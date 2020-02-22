@@ -79,3 +79,8 @@ Temporary Items
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+
+# ------------------------------------------------------------------------------
+# Dependency directories
+
+/node_modules

@@ -17,19 +17,17 @@ import javafx.scene.control.Label;
  * @author eunice
  */
 public class FXMLDocumentController implements Initializable {
-    
-    @FXML
-    private Label label;
-    
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
-    }
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+  @FXML
+  private Label label;
+
+  @FXML
+  private void handleButtonAction(ActionEvent event) {
+    System.out.println("You clicked me!");
+    label.setText("Hello World!");
+  }
+
+  @Override
+  public void initialize(URL url, ResourceBundle rb) {
+    // TODO
+  }
 }
