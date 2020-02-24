@@ -51,7 +51,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 //import ryanhildebrantsoftware2.RyanHildebrantSoftware2;
 import scheduler.Scheduler;
-import utils.DBConnection;
+import Database.DBConnection;
+//import utils.DBConnection;
 
 /**
  * FXML Controller class
@@ -384,3 +385,10 @@ public class AppointmentScreenController implements Initializable {
     }
   }
 }
+/* =================================================================  
+                          	MY NOTES
+================================================================= */
+/*
+--------------------------------------------------------------------
+*/
+/* -------------------------------------------------------------- */

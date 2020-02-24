@@ -29,7 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
+// import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -57,7 +57,8 @@ public class AddCustomerController implements Initializable {
   private TextField addCustomPhoneText;
 
   @FXML
-  private ComboBox<String> addCustomerCityComboBox;
+  private TextField addCustomerCityComboBox;
+  // private ComboBox<String> addCustomerCityComboBox;
 
   @FXML
   private Button saveCustomerButton;
@@ -65,34 +66,36 @@ public class AddCustomerController implements Initializable {
   @FXML
   private Button cancelButton;
 
-  ObservableList<String> cityIDList = FXCollections.observableArrayList(
-    "Phoenix, Arizona",
-    " New York, New York",
-    "London, England"
-  );
-  ObservableList<String> countryIDList = FXCollections.observableArrayList(
-    "United States",
-    "United Kingdom"
-  );
+  // ObservableList<String> cityIDList = FXCollections.observableArrayList(
+  //   "Phoenix, Arizona",
+  //   " New York, New York",
+  //   "London, England"
+  // );
+  // ObservableList<String> countryIDList = FXCollections.observableArrayList(
+  //   "United States",
+  //   "United Kingdom"
+  // );
 
   /**
    * Initializes the controller class.
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    addCustomerCityComboBox.setItems(cityIDList);
+    // addCustomerCityComboBox.setItems(cityIDList);
   }
 
-  @FXML
-  private void addCustomerCityHandler(ActionEvent event) {
-    int customerCity =
-      addCustomerCityComboBox.getSelectionModel().getSelectedIndex() + 1;
+  /* -------------------------------------------------------------- */
+  // @FXML
+  // private void addCustomerCityHandler(ActionEvent event) {
+  //   int customerCity =
+  //     addCustomerCityComboBox.getSelectionModel().getSelectedIndex() + 1;
 
-    if (customerCity == 3) {
-      addCustomerCountryText.setText("United Kingdom");
-    }
-  }
+  //   if (customerCity == 3) {
+  //     addCustomerCountryText.setText("United Kingdom");
+  //   }
+  // }
 
+  /* -------------------------------------------------------------- */
   @FXML
   private void saveCustomerHandler(ActionEvent event) throws IOException {
     int customerID = 1;
@@ -104,16 +107,18 @@ public class AddCustomerController implements Initializable {
 
     int addressId = 1;
     int customerId = customerID;
-    int customerCity =
-      addCustomerCityComboBox.getSelectionModel().getSelectedIndex() + 1;
-    String customerCityChoice = addCustomerCityComboBox
-      .getSelectionModel()
-      .getSelectedItem();
+    int customerCity = 1;
+    // int customerCity =
+    //   addCustomerCityComboBox.getSelectionModel().getSelectedIndex() + 1;
+    // String customerCityChoice = addCustomerCityComboBox
+    //   .getSelectionModel()
+    //   .getSelectedItem();
 
     customerID = ++customerID;
     String customerName = addCustomerText.getText();
     String customerAddress = addCustomerAddressText.getText();
-    String customerCityChoiceValue = customerCityChoice;
+    String customerCityChoiceValue = addCustomerCityComboBox.getText();
+    // String customerCityChoiceValue = customerCityChoice;
     String customerCountry = addCustomerCountryText.getText();
     String customerZipCode = addCustomerZipCodeText.getText();
     String customerPhone = addCustomPhoneText.getText();
@@ -203,6 +208,7 @@ public class AddCustomerController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   @FXML
   private void cancelHandler(ActionEvent event) throws IOException {
     Alert alert = new Alert(
@@ -221,10 +227,12 @@ public class AddCustomerController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   public static int getID(int ID) {
     return ID;
   }
 
+  /* -------------------------------------------------------------- */
   public boolean validateCustomerName(String customerName) {
     if (customerName.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -237,6 +245,7 @@ public class AddCustomerController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   public boolean validateAddress(String address) {
     if (address.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -249,6 +258,7 @@ public class AddCustomerController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   public boolean validateZipcode(String zipCode) {
     if (zipCode.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -261,6 +271,7 @@ public class AddCustomerController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   public boolean validatePhone(String phone) {
     if (phone.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -275,3 +286,10 @@ public class AddCustomerController implements Initializable {
     }
   }
 }
+/* =================================================================  
+                          	MY NOTES
+================================================================= */
+/*
+--------------------------------------------------------------------
+*/
+/* -------------------------------------------------------------- */
