@@ -98,9 +98,11 @@ public class CustomerTableController implements Initializable {
 
     //Lambda expression to populate customer table
     customerTableView.getSelectionModel().selectFirst();
+
     customerIDTable.setCellValueFactory(
       new PropertyValueFactory<>("customerID")
     );
+    
     customerNameTable.setCellValueFactory(
       customer ->
         new SimpleStringProperty(customer.getValue().getCustomerName())
@@ -136,11 +138,14 @@ public class CustomerTableController implements Initializable {
   @FXML
   private void modifyButtonHandler(ActionEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader();
+
     loader.setLocation(
       getClass().getResource("/View_Controller/ModifyCustomer.fxml")
     );
     loader.load();
+    
     ModifyCustomerController controller = loader.getController();
+    
     Customer customer = customerTableView.getSelectionModel().getSelectedItem();
 
     int index = customerTableView.getSelectionModel().getSelectedIndex();

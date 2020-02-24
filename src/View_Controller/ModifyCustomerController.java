@@ -59,7 +59,8 @@ public class ModifyCustomerController implements Initializable {
   // private ComboBox<String> modifyCustomerCityText;
 
   @FXML
-  private Label modifyCustomerCountryText;
+  private TextField modifyCustomerCountryText;
+  // private Label modifyCustomerCountryText;
 
   @FXML
   private Button saveModifiedustomerButton;
@@ -214,6 +215,15 @@ public class ModifyCustomerController implements Initializable {
                           	MY NOTES
 ================================================================= */
 /*
+getSelectionModel()
+https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/TableView.html#getSelectionModel--
+Gets the value of the property selectionModel.
+Property description:
+The SelectionModel provides the API through which it is possible to select single or multiple items within a TableView, as well as inspect which items have been selected by the user.
+
+Getting selected item from a JavaFX TableView
+https://stackoverflow.com/questions/17388866/getting-selected-item-from-a-javafx-tableview
+
 --------------------------------------------------------------------
 */
 /* -------------------------------------------------------------- */

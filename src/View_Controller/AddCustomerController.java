@@ -48,7 +48,8 @@ public class AddCustomerController implements Initializable {
   private TextField addCustomerAddressText;
 
   @FXML
-  private Label addCustomerCountryText;
+  // private Label addCustomerCountryText;
+  private TextField addCustomerCountryText;
 
   @FXML
   private TextField addCustomerZipCodeText;
@@ -94,15 +95,30 @@ public class AddCustomerController implements Initializable {
   //     addCustomerCountryText.setText("United Kingdom");
   //   }
   // }
+  /* -------------------------------------------------------------- */    
+  private static String mySQLEscapeSingleQuote(String s) {
+    String escapedString = s.replace("'", "''");
+    return escapedString;
+  }
+
+  // private static int findCityId(String s) {
+    
+  // }
+
+  // private static int findCountryId(String s) {
+
+  // }
 
   /* -------------------------------------------------------------- */
   @FXML
   private void saveCustomerHandler(ActionEvent event) throws IOException {
     int customerID = 1;
 
+    // Find greatest customerID in `Customer` table
     for (Customer customer : DataProvider.allCustomersTableList) {
-      if (customer.getCustomerID() > customerID) customerID =
-        customer.getCustomerID();
+      if (customer.getCustomerID() > customerID) {
+        customerID = customer.getCustomerID();
+      }
     }
 
     int addressId = 1;
@@ -117,6 +133,7 @@ public class AddCustomerController implements Initializable {
     customerID = ++customerID;
     String customerName = addCustomerText.getText();
     String customerAddress = addCustomerAddressText.getText();
+    String customerAddressEscaped = mySQLEscapeSingleQuote(customerAddress);
     String customerCityChoiceValue = addCustomerCityComboBox.getText();
     // String customerCityChoiceValue = customerCityChoice;
     String customerCountry = addCustomerCountryText.getText();
@@ -126,9 +143,11 @@ public class AddCustomerController implements Initializable {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
 
+      // Find max addressId
       ResultSet addressResultSet = statement.executeQuery(
         "SELECT MAX(addressId) FROM address"
       );
+
       if (addressResultSet.next()) {
         addressId = addressResultSet.getInt(1);
         addressId++;
@@ -137,6 +156,7 @@ public class AddCustomerController implements Initializable {
       ResultSet customerResultSet = statement.executeQuery(
         "SELECT MAX(customerId) FROM customer"
       );
+
       if (customerResultSet.next()) {
         customerId = customerResultSet.getInt(1);
         customerId++;
@@ -146,7 +166,8 @@ public class AddCustomerController implements Initializable {
         "INSERT INTO address SET addressId=" +
         addressId +
         ", address='" +
-        customerAddress +
+        customerAddressEscaped +
+        // customerAddress +
         "', address2='none', phone='" +
         customerPhone +
         "', postalCode='" +
@@ -157,6 +178,7 @@ public class AddCustomerController implements Initializable {
 
       int addressExecuteUpdate = statement.executeUpdate(addressQuery);
 
+      // Update `Customer` table
       if (addressExecuteUpdate == 1) {
         String customerQuery =
           "INSERT INTO customer SET customerId=" +
@@ -286,10 +308,51 @@ public class AddCustomerController implements Initializable {
     }
   }
 }
+
 /* =================================================================  
                           	MY NOTES
 ================================================================= */
 /*
+TEMPLATE LITERALS
+
+string concatenation
+StringBuilder
+Formatted text - String.format()
+
 --------------------------------------------------------------------
+How to escape single quotes in MySQL
+https://stackoverflow.com/questions/887036/how-to-escape-single-quotes-in-mysql/19819265
+
+--------------------------------------------------------------------
+Connection interface
+https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html
+
+A connection (session) with a specific database. 
+SQL statements are executed and results are returned within the context of a connection.
+
+--------------------------------------------------------------------
+createStatement() - Connection
+Creates a Statement object for sending SQL statements to the database.
+
+--------------------------------------------------------------------
+Statement interface
+https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html
+
+The object used for executing a static SQL statement and returning the results it produces.
+
+--------------------------------------------------------------------
+executeUpdate() - Statement
+https://docs.oracle.com/javase/8/docs/api/java/sql/Statement.html#executeUpdate-java.lang.String-
+
+Executes the given SQL statement
+Returns
+- the row count for DML statements 
+- 0 for SQL statements that return nothing
+
+--------------------------------------------------------------------
+ResultSet interface
+https://docs.oracle.com/javase/8/docs/api/java/sql/ResultSet.html
+
+A table of data representing a database result set, which is usually generated by executing a statement that queries the database.
 */
 /* -------------------------------------------------------------- */

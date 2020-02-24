@@ -61,6 +61,19 @@ public class Scheduler extends Application {
                           	MY NOTES
 ================================================================= */
 /*
+Writing a function inside the main method 
+https://stackoverflow.com/questions/20888208/writing-a-function-inside-the-main-method-java
+
+you can't declare a method inside another method.
+Unless you use Java 8's Closure/Lambda functionality
+
 --------------------------------------------------------------------
+STATIC METHODS
+
+static methods = class methods 
+non-static methods = instance methods
+a static method cannot call a non static method, 
+because it is not being called from an instance/object
+
 */
 /* -------------------------------------------------------------- */

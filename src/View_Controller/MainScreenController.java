@@ -96,28 +96,28 @@ public class MainScreenController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    ResourceBundle userLanguage;
-    Locale current = getLocale();
-    userLanguage =
-      ResourceBundle.getBundle("ryanhildebrantsoftware2/Nat", current);
+    // ResourceBundle userLanguage;
+    // Locale current = getLocale();
+    // userLanguage =
+    //   ResourceBundle.getBundle("scheduler/Nat", current);
 
-    welcomeLabel.setText(userLanguage.getString("welcomeMain"));
-    customerLabel1.setText(userLanguage.getString("customer"));
-    customerTableButton.setText(userLanguage.getString("customerButton"));
-    customerLabel1.setText(userLanguage.getString("customerText1"));
-    customerLabel2.setText(userLanguage.getString("customerText2"));
-    appointmentTableButton.setText(userLanguage.getString("appointmentButton"));
-    appointmentLabel.setText(userLanguage.getString("appointment"));
-    appointmentLabel1.setText(userLanguage.getString("appointmentText1"));
-    appointmentLabel2.setText(userLanguage.getString("appointmentText2"));
-    reportLabel.setText(userLanguage.getString("generateReport"));
-    reportTableButton.setText(userLanguage.getString("generateButton"));
-    reportLabel1.setText(userLanguage.getString("generateText1"));
-    reportLabel2.setText(userLanguage.getString("generateText2"));
-    reportLabel3.setText(userLanguage.getString("generateText3"));
-    reportLabel4.setText(userLanguage.getString("generateText4"));
-    logoutButton.setText(userLanguage.getString("logout"));
-    exitButton.setText(userLanguage.getString("exit"));
+    // welcomeLabel.setText(userLanguage.getString("welcomeMain"));
+    // customerLabel1.setText(userLanguage.getString("customer"));
+    // customerTableButton.setText(userLanguage.getString("customerButton"));
+    // customerLabel1.setText(userLanguage.getString("customerText1"));
+    // customerLabel2.setText(userLanguage.getString("customerText2"));
+    // appointmentTableButton.setText(userLanguage.getString("appointmentButton"));
+    // appointmentLabel.setText(userLanguage.getString("appointment"));
+    // appointmentLabel1.setText(userLanguage.getString("appointmentText1"));
+    // appointmentLabel2.setText(userLanguage.getString("appointmentText2"));
+    // reportLabel.setText(userLanguage.getString("generateReport"));
+    // reportTableButton.setText(userLanguage.getString("generateButton"));
+    // reportLabel1.setText(userLanguage.getString("generateText1"));
+    // reportLabel2.setText(userLanguage.getString("generateText2"));
+    // reportLabel3.setText(userLanguage.getString("generateText3"));
+    // reportLabel4.setText(userLanguage.getString("generateText4"));
+    // logoutButton.setText(userLanguage.getString("logout"));
+    // exitButton.setText(userLanguage.getString("exit"));
 
     Appointment checkAppointments = new Appointment();
     checkAppointments.setAppointmentAlert();

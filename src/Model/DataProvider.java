@@ -59,6 +59,7 @@ public class DataProvider {
     return DataProvider.allCustomersTableList;
   }
 
+  /* -------------------------------------------------------------- */
   public static ObservableList<Appointment> getAllAppointments()
     throws SQLException {
     Statement statement = DBConnection.getConnection().createStatement();
@@ -90,23 +91,28 @@ public class DataProvider {
     return DataProvider.allAppointmentsTableList;
   }
 
+  /* -------------------------------------------------------------- */
   private static ObservableList<Appointment> selectedAppointmentsForCustomer = FXCollections.observableArrayList();
   private static ObservableList<Appointment> allAppointmentsTableList = FXCollections.observableArrayList();
   private static ObservableList<Appointment> appointmentsByWeek = FXCollections.observableArrayList();
   private static ObservableList<Appointment> appointmentsByMonth = FXCollections.observableArrayList();
 
+  /* -------------------------------------------------------------- */
   public static void addCustomer(Customer customer) {
     allCustomersTableList.add(customer);
   }
 
+  /* -------------------------------------------------------------- */
   public static void addAppointment(Appointment appointment) {
     allAppointmentsTableList.add(appointment);
   }
 
+  /* -------------------------------------------------------------- */
   public static ObservableList<Customer> getAllCustomersTableList() {
     return allCustomersTableList;
   }
 
+  /* -------------------------------------------------------------- */
   public static void populateCustomerTable() {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
@@ -177,6 +183,7 @@ public class DataProvider {
     }
   }
 
+  /* -------------------------------------------------------------- */
   public static void populateAppointmentTable() {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
@@ -262,6 +269,7 @@ public class DataProvider {
     }
   }
 
+  /* -------------------------------------------------------------- */
   public static int nextAppointmentId()
     throws ClassNotFoundException, SQLException {
     Statement statement = DBConnection.getConnection().createStatement();
@@ -276,22 +284,27 @@ public class DataProvider {
     return max;
   }
 
+  /* -------------------------------------------------------------- */
   public static ObservableList<Appointment> getSelectedAppointmentsForCustomer() {
     return selectedAppointmentsForCustomer;
   }
 
+  /* -------------------------------------------------------------- */
   public static ObservableList<Appointment> getAllAppointmentsTableList() {
     return allAppointmentsTableList;
   }
 
+  /* -------------------------------------------------------------- */
   public static ObservableList<Appointment> getAppointmentsByWeek() {
     return appointmentsByWeek;
   }
 
+  /* -------------------------------------------------------------- */
   public static ObservableList<Appointment> getAppointmentsByMonth() {
     return appointmentsByMonth;
   }
 
+  /* -------------------------------------------------------------- */
   public static void setSelectedAppointmentsForCustomer(int selectedCustomer) {
     try {
       ArrayList<Integer> selectedCustomerAppointments = new ArrayList<>();
@@ -353,6 +366,7 @@ public class DataProvider {
     }
   }
 
+  /* -------------------------------------------------------------- */
   public static void setMonthlyView(String monthForReference) {
     try {
       ArrayList<Integer> selectedAppointmentsByMonth = new ArrayList<>();
@@ -401,6 +415,7 @@ public class DataProvider {
     }
   }
 
+  /* -------------------------------------------------------------- */
   public static void setWeeklyView(int weekForReference) {
     try {
       ArrayList<Integer> selectedAppointmentsByWeek = new ArrayList<>();
