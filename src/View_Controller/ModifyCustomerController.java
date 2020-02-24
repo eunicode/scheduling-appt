@@ -29,7 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
+// import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -55,7 +55,8 @@ public class ModifyCustomerController implements Initializable {
   private TextField modifyCustomPhoneText;
 
   @FXML
-  private ComboBox<String> modifyCustomerCityText;
+  private TextField modifyCustomerCityText;
+  // private ComboBox<String> modifyCustomerCityText;
 
   @FXML
   private Label modifyCustomerCountryText;
@@ -68,11 +69,12 @@ public class ModifyCustomerController implements Initializable {
 
   Customer selectedCustomer;
   int selectedIndex;
-  ObservableList<String> cityIDList = FXCollections.observableArrayList(
-    "Phoenix, Arizona",
-    " New York, New York",
-    "London, England"
-  );
+
+  // ObservableList<String> cityIDList = FXCollections.observableArrayList(
+  //   "Phoenix, Arizona",
+  //   " New York, New York",
+  //   "London, England"
+  // );
 
   /**
    * Initializes the controller class.
@@ -82,33 +84,34 @@ public class ModifyCustomerController implements Initializable {
     // TODO
   }
 
-  @FXML
-  private void modifyCustomerCityHandler(ActionEvent event) {
-    int customerCity =
-      modifyCustomerCityText.getSelectionModel().getSelectedIndex() + 1;
+  // @FXML
+  // private void modifyCustomerCityHandler(ActionEvent event) {
+  //   int customerCity =
+  //     modifyCustomerCityText.getSelectionModel().getSelectedIndex() + 1;
 
-    if (customerCity == 1 || customerCity == 2) {
-      modifyCustomerCountryText.setText("United States");
-    }
+  //   if (customerCity == 1 || customerCity == 2) {
+  //     modifyCustomerCountryText.setText("United States");
+  //   }
 
-    if (customerCity == 3) {
-      modifyCustomerCountryText.setText("United Kingdom");
-    }
-  }
+  //   if (customerCity == 3) {
+  //     modifyCustomerCountryText.setText("United Kingdom");
+  //   }
+  // }
 
-  @FXML
-  private void modifyCustomerCountryHandler(MouseEvent event) {}
+  // @FXML
+  // private void modifyCustomerCountryHandler(MouseEvent event) {}
 
   @FXML
   void saveModifiedCustomerHandler(ActionEvent event)
-    throws IOException, SQLException {
+  throws IOException, SQLException {
     int addressId = 0;
     int customerId = selectedCustomer.getCustomerID();
 
     try {
-      String customerCityChoice = modifyCustomerCityText
-        .getSelectionModel()
-        .getSelectedItem();
+      // String customerCityChoice = modifyCustomerCityText
+      //   .getSelectionModel()
+      //   .getSelectedItem();
+      String customerCityChoice = modifyCustomerCityText.getText();
       String customerName = modifyCustomerText.getText();
       String customerAddress = modifyCustomerAddressText.getText();
       String customerCountry = modifyCustomerCountryText.getText();
@@ -172,6 +175,7 @@ public class ModifyCustomerController implements Initializable {
     stage.show();
   }
 
+  /* -------------------------------------------------------------- */
   @FXML
   private void cancelModifiedHandler(ActionEvent event) throws IOException {
     Alert alert = new Alert(
@@ -190,6 +194,7 @@ public class ModifyCustomerController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   public void setCustomer(Customer customer, int index) {
     selectedCustomer = customer;
     selectedIndex = index;
@@ -198,7 +203,8 @@ public class ModifyCustomerController implements Initializable {
 
     this.modifyCustomerText.setText(newCustomer.getCustomerName());
     this.modifyCustomerAddressText.setText((newCustomer.getAddress()));
-    this.modifyCustomerCityText.setItems(cityIDList);
+    // this.modifyCustomerCityText.setItems(cityIDList);
+    this.modifyCustomerCityText.setText((newCustomer.getCity()));
     this.modifyCustomerCountryText.setText((newCustomer.getCountry()));
     this.modifyCustomerZipCodeText.setText((newCustomer.getPostalCode()));
     this.modifyCustomPhoneText.setText((newCustomer.getPhone()));

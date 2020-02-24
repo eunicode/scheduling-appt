@@ -24,11 +24,11 @@
       </TableView>
       <RadioButton fx:id="viewByWeekRadioButton" layoutX="55.0" layoutY="62.0" mnemonicParsing="false" onAction="#viewByWeekHandler" text="This week's appointments" />
       <RadioButton fx:id="viewByMonthRadioButton" layoutX="55.0" layoutY="93.0" mnemonicParsing="false" onAction="#viewByMonthHandler" text="This month's appointments" />
+      <RadioButton layoutX="55.0" layoutY="123.0" mnemonicParsing="false" text="All appointments" />
       <Label layoutX="55.0" layoutY="29.0" text="Appointment Records" />
       <Button fx:id="backButton" layoutX="741.0" layoutY="498.0" mnemonicParsing="false" onAction="#backHandler" prefHeight="27.0" prefWidth="124.0" text="Back" />
       <Button fx:id="modifyAppointmentButton" layoutX="413.0" layoutY="498.0" mnemonicParsing="false" onAction="#modifyAppointmentHandler" prefHeight="27.0" prefWidth="134.0" text="Edit appointment" />
       <Button layoutX="60.0" layoutY="498.0" mnemonicParsing="false" text="Add appointment" />
       <Button fx:id="deleteAppointmentButton" layoutX="570.0" layoutY="498.0" mnemonicParsing="false" onAction="#deleteAppointmentHandler" prefHeight="27.0" prefWidth="151.0" text="Delete appointment" />
-      <RadioButton layoutX="55.0" layoutY="123.0" mnemonicParsing="false" text="All appointments" />
    </children>
 </AnchorPane>

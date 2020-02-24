@@ -49,7 +49,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-//import ryanhildebrantsoftware2.RyanHildebrantSoftware2;
 import scheduler.Scheduler;
 import Database.DBConnection;
 //import utils.DBConnection;
@@ -64,8 +63,9 @@ public class AppointmentScreenController implements Initializable {
   @FXML
   private RadioButton viewByMonthRadioButton;
 
-  @FXML
-  private ToggleGroup appointmentRadioButtonGroup;
+  // @FXML
+  // private ToggleGroup appointmentRadioButtonGroup;
+  private ToggleGroup weekOrMonthToggleGroup;
 
   @FXML
   private RadioButton viewByWeekRadioButton;
@@ -141,6 +141,13 @@ public class AppointmentScreenController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
+
+    // Radio Button  
+    weekOrMonthToggleGroup = new ToggleGroup();
+    this.viewByWeekRadioButton.setToggleGroup(weekOrMonthToggleGroup);
+    this.viewByMonthRadioButton.setToggleGroup(weekOrMonthToggleGroup);
+    // this.viewByAllRadioButton.setToggleGroup(weekOrMonthToggleGroup);
+
     DataProvider.getAllAppointmentsTableList().clear();
     appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
 
@@ -172,6 +179,7 @@ public class AppointmentScreenController implements Initializable {
     appointmentEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
   }
 
+  /* -------------------------------------------------------------- */
   @FXML
   private void viewByMonthHandler(ActionEvent event) {
     DataProvider.getAppointmentsByMonth().clear();
@@ -188,6 +196,7 @@ public class AppointmentScreenController implements Initializable {
     viewByComboBox.setItems(viewByMonth);
   }
 
+  /* -------------------------------------------------------------- */  
   @FXML
   private void viewByWeekHandler(ActionEvent event) {
     DataProvider.getAppointmentsByMonth().clear();
@@ -201,6 +210,7 @@ public class AppointmentScreenController implements Initializable {
     viewByComboBox.setItems(viewByWeek);
   }
 
+  /* -------------------------------------------------------------- */
   @FXML
   void searchTableSorterHandler(ActionEvent event) {
     DataProvider.getAppointmentsByMonth().clear();
@@ -260,6 +270,7 @@ public class AppointmentScreenController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   @FXML
   void modifyAppointmentHandler(ActionEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader();
@@ -281,6 +292,7 @@ public class AppointmentScreenController implements Initializable {
     stage.show();
   }
 
+  /* -------------------------------------------------------------- */
   @FXML
   private void deleteAppointmentHandler(ActionEvent event) {
     Alert alert = new Alert(
@@ -301,6 +313,7 @@ public class AppointmentScreenController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   @FXML
   private void backHandler(ActionEvent event) throws IOException {
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -333,6 +346,7 @@ public class AppointmentScreenController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   public void sortAppointment() {
     try {
       Statement statement = DBConnection.getConnection().createStatement();

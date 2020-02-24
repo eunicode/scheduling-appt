@@ -17,10 +17,12 @@ import java.sql.ResultSet;
 //import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.ZoneId;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 //import java.util.Locale;
 //import java.util.ResourceBundle;
+
 import java.util.TimeZone;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -65,7 +67,7 @@ public class LoginScreenController implements Initializable {
   private Button submitButton;
 
   @FXML
-  private TextArea welcomeMessageLabel;
+  private Label welcomeMessageLabel;
 
   @FXML
   private Label usernameLabel;
@@ -79,19 +81,19 @@ public class LoginScreenController implements Initializable {
    * Initializes the Locale on Login screen.
    */
 
-  public static Locale getLocale() {
-    return Locale.getDefault();
-  }
+   public static Locale getLocale() {
+     return Locale.getDefault();
+   }
 
-  Locale[] localeLanguages = { Locale.ENGLISH, Locale.GERMAN };
+  // Locale[] localeLanguages = { Locale.ENGLISH, Locale.KOREAN };
 
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    // TODO
-    ResourceBundle userLanguage;
-    Locale current = getLocale();
-    userLanguage =
-      ResourceBundle.getBundle("ryanhildebrantsoftware2/Nat", current);
+    // ResourceBundle userLanguage; // rb
+    // Locale current = getLocale();
+    // userLanguage =
+    //   ResourceBundle.getBundle("scheduler/Nat", current);
+    ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat");
 
     welcomeMessageLabel.setText(userLanguage.getString("welcome"));
     usernameLabel.setText(userLanguage.getString("username"));
@@ -123,17 +125,17 @@ public class LoginScreenController implements Initializable {
       if (getLocale().toString().equals("en_US")) {
         Alert alert = new Alert(
           Alert.AlertType.ERROR,
-          "The username and password did not match."
+          "The username and/or password is incorrect."
         );
         alert.showAndWait();
 
         trackLoggedInUser.trackLog(username, false);
       }
 
-      if (getLocale().toString().equals("de_DE")) {
+      if (getLocale().toString().equals("ko_KR")) {
         Alert alert = new Alert(
           Alert.AlertType.ERROR,
-          "Der Benutzername und das Passwort stimmten nicht überein."
+          "사용자 이름 및 / 또는 비밀번호가 잘못되었습니다."
         );
         alert.showAndWait();
 
