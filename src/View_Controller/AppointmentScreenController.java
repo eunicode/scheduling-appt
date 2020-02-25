@@ -7,6 +7,7 @@ package View_Controller;
 
 import static View_Controller.CustomerTableController.deleteCustomer;
 
+import Database.DBConnection;
 //import Database.DBConnection;
 import Model.Appointment;
 import Model.Customer;
@@ -50,7 +51,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import scheduler.Scheduler;
-import Database.DBConnection;
+
 //import utils.DBConnection;
 
 /**
@@ -141,8 +142,7 @@ public class AppointmentScreenController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-
-    // Radio Button  
+    // Radio Button
     weekOrMonthToggleGroup = new ToggleGroup();
     this.viewByWeekRadioButton.setToggleGroup(weekOrMonthToggleGroup);
     this.viewByMonthRadioButton.setToggleGroup(weekOrMonthToggleGroup);
@@ -196,7 +196,7 @@ public class AppointmentScreenController implements Initializable {
     viewByComboBox.setItems(viewByMonth);
   }
 
-  /* -------------------------------------------------------------- */  
+  /* -------------------------------------------------------------- */
   @FXML
   private void viewByWeekHandler(ActionEvent event) {
     DataProvider.getAppointmentsByMonth().clear();

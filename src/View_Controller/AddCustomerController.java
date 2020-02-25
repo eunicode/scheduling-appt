@@ -59,6 +59,7 @@ public class AddCustomerController implements Initializable {
 
   @FXML
   private TextField addCustomerCityComboBox;
+
   // private ComboBox<String> addCustomerCityComboBox;
 
   @FXML
@@ -95,14 +96,14 @@ public class AddCustomerController implements Initializable {
   //     addCustomerCountryText.setText("United Kingdom");
   //   }
   // }
-  /* -------------------------------------------------------------- */    
+  /* -------------------------------------------------------------- */
   private static String mySQLEscapeSingleQuote(String s) {
     String escapedString = s.replace("'", "''");
     return escapedString;
   }
 
   // private static int findCityId(String s) {
-    
+
   // }
 
   // private static int findCountryId(String s) {
@@ -308,7 +309,6 @@ public class AddCustomerController implements Initializable {
     }
   }
 }
-
 /* =================================================================  
                           	MY NOTES
 ================================================================= */

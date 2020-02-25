@@ -17,7 +17,6 @@ import java.sql.ResultSet;
 //import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.ZoneId;
-
 import java.util.Locale;
 import java.util.ResourceBundle;
 //import java.util.Locale;
@@ -81,9 +80,9 @@ public class LoginScreenController implements Initializable {
    * Initializes the Locale on Login screen.
    */
 
-   public static Locale getLocale() {
-     return Locale.getDefault();
-   }
+  public static Locale getLocale() {
+    return Locale.getDefault();
+  }
 
   // Locale[] localeLanguages = { Locale.ENGLISH, Locale.KOREAN };
 

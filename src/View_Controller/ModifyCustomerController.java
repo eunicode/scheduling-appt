@@ -56,10 +56,12 @@ public class ModifyCustomerController implements Initializable {
 
   @FXML
   private TextField modifyCustomerCityText;
+
   // private ComboBox<String> modifyCustomerCityText;
 
   @FXML
   private TextField modifyCustomerCountryText;
+
   // private Label modifyCustomerCountryText;
 
   @FXML
@@ -104,7 +106,7 @@ public class ModifyCustomerController implements Initializable {
 
   @FXML
   void saveModifiedCustomerHandler(ActionEvent event)
-  throws IOException, SQLException {
+    throws IOException, SQLException {
     int addressId = 0;
     int customerId = selectedCustomer.getCustomerID();
 

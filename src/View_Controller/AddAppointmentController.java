@@ -142,6 +142,7 @@ public class AddAppointmentController implements Initializable {
     "Planning & Coordination"
   );
 
+  /* -------------------------------------------------------------- */
   /**
    * Initializes the controller class.
    */
@@ -177,10 +178,12 @@ public class AddAppointmentController implements Initializable {
     addAppointmentLocationText.setItems(appointmentLocation);
   }
 
+  /* -------------------------------------------------------------- */
   public void setSelectedCustomerId(int customerIdValue) {
     customerId = customerIdValue;
   }
 
+  /* -------------------------------------------------------------- */
   public void setSelectedUserId(String selectedUserName) {
     try {
       Connection conn = DBConnection.getConnection();
@@ -198,6 +201,7 @@ public class AddAppointmentController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   @FXML
   private void saveAppointmentHandler(ActionEvent event)
     throws IOException, ParseException, ClassNotFoundException, SQLException {
@@ -367,6 +371,7 @@ public class AddAppointmentController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   @FXML
   private void backAppointmentHandler(ActionEvent event) throws IOException {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -404,6 +409,7 @@ public class AddAppointmentController implements Initializable {
       );
   }
 
+  /* -------------------------------------------------------------- */
   public static boolean validateAppointmentStart(
     String appointmentStartTime,
     String appointmentEndTime

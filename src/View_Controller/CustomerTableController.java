@@ -144,10 +144,10 @@ public class CustomerTableController implements Initializable {
       getClass().getResource("/View_Controller/ModifyCustomer.fxml")
     );
     loader.load();
-    
+
     // Create controller
     ModifyCustomerController controller = loader.getController();
-    
+
     Customer customer = customerTableView.getSelectionModel().getSelectedItem();
 
     int index = customerTableView.getSelectionModel().getSelectedIndex();

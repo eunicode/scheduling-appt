@@ -29,7 +29,6 @@ import javafx.scene.control.Alert;
  */
 
 // Plain Old Java Object class
-
 public class Appointment {
   // Class field names match `Appointment` table columns
   private int appointmentId;
@@ -50,7 +49,7 @@ public class Appointment {
   public Appointment() {}
 
   // Constructor overload
-  public Appointment(
+  public Appointment( // 12 params
     String customerName,
     int appointmentId,
     int customerId,
@@ -78,7 +77,7 @@ public class Appointment {
     end = this.end;
   }
 
-  public Appointment(
+  public Appointment( // 11 params - missing customerName
     int appointmentId,
     int customerId,
     int userId,
@@ -104,76 +103,41 @@ public class Appointment {
     end = this.end;
   }
 
+  /* -------------------------------------------------------------- */
   public int getAppointmentId() {
     return appointmentId;
-  }
-
-  public void setAppointmentId(int appointmentId) {
-    this.appointmentId = appointmentId;
-  }
-
-  public int getCustomerId() {
-    return customerId;
-  }
-
-  public void setCustomerId(int customerId) {
-    this.customerId = customerId;
   }
 
   public int getUserId() {
     return userId;
   }
 
-  public void setUserId(int userId) {
-    this.userId = userId;
+  public int getCustomerId() {
+    return customerId;
   }
-
+  
   public String getTitle() {
     return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
   }
 
   public String getDescription() {
     return description;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
   public String getLocation() {
     return location;
-  }
-
-  public void setLocation(String location) {
-    this.location = location;
   }
 
   public String getContact() {
     return contact;
   }
 
-  public void setContact(String contact) {
-    this.contact = contact;
-  }
-
   public String getType() {
     return type;
   }
 
-  public void setType(String type) {
-    this.type = type;
-  }
-
   public String getUrl() {
     return url;
-  }
-
-  public void setUrl(String url) {
-    this.url = url;
   }
 
   public LocalTime getTime() {
@@ -184,30 +148,53 @@ public class Appointment {
     return start;
   }
 
-  public void setStart(String start) {
-    this.start = start;
-  }
-
   public String getEnd() {
     return end;
   }
 
-  public void setEnd(String end) {
-    this.end = end;
+  /* -------------------------------------------------------------- */
+  public void setAppointmentId(int appointmentId) {
+    this.appointmentId = appointmentId;
   }
 
-  public static String pullCustomerName(int customerId) throws SQLException {
-    Statement statement = DBConnection.getConnection().createStatement();
-    Customer customer = new Customer();
-    ResultSet customerTableData = statement.executeQuery(
-      "SELECT customerName from customer WHERE customerId =" + customerId
-    );
-    customerTableData.next();
+  public void setCustomerId(int customerId) {
+    this.customerId = customerId;
+  }
 
-    String customerName = customerTableData.getString("customerName");
-    customer.setCustomerName(customerName);
+  public void setUserId(int userId) {
+    this.userId = userId;
+  }
 
-    return customerName;
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+  
+  public void setLocation(String location) {
+    this.location = location;
+  }
+  
+  public void setContact(String contact) {
+    this.contact = contact;
+  }
+  
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
+  public void setStart(String start) {
+    this.start = start;
+  }
+
+  public void setEnd(String end) {
+    this.end = end;
   }
 
   public String getCustomerName() {
@@ -217,10 +204,34 @@ public class Appointment {
   public void setCustomerName(String customerName) {
     this.customerName = customerName;
   }
+  // public LocalDate getDate(String dateString) {
+  //   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+  //   LocalDate transformedDate = LocalDate.parse(dateString, formatter);
+  //   return transformedDate;
+  // }
+  /* -------------------------------------------------------------- */  
+  public static String pullCustomerName(int customerId) throws SQLException {
+    Statement statement = DBConnection.getConnection().createStatement();
+    Customer customer = new Customer();
 
+    ResultSet customerTableData = statement.executeQuery(
+      "SELECT customerName from customer WHERE customerId =" + customerId
+    );
+
+    customerTableData.next();
+
+    String customerName = customerTableData.getString("customerName");
+
+    customer.setCustomerName(customerName);
+
+    return customerName;
+  }
+
+  /* -------------------------------------------------------------- */
   public void setAppointmentAlert() {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
+
       ResultSet upcomingAppointments = statement.executeQuery(
         "SELECT customer.customerName, start FROM appointment JOIN customer ON customer.customerId = appointment.customerId WHERE DATE(start) = curdate()"
       );
@@ -234,15 +245,18 @@ public class Appointment {
         DateTimeFormatter formateDateTime = DateTimeFormatter.ofPattern(
           "yyyy-MM-dd HH:mm:ss.S"
         );
+
         LocalDateTime localFormattedTime = LocalDateTime.parse(
           startTime,
           formateDateTime
         );
+
         ZonedDateTime zonedFormattedTime = localFormattedTime.atZone(
           ZoneId.of("UTC")
         );
 
         ZoneId localZoneId = ZoneId.systemDefault();
+
         ZonedDateTime zonedUTCTime = zonedFormattedTime.withZoneSameInstant(
           localZoneId
         );
@@ -252,15 +266,19 @@ public class Appointment {
           zonedUTCTime.toString().substring(11, 16),
           format
         );
+
         String appointmentTime = localTime.toString();
+
         long difference = ChronoUnit.MINUTES.between(currentTime, localTime);
 
         if (difference > 0 && difference <= 15) {
+          // Add Korean alternative
           String alertMessage = String.format(
             "Reminder! You have an appointment coming up with %s at %s",
             customerName,
             appointmentTime
           );
+
           Alert alert = new Alert(Alert.AlertType.INFORMATION);
           alert.setTitle("Appointment Reminder");
           alert.setHeaderText("Upcoming appointment within 15 minutes!");
@@ -279,6 +297,11 @@ public class Appointment {
                           	MY NOTES
 ================================================================= */
 /*
+How to set javafx datepicker value correctly?
+https://stackoverflow.com/questions/36968122/how-to-set-javafx-datepicker-value-correctly
+
 --------------------------------------------------------------------
+Retrieving and Modifying Values from Result Sets
+https://docs.oracle.com/javase/tutorial/jdbc/basics/retrieving.html
 */
 /* -------------------------------------------------------------- */
