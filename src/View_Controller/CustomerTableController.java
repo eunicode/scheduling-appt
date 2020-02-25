@@ -102,7 +102,7 @@ public class CustomerTableController implements Initializable {
     customerIDTable.setCellValueFactory(
       new PropertyValueFactory<>("customerID")
     );
-    
+
     customerNameTable.setCellValueFactory(
       customer ->
         new SimpleStringProperty(customer.getValue().getCustomerName())
@@ -137,13 +137,15 @@ public class CustomerTableController implements Initializable {
 
   @FXML
   private void modifyButtonHandler(ActionEvent event) throws IOException {
+    // Create FXMLLoader instance
     FXMLLoader loader = new FXMLLoader();
-
+    // Find location of FXML file to load
     loader.setLocation(
       getClass().getResource("/View_Controller/ModifyCustomer.fxml")
     );
     loader.load();
     
+    // Create controller
     ModifyCustomerController controller = loader.getController();
     
     Customer customer = customerTableView.getSelectionModel().getSelectedItem();
@@ -241,6 +243,18 @@ public class CustomerTableController implements Initializable {
                           	MY NOTES
 ================================================================= */
 /*
+FXMLLoader getController returns NULL?
+https://stackoverflow.com/questions/23461148/fxmlloader-getcontroller-returns-null
+https://stackoverflow.com/questions/24429809/fxml-getcontroller-returns-null/24597719
+
 --------------------------------------------------------------------
+JavaFX: Accessing the Controller
+https://noblecodemonkeys.com/javafx-accessing-the-controller/
+https://riptutorial.com/javafx/example/8803/passing-data-to-fxml---accessing-existing-controller
+
+--------------------------------------------------------------------
+getController - FXMLLoader
+https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/FXMLLoader.html#getController--
+Returns the controller associated with the root object.
 */
 /* -------------------------------------------------------------- */

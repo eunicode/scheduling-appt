@@ -181,7 +181,7 @@ public class ModifyCustomerController implements Initializable {
   private void cancelModifiedHandler(ActionEvent event) throws IOException {
     Alert alert = new Alert(
       Alert.AlertType.CONFIRMATION,
-      "This will clear all text field vlaues, do you want to continue?"
+      "You will lose any changes. Continue?"
     );
 
     Optional<ButtonType> result = alert.showAndWait();

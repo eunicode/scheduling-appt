@@ -55,13 +55,16 @@ public class ModifyAppointmentController implements Initializable {
   @FXML
   private TextField modifyTitleText;
   @FXML
-  private ComboBox<String> modifyLocationComboBox;
+  private TextField modifyLocationComboBox;
+//   private ComboBox<String> modifyLocationComboBox;
   @FXML
-  private TextField modifyTypeText;
+  private ComboBox<String> modifyTypeText;
+//   private TextField modifyTypeText;
   @FXML
   private TextField modifyURLText;
   @FXML
-  private ComboBox<String> modifyDescriptionComboBox;
+  private TextField modifyDescriptionComboBox;
+//   private ComboBox<String> modifyDescriptionComboBox;
   @FXML
   private DatePicker modifyDate;
   @FXML
@@ -76,9 +79,12 @@ public class ModifyAppointmentController implements Initializable {
   Appointment selectedAppointment;
   int selectedIndex;
   
+  // hour
   ObservableList<String> appointmentTime = FXCollections.observableArrayList("09:00:00", "10:00:00", "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00");
-  ObservableList<String> appointmentLocation = FXCollections.observableArrayList("Phoenix", "New York", "London", "Internet");
-  ObservableList<String> appointmentDescription = FXCollections.observableArrayList("There will be a meeting", "Documentation Discussion", "Planning & Coordination");
+  ObservableList<String> appointmentMin = FXCollections.observableArrayList("00:00", "15:00", "30:00", "45:00");
+  ObservableList<String> appointmentType = FXCollections.observableArrayList("Presentation", "Scrum");
+//   ObservableList<String> appointmentLocation = FXCollections.observableArrayList("Phoenix", "New York", "London", "Internet");
+//   ObservableList<String> appointmentDescription = FXCollections.observableArrayList("There will be a meeting", "Documentation Discussion", "Planning & Coordination");
   
   /**
    * Initializes the controller class.
@@ -88,8 +94,9 @@ public class ModifyAppointmentController implements Initializable {
       
       modifyStartComboBox.setItems(appointmentTime);
       modifyEndComboBox.setItems(appointmentTime);
-      modifyDescriptionComboBox.setItems(appointmentDescription);
-      modifyLocationComboBox.setItems(appointmentLocation);
+      modifyTypeText.setItems(appointmentType);
+    //   modifyDescriptionComboBox.setItems(appointmentDescription);
+    //   modifyLocationComboBox.setItems(appointmentLocation);
   }    
 
   @FXML
@@ -102,11 +109,15 @@ public class ModifyAppointmentController implements Initializable {
       int userId = selectedAppointment.getUserId();
       
       String title = modifyTitleText.getText();
-      String description = modifyDescriptionComboBox.getSelectionModel().getSelectedItem();
-      String location = modifyLocationComboBox.getSelectionModel().getSelectedItem();
+      String description = modifyDescriptionComboBox.getText();
+    //   String description = modifyDescriptionComboBox.getSelectionModel().getSelectedItem();
+      String location = modifyLocationComboBox.getText();
+    //   String location = modifyLocationComboBox.getSelectionModel().getSelectedItem();
       String assignedContact = modifyContactNameText.getText();
-      String type = modifyTypeText.getText();
-      String url = modifyURLText.getText();
+      String type = modifyTypeText.getSelectionModel().getSelectedItem();
+    //   String type = modifyTypeText.getText();
+    //   String url = modifyURLText.getText();
+      String url = "";
       
       
       LocalDate date = modifyDate.getValue();
@@ -192,6 +203,7 @@ public class ModifyAppointmentController implements Initializable {
       
       if(AddAppointmentController.validateAppointmentStart(testZonedStart, testZonedEnd)) {
       
+    //   Appointment appointment = new Appointment(appointmentId, customerId, userId, title, description, location, assignedContact, type, url, startConstructorValue, endConstructorValue);
       Appointment appointment = new Appointment(appointmentId, customerId, userId, title, description, location, assignedContact, type, url, startConstructorValue, endConstructorValue);
       DataProvider.getAllAppointmentsTableList().set(selectedIndex, appointment);
      
@@ -254,9 +266,11 @@ public class ModifyAppointmentController implements Initializable {
       Appointment newAppointment = (Appointment) appointment;           
          
       this.modifyContactNameText.setText(newAppointment.getContact());
-      this.modifyTitleText.setText((newAppointment.getTitle()));
-      this.modifyURLText.setText((newAppointment.getUrl()));
-      this.modifyTypeText.setText((newAppointment.getType()));
+      this.modifyTitleText.setText(newAppointment.getTitle());
+    //   this.modifyURLText.setText(newAppointment.getUrl());
+      // POSSIBLE TO DO
+      this.modifyTypeText.getSelectionModel().selectFirst();
+    //   this.modifyTypeText.setText((newAppointment.getType()));
 
   }
   
