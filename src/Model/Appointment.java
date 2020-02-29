@@ -44,7 +44,9 @@ public class Appointment {
   private String start;
   private String end;
   private String customerName;
-
+  // consultant
+  // createDate / createdBy / lastUpdate / lastUpdateBy 
+  
   // Constructor
   public Appointment() {}
 
@@ -297,6 +299,16 @@ public class Appointment {
                           	MY NOTES
 ================================================================= */
 /*
+1 Using JavaFX Properties and Binding
+https://docs.oracle.com/javase/8/javafx/properties-binding-tutorial/binding.htm#JFXBD107
+
+Defining a Property
+Define a variable to store the property
+Define a getter for the property's value
+Define a setter for the property's value
+Define a getter for the property itself
+
+--------------------------------------------------------------------
 How to set javafx datepicker value correctly?
 https://stackoverflow.com/questions/36968122/how-to-set-javafx-datepicker-value-correctly
 

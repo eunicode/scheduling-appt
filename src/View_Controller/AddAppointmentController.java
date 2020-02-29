@@ -74,10 +74,11 @@ public class AddAppointmentController implements Initializable {
   private DatePicker addAppointmentDatePicker;
 
   @FXML
-  private ComboBox<String> addAppointmentLocationText;
+  private TextField addAppointmentLocationText;
 
   @FXML
-  private ComboBox<String> addAppointmentDescriptionText;
+  // private ComboBox<String> addAppointmentDescriptionText;
+  private TextField addAppointmentDescriptionText;
 
   @FXML
   private ComboBox<String> addAppointmentEndTimeComboBox;
@@ -130,17 +131,17 @@ public class AddAppointmentController implements Initializable {
     "16:00:00",
     "17:00:00"
   );
-  ObservableList<String> appointmentLocation = FXCollections.observableArrayList(
-    "Phoenix",
-    "New York",
-    "London",
-    "Internet"
-  );
-  ObservableList<String> appointmentDescription = FXCollections.observableArrayList(
-    "There will be a meeting",
-    "Documentation Discussion",
-    "Planning & Coordination"
-  );
+  // ObservableList<String> appointmentLocation = FXCollections.observableArrayList(
+  //   "Phoenix",
+  //   "New York",
+  //   "London",
+  //   "Internet"
+  // );
+  // ObservableList<String> appointmentDescription = FXCollections.observableArrayList(
+  //   "There will be a meeting",
+  //   "Documentation Discussion",
+  //   "Planning & Coordination"
+  // );
 
   /* -------------------------------------------------------------- */
   /**
@@ -148,34 +149,35 @@ public class AddAppointmentController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    DataProvider.getAllAppointmentsTableList().clear();
-    addCustomerTableView.setItems(
-      DataProvider.getSelectedAppointmentsForCustomer()
-    );
+    // DataProvider.getAllAppointmentsTableList().clear();
 
-    DataProvider populateAppointments = new DataProvider();
-    populateAppointments.populateAppointmentTable();
+    // addCustomerTableView.setItems(
+    //   DataProvider.getSelectedAppointmentsForCustomer()
+    // );
 
-    addAppointmentCustomerIDColumn.setCellValueFactory(
-      new PropertyValueFactory<>("customerId")
-    );
-    addAppointmentIDColumn.setCellValueFactory(
-      new PropertyValueFactory<>("appointmentId")
-    );
-    addAppointmentLocationColumn.setCellValueFactory(
-      new PropertyValueFactory<>("location")
-    );
-    addAppointmentLocalDateColumn.setCellValueFactory(
-      new PropertyValueFactory<>("url")
-    );
-    addAppointmentUTCDateColumn.setCellValueFactory(
-      new PropertyValueFactory<>("start")
-    );
+    // DataProvider populateAppointments = new DataProvider();
+    // populateAppointments.populateAppointmentTable();
+
+    // addAppointmentCustomerIDColumn.setCellValueFactory(
+    //   new PropertyValueFactory<>("customerId")
+    // );
+    // addAppointmentIDColumn.setCellValueFactory(
+    //   new PropertyValueFactory<>("appointmentId")
+    // );
+    // addAppointmentLocationColumn.setCellValueFactory(
+    //   new PropertyValueFactory<>("location")
+    // );
+    // addAppointmentLocalDateColumn.setCellValueFactory(
+    //   new PropertyValueFactory<>("url")
+    // );
+    // addAppointmentUTCDateColumn.setCellValueFactory(
+    //   new PropertyValueFactory<>("start")
+    // );
 
     addAppointmentStartTimeComboBox.setItems(appointmentTime);
     addAppointmentEndTimeComboBox.setItems(appointmentTime);
-    addAppointmentDescriptionText.setItems(appointmentDescription);
-    addAppointmentLocationText.setItems(appointmentLocation);
+    // addAppointmentDescriptionText.setItems(appointmentDescription);
+    // addAppointmentLocationText.setItems(appointmentLocation);
   }
 
   /* -------------------------------------------------------------- */
@@ -205,20 +207,30 @@ public class AddAppointmentController implements Initializable {
   @FXML
   private void saveAppointmentHandler(ActionEvent event)
     throws IOException, ParseException, ClassNotFoundException, SQLException {
-    if (addAppointmentCustomerIDColumn.getCellData(0) != null) {
-      customerId = addAppointmentCustomerIDColumn.getCellData(0);
-    }
+    // add code for selecting user from list
+
+    // old code: if this customer already has appointments?
+    // if (addAppointmentCustomerIDColumn.getCellData(0) != null) {
+    //   customerId = addAppointmentCustomerIDColumn.getCellData(0);
+    // }
 
     String title = addAppointmentTitleText.getText();
-    String description = addAppointmentDescriptionText
-      .getSelectionModel()
-      .getSelectedItem();
-    String location = addAppointmentLocationText
-      .getSelectionModel()
-      .getSelectedItem();
+    String description = addAppointmentDescriptionText.getText();
+    // String description = addAppointmentDescriptionText
+    //   .getSelectionModel()
+    //   .getSelectedItem();
+    String location = addAppointmentLocationText.getText();
+    // String location = addAppointmentLocationText
+    //   .getSelectionModel()
+    //   .getSelectedItem();
     String assignedContact = addCustomerContactText.getText();
+    
     String type = addAppointmentTypeText.getText();
-    String url = addAppointmentURLText.getText();
+    // String type = addAppointmentTypeText.getText();
+    
+    String url = "";
+    // String url = addAppointmentURLText.getText();
+
     LocalDate appointmentDate = addAppointmentDatePicker.getValue();
     String startTime = addAppointmentStartTimeComboBox.getValue();
     String endTime = addAppointmentEndTimeComboBox

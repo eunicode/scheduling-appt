@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8.0.231" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.ModifyAppointmentController">
+<!-- xmlns="http://javafx.com/javafx/8.0.231" -->
    <children>
       <Label layoutX="22.0" layoutY="28.0" text="Edit Appointment" />
       <GridPane layoutX="57.0" layoutY="67.0" prefHeight="286.0" prefWidth="393.0">
@@ -30,22 +31,22 @@
             <RowConstraints />
         </rowConstraints>
          <children>
-            <Label text="Consultant:" />
-            <Label text="Title:" GridPane.rowIndex="1" />
-            <Label text="Location:" GridPane.rowIndex="2" />
-            <Label text="Type:" GridPane.rowIndex="3" />
-            <Label text="Description:" GridPane.rowIndex="4" />
-            <Label text="Date:" GridPane.rowIndex="5" />
-            <Label text="Start time:" GridPane.rowIndex="6" />
-            <Label text="End time:" GridPane.rowIndex="7" />
-            <TextField fx:id="modifyContactNameText" GridPane.columnIndex="1" />
-            <TextField fx:id="modifyTitleText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="modifyLocationComboBox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="modifyDescriptionComboBox" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <DatePicker fx:id="modifyDate" prefHeight="27.0" prefWidth="291.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <ComboBox fx:id="modifyStartComboBox" prefHeight="27.0" prefWidth="88.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <ComboBox fx:id="modifyEndComboBox" prefHeight="27.0" prefWidth="87.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <ComboBox fx:id="modifyTypeText" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Title:" GridPane.rowIndex="4" />
+            <Label text="Location:" GridPane.rowIndex="5" />
+            <Label text="Type:" />
+            <Label text="Description:" GridPane.rowIndex="6" />
+            <Label text="Start time:" GridPane.rowIndex="2" />
+            <Label text="End time:" GridPane.rowIndex="3" />
+            <TextField fx:id="modifyTitleText" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="modifyLocationComboBox" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="modifyDescriptionComboBox" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <ComboBox fx:id="modifyStartComboBox" prefHeight="27.0" prefWidth="88.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="modifyEndComboBox" prefHeight="27.0" prefWidth="87.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox fx:id="modifyTypeText" prefWidth="150.0" GridPane.columnIndex="1" />
+            <TextField fx:id="modifyContactNameText" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label text="Contact" GridPane.rowIndex="7" />
+            <DatePicker fx:id="modifyDate" prefHeight="27.0" prefWidth="291.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Date:" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <Button fx:id="saveModifyAppointmentButton" layoutX="250.0" layoutY="394.0" mnemonicParsing="false" onAction="#saveMondifyAppointmentHandler" prefHeight="27.0" prefWidth="88.0" text="Save" />

@@ -48,6 +48,7 @@ import javafx.stage.Stage;
  */
 
 public class ModifyAppointmentController implements Initializable {
+  // necessary?
   @FXML
   private TextField modifyContactNameText;
 

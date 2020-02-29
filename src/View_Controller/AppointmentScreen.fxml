@@ -7,19 +7,23 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.231" fx:controller="View_Controller.AppointmentScreenController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.231" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AppointmentScreenController">
+<!-- xmlns="http://javafx.com/javafx/8.0.231" -->
    <children>
-      <TableView fx:id="appointmentTableView" layoutX="15.0" layoutY="186.0" prefHeight="295.0" prefWidth="870.0">
+      <TableView fx:id="appointmentTableView" layoutX="15.0" layoutY="186.0" prefHeight="295.0" prefWidth="970.0">
         <columns>
           <TableColumn fx:id="customerNameColumn" prefWidth="128.0" text="Name" />
-          <TableColumn fx:id="customerContactColumn" prefWidth="102.0" text="Consultant" />
-            <TableColumn fx:id="appointmentTitleColumn" prefWidth="84.0" text="Title" />
-            <TableColumn fx:id="appointmentTypeColumn" prefWidth="108.0" text="Type" />
-            <TableColumn fx:id="appointmentLocationColumn" prefWidth="91.0" text="Location" />
-            <TableColumn fx:id="appointmentDescriptionColumn" prefWidth="144.0" text="Description" />
-            <TableColumn fx:id="appointmentStartColumn" minWidth="0.0" prefWidth="100.0" text="Start" />
-            <TableColumn fx:id="appointmentEndColumn" prefWidth="112.0" text="End" />
+          
+          <TableColumn fx:id="appointmentTypeColumn" prefWidth="101.0" text="Type" />
+
+          <TableColumn fx:id="appointmentStartColumn" minWidth="0.0" prefWidth="157.0" text="Start" />
+          <TableColumn fx:id="appointmentEndColumn" prefWidth="138.0" text="End" />
+          
+          <TableColumn fx:id="appointmentTitleColumn" prefWidth="105.0" text="Title" />
+          <TableColumn fx:id="appointmentLocationColumn" prefWidth="126.0" text="Location" />
+          <TableColumn fx:id="appointmentDescriptionColumn" prefWidth="112.0" text="Description" />
+          <TableColumn fx:id="customerContactColumn" prefWidth="102.0" text="Contact" />
+
         </columns>
       </TableView>
       <RadioButton fx:id="viewByWeekRadioButton" layoutX="55.0" layoutY="62.0" mnemonicParsing="false" onAction="#viewByWeekHandler" text="This week's appointments" />

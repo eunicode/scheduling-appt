@@ -22,10 +22,15 @@ public class trackLoggedInUser {
   public static void trackLog(String user, boolean loggedIn) {
     try {
       FileWriter fw = new FileWriter(filename, true);
+
       PrintWriter logFile = new PrintWriter(fw);
+      
       LocalDateTime localTime = LocalDateTime.now();
+      
       logFile.println(user + " access time: " + localTime);
+      
       logFile.close();
+      
       System.out.println(user + " - has been written to the log");
     } catch (IOException ex) {
       System.out.println("Logger error: " + ex.getMessage());

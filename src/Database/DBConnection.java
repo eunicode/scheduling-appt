@@ -21,12 +21,13 @@ public class DBConnection {
   private static final String USERNAME = "U06EKa";
   private static final String PASSWORD = "53688739723";
   private static final String DRIVER = "com.mysql.jdbc.Driver";
+  // Variable to store the "bridge"
   private static Connection conn;
 
   public static Connection makeConnection()
     throws ClassNotFoundException, SQLException, Exception {
     Class.forName(DRIVER);
-    // Update connection
+    // Create bridge and update `conn`
     conn = (Connection) DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
     
     //Lambda expression that prints to the console when user logins

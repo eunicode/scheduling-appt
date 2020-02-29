@@ -117,6 +117,7 @@ public class AppointmentScreenController implements Initializable {
   Parent scene;
   private Appointment selectedAppointment;
 
+  // Get rid of?
   ObservableList<String> viewByMonth = FXCollections.observableArrayList(
     "January",
     "February",
@@ -142,7 +143,7 @@ public class AppointmentScreenController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    // Radio Button
+    // Create ToggleGroup for radio buttons with Java instead of FXML
     weekOrMonthToggleGroup = new ToggleGroup();
     this.viewByWeekRadioButton.setToggleGroup(weekOrMonthToggleGroup);
     this.viewByMonthRadioButton.setToggleGroup(weekOrMonthToggleGroup);
@@ -154,12 +155,15 @@ public class AppointmentScreenController implements Initializable {
     DataProvider populateAppointments = new DataProvider();
     populateAppointments.populateAppointmentTable();
 
+    // Have first appointment selected by default
     appointmentTableView.getSelectionModel().selectFirst();
+
     customerNameColumn.setCellValueFactory(
       new PropertyValueFactory<>("customerName")
     );
     customerContactColumn.setCellValueFactory(
       new PropertyValueFactory<>("contact")
+      // new PropertyValueFactory<>("")
     );
     appointmentTitleColumn.setCellValueFactory(
       new PropertyValueFactory<>("title")
@@ -211,64 +215,66 @@ public class AppointmentScreenController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
-  @FXML
-  void searchTableSorterHandler(ActionEvent event) {
-    DataProvider.getAppointmentsByMonth().clear();
-    DataProvider.getAppointmentsByWeek().clear();
+  // @FXML
+  // void searchTableSorterHandler(ActionEvent event) {
+  //   DataProvider.getAppointmentsByMonth().clear();
+  //   DataProvider.getAppointmentsByWeek().clear();
 
-    if (viewByMonthRadioButton.isSelected()) {
-      String selectedMonth = viewByComboBox.getValue();
-      DataProvider.setMonthlyView(selectedMonth);
-    }
+  //   if (viewByMonthRadioButton.isSelected()) {
+  //     String selectedMonth = viewByComboBox.getValue();
+  //     DataProvider.setMonthlyView(selectedMonth);
+  //   }
 
-    if (viewByWeekRadioButton.isSelected()) {
-      int numberOfWeeks = 0;
+  //   if (viewByWeekRadioButton.isSelected()) {
+  //     int numberOfWeeks = 0;
 
-      if (viewByComboBox.getValue() == "Previous Week") {
-        numberOfWeeks = -1;
-      } else if (viewByComboBox.getValue() == "This Week") {
-        numberOfWeeks = 0;
-      } else {
-        numberOfWeeks = 1;
-      }
+  //     if (viewByComboBox.getValue() == "Previous Week") {
+  //       numberOfWeeks = -1;
+  //     } else if (viewByComboBox.getValue() == "This Week") {
+  //       numberOfWeeks = 0;
+  //     } else {
+  //       numberOfWeeks = 1;
+  //     }
 
-      DataProvider.setWeeklyView(numberOfWeeks);
-    }
+  //     DataProvider.setWeeklyView(numberOfWeeks);
+  //   }
 
-    sortAppointment();
+  //   sortAppointment();
 
-    //Lambda expressions to populate appointment table
-    customerNameColumn.setCellValueFactory(
-      new PropertyValueFactory<>("customerName")
-    );
-    customerContactColumn.setCellValueFactory(
-      appointment ->
-        new SimpleStringProperty(appointment.getValue().getContact())
-    );
-    appointmentTitleColumn.setCellValueFactory(
-      appointment -> new SimpleStringProperty(appointment.getValue().getTitle())
-    );
-    appointmentLocationColumn.setCellValueFactory(
-      appointment ->
-        new SimpleStringProperty(appointment.getValue().getLocation())
-    );
-    appointmentDescriptionColumn.setCellValueFactory(
-      appointment ->
-        new SimpleStringProperty(appointment.getValue().getDescription())
-    );
-    appointmentStartColumn.setCellValueFactory(
-      appointment -> new SimpleStringProperty(appointment.getValue().getStart())
-    );
-    appointmentEndColumn.setCellValueFactory(
-      appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
-    );
+  //   //Lambda expressions to populate appointment table
+  //   customerNameColumn.setCellValueFactory(
+  //     new PropertyValueFactory<>("customerName")
+  //   );
 
-    if (viewByMonthRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
-    } else {
-      appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
-    }
-  }
+  //   customerContactColumn.setCellValueFactory(
+  //     appointment ->
+  //       new SimpleStringProperty(appointment.getValue().getContact())
+  //   );
+
+  //   appointmentTitleColumn.setCellValueFactory(
+  //     appointment -> new SimpleStringProperty(appointment.getValue().getTitle())
+  //   );
+  //   appointmentLocationColumn.setCellValueFactory(
+  //     appointment ->
+  //       new SimpleStringProperty(appointment.getValue().getLocation())
+  //   );
+  //   appointmentDescriptionColumn.setCellValueFactory(
+  //     appointment ->
+  //       new SimpleStringProperty(appointment.getValue().getDescription())
+  //   );
+  //   appointmentStartColumn.setCellValueFactory(
+  //     appointment -> new SimpleStringProperty(appointment.getValue().getStart())
+  //   );
+  //   appointmentEndColumn.setCellValueFactory(
+  //     appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
+  //   );
+
+  //   if (viewByMonthRadioButton.isSelected()) {
+  //     appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
+  //   } else {
+  //     appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
+  //   }
+  // }
 
   /* -------------------------------------------------------------- */
   @FXML
@@ -367,6 +373,7 @@ public class AppointmentScreenController implements Initializable {
     }
 
     //Lambda expressions to populate appointment table
+    // Pros: 
     customerNameColumn.setCellValueFactory(
       new PropertyValueFactory<>("customerName")
     );
@@ -403,6 +410,29 @@ public class AppointmentScreenController implements Initializable {
                           	MY NOTES
 ================================================================= */
 /*
+PropertyValueFactory<S,T>
+https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/cell/PropertyValueFactory.html
+https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/TableColumn.html
+
+A convenience implementation of the Callback interface, designed specifically for use within the TableColumn cell value factory. 
+
+ObservableList<Person> data = ...
+TableView<Person> tableView = new TableView<Person>(data);
+
+TableColumn<Person,String> firstNameCol = new TableColumn<Person,String>("First Name");
+firstNameCol.setCellValueFactory(new PropertyValueFactory<Person,String>("firstName"));
+
+In this example, the "firstName" string, 
+is used as a reference to an assumed firstNameProperty() method, 
+in the Person class type (which is the class type of the TableView items list). 
+Additionally, this method must return a Property instance. 
+If a method meeting these requirements is found, then the TableCell is populated with this ObservableValue. 
+In addition, the TableView will automatically add an observer to the returned value, 
+such that any changes fired will be observed by the TableView, resulting in the cell immediately updating.
+
+If no method matching this pattern exists, there is fall-through support for attempting to call get<property>() or is<property>() 
+(that is, getFirstName() or isFirstName() in the example above). 
+
 --------------------------------------------------------------------
 */
 /* -------------------------------------------------------------- */

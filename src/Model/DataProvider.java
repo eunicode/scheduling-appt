@@ -421,6 +421,7 @@ public class DataProvider {
       ArrayList<Integer> selectedAppointmentsByWeek = new ArrayList<>();
 
       Statement statement = DBConnection.getConnection().createStatement();
+      
       ResultSet weeklyAppointments = statement.executeQuery(
         "SELECT appointmentId from appointment where year(start) = YEAR(date_add(curdate(), interval " +
         weekForReference +

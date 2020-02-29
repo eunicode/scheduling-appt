@@ -26,14 +26,17 @@ public class DBQuery {
       Statement stmt = DBConnection.makeConnection().createStatement();
 
       //Determine QUERY execution
-      if (QUERY.toLowerCase().startsWith("select")) RESULT =
+      if (QUERY.toLowerCase().startsWith("select")) {
+        RESULT =
         stmt.executeQuery(QUERY);
-
+      }  
       if (
         QUERY.toLowerCase().startsWith("delete") ||
         QUERY.toLowerCase().startsWith("insert") ||
         QUERY.toLowerCase().startsWith("update")
-      ) stmt.executeUpdate(QUERY);
+      ) {
+        stmt.executeUpdate(QUERY);
+      }
     } catch (Exception ex) {
       System.out.println("Error " + ex.getMessage());
     }
