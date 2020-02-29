@@ -113,9 +113,11 @@ public class AddCustomerController implements Initializable {
   /* -------------------------------------------------------------- */
   @FXML
   private void saveCustomerHandler(ActionEvent event) throws IOException {
-    int customerID = 1;
+    // Initialize values 
+    // int customerID = 1;
+    int customerId = 1;
     int customerCity = 1;
-
+    int customerCountryId = 1;
     // Find greatest customerID in `Customer` table
     // for (Customer customer : DataProvider.allCustomersTableList) {
     //   if (customer.getCustomerID() > customerID) {
@@ -126,7 +128,7 @@ public class AddCustomerController implements Initializable {
     // Check if city exists in city table
 
     int addressId = 1;
-    int customerId = customerID;
+    // int customerId = customerID;
     
     // int customerCity =
     //   addCustomerCityComboBox.getSelectionModel().getSelectedIndex() + 1;
@@ -147,27 +149,86 @@ public class AddCustomerController implements Initializable {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
 
+      // Find max customerId in customer table
+      ResultSet customerResultSet = statement.executeQuery(
+        "SELECT MAX(customerId) FROM customer"
+      );
+
+      // Use max customerId value to update new customer's customerId key
+      if (customerResultSet.next()) { // Way to check if table is non-empty
+        customerId = customerResultSet.getInt(1); // col 1
+        customerId += 1;
+      }
+
       // Find max addressId in address table
       ResultSet addressResultSet = statement.executeQuery(
         "SELECT MAX(addressId) FROM address"
       );
 
-      // Assign new customer's addressId
+      // Use max addressId value to update new customer's addressId key
       if (addressResultSet.next()) {
         addressId = addressResultSet.getInt(1);
-        addressId++;
+        addressId += 1;
       }
 
-      ResultSet customerResultSet = statement.executeQuery(
-        "SELECT MAX(customerId) FROM customer"
+      // Check if city exists in city table 
+      ResultSet cityResultSet = statement.executeQuery(
+        "SELECT cityId FROM city " +
+        "WHERE city = " + 
+        "'" + customerCityChoiceValue + "'"
       );
 
-      // Assign new customer's customerId
-      if (customerResultSet.next()) {
-        customerId = customerResultSet.getInt(1);
-        customerId++;
+      // Create new statement for concurrent ResultSet
+      Statement statement2 = DBConnection.getConnection().createStatement();
+      // Find max cityId
+      ResultSet cityResultSetMax = statement2.executeQuery(
+        "SELECT MAX(cityId) FROM city"
+      );
+
+      // If city exists in city table, use existing cityId key
+      if (cityResultSet.next()) {
+        customerCity = cityResultSet.getInt(1); // statement1
+      } else {
+        cityResultSetMax.next(); // Call next() to move to row 1
+        customerCity = cityResultSetMax.getInt(1); // statement2
+        customerCity += 1;
+        // Insert new city into city table
+        String cityInsertQuery = 
+        "INSERT INTO city SET cityId=" +
+        customerCity + ", " +
+        "countryId=(SELECT countryId FROM country WHERE country=" + customerCountry + "), " + 
+        "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
+        statement.executeUpdate(cityInsertQuery);
       }
 
+      // Check if country exists in country table
+      ResultSet countryResultSet = statement.executeQuery(
+        "SELECT countryId from country " +
+        "WHERE country = " +
+         "'" + customerCountry + "'"
+      );
+      // Find max countryId
+      ResultSet countryResultSetMax = statement2.executeQuery(
+        "SELECT MAX(countryId) FROM country"
+      );
+      // If country user input exists in country table, use existing countryId key
+      if (countryResultSet.next()) {
+        customerCountryId = countryResultSet.getInt(1); // statement1
+      } else {
+        countryResultSetMax.next();
+        customerCountryId = countryResultSetMax.getInt(1); // statement2
+        customerCountryId += 1;
+
+        // Insert new country into country table
+        String countryInsertQuery = 
+        "INSERT INTO country SET countryId=" +
+        customerCountryId + ", " +
+        "country='" + customerCountry + "'" + ", " +
+        "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
+        statement.executeUpdate(countryInsertQuery);
+      }
+      
+      // Update address table
       String addressQuery =
         "INSERT INTO address SET addressId=" +
         addressId +
@@ -181,7 +242,7 @@ public class AddCustomerController implements Initializable {
         "', cityId= " +
         customerCity +
         ", createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
-
+      
       int addressExecuteUpdate = statement.executeUpdate(addressQuery);
 
       // Update `Customer` table
@@ -201,6 +262,7 @@ public class AddCustomerController implements Initializable {
           System.out.println("Insert into SQL table was successful!");
         }
       }
+      
     } catch (SQLException ex) {
       System.out.println("Error " + ex.getMessage());
     } catch (NumberFormatException e) {
@@ -216,8 +278,10 @@ public class AddCustomerController implements Initializable {
       ) &&
       (validateZipcode(customerZipCode) && validatePhone(customerPhone))
     ) {
+      // Add customer to DataProvider 
       Customer customer = new Customer(
-        customerID,
+        customerId,
+        // customerID,
         customerName,
         customerAddress,
         customerCityChoiceValue,
@@ -227,6 +291,7 @@ public class AddCustomerController implements Initializable {
       );
       DataProvider.addCustomer(customer);
 
+      // Return to customer table
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
       Object scene = FXMLLoader.load(
         getClass().getResource("/View_Controller/CustomerTable.fxml")
@@ -329,6 +394,10 @@ How to escape single quotes in MySQL
 https://stackoverflow.com/questions/887036/how-to-escape-single-quotes-in-mysql/19819265
 
 --------------------------------------------------------------------
+Processing SQL Statements with JDBC
+https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html
+
+--------------------------------------------------------------------
 Connection interface
 https://docs.oracle.com/javase/8/docs/api/java/sql/Connection.html
 
@@ -374,5 +443,9 @@ https://www.tutorialspoint.com/java-resultset-next-method-with-example
 Call 1 = row 1
 Call 2 = row 2
 Returns: true if the new current row is valid; false if there are no more rows
+
+--------------------------------------------------------------------
+Error Operation not allowed after ResultSet closed
+
 */
 /* -------------------------------------------------------------- */
