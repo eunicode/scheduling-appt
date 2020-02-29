@@ -36,11 +36,14 @@ public class DataProvider {
 
   public static ObservableList<Customer> getAllCustomers() throws SQLException {
     Statement statement = DBConnection.getConnection().createStatement();
+
     String customerQuery =
-      "SELECT customer.customerId, customer.customerName, address.address, address.phone, address.postalCode, city.city, country.country" +
-      " FROM customer INNER JOIN address ON customer.addressId = address.addressId" +
-      "INNER JOIN city ON address.cityId = city.cityId" +
+      "SELECT customer.customerId, customer.customerName, address.address, address.phone, address.postalCode, city.city, country.country " +
+      "FROM customer " + 
+      "INNER JOIN address ON customer.addressId = address.addressId " +
+      "INNER JOIN city ON address.cityId = city.cityId " +
       "INNER JOIN country ON city.countryId = country.countryId";
+
     ResultSet customerResults = statement.executeQuery(customerQuery);
 
     while (customerResults.next()) {
@@ -64,8 +67,9 @@ public class DataProvider {
     throws SQLException {
     Statement statement = DBConnection.getConnection().createStatement();
     String appointmentQuery =
-      "SELECT customer.customerName, appointment.appointmentId, customer.customerId, user.userId, appointment.title, appointment.description, appointment.location, appointment.contact, appointment.type, appointment.url, appointment.start, appointment.end" +
-      "FROM user INNER JOIN appointment ON user.userId = appointment.userId" +
+      "SELECT customer.customerName, appointment.appointmentId, customer.customerId, user.userId, appointment.title, appointment.description, appointment.location, appointment.contact, appointment.type, appointment.url, appointment.start, appointment.end " +
+      "FROM user " +
+      "INNER JOIN appointment ON user.userId = appointment.userId " +
       "INNER JOIN customer ON appointment.customerId = customer.customerId";
 
     ResultSet appointmentResults = statement.executeQuery(appointmentQuery);
@@ -85,6 +89,7 @@ public class DataProvider {
         appointmentResults.getString("start"),
         appointmentResults.getString("end")
       );
+
       DataProvider.allAppointmentsTableList.add(appointment);
     }
 
@@ -116,7 +121,9 @@ public class DataProvider {
   public static void populateCustomerTable() {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
+
       ObservableList<Customer> allCustomers = DataProvider.getAllCustomersTableList();
+
       ResultSet selectCustomerID = statement.executeQuery(
         "SELECT customerId FROM customer WHERE active = 1"
       );
@@ -187,7 +194,9 @@ public class DataProvider {
   public static void populateAppointmentTable() {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
+
       ObservableList<Appointment> allAppointments = DataProvider.getAllAppointmentsTableList();
+      
       ResultSet selectAppointment = statement.executeQuery(
         "SELECT appointmentId FROM appointment"
       );
@@ -201,7 +210,9 @@ public class DataProvider {
       for (int appointmentIDLoop : appointmentIDArray) {
         Appointment appointment = new Appointment();
         ResultSet appointmentTableData = statement.executeQuery(
-          "SELECT customer.customerName, appointmentId, appointment.customerId, userId, title, description, location, contact, type, url, start, end FROM appointment JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId = " +
+          "SELECT customer.customerName, appointmentId, appointment.customerId, userId, title, description, location, contact, type, url, start, end " + 
+          "FROM appointment JOIN customer ON customer.customerId = appointment.customerId " +
+          "WHERE appointmentId = " +
           appointmentIDLoop
         );
         appointmentTableData.next();
@@ -273,14 +284,17 @@ public class DataProvider {
   public static int nextAppointmentId()
     throws ClassNotFoundException, SQLException {
     Statement statement = DBConnection.getConnection().createStatement();
+
     ResultSet selectAppointment = statement.executeQuery(
       "SELECT appointmentId FROM appointment"
     );
 
     int max = 0;
+
     while (selectAppointment.next()) {
       max = selectAppointment.getInt("Auto_increment");
     }
+
     return max;
   }
 
@@ -319,6 +333,7 @@ public class DataProvider {
       }
 
       getSelectedAppointmentsForCustomer().clear();
+      
       ResultSet associatedAppointments = statement.executeQuery(
         "SELECT customerId, appointmentId, location, start FROM appointment WHERE customerId =" +
         selectedCustomer

@@ -311,6 +311,7 @@ public class AddAppointmentController implements Initializable {
     String startConstructorValue = zonedStartLocal.toString();
     String endConstructorValue = zonedEndLocal.toString();
 
+    // If there is no overlap
     if (validateAppointmentStart(testZonedStart, testZonedEnd)) {
       Statement statement = DBConnection.getConnection().createStatement();
 
@@ -319,7 +320,7 @@ public class AddAppointmentController implements Initializable {
         " VALUES (" +
         customerId +
         ", " +
-        1 +
+        "1" + // consultant/user
         ", '" +
         title +
         "', '" +
@@ -336,18 +337,20 @@ public class AddAppointmentController implements Initializable {
         testZonedStart +
         "', '" +
         testZonedEnd +
-        "', NOW(), '" +
-        assignedContact +
-        "', NOW(), '')";
+        "', NOW(), " + // createDate
+        "'test'" + // createdBy
+        ", NOW(), " + // lastUpdate
+        "'test')"; // lastUpdateBy
 
       int appointmentExecuteUpdate = statement.executeUpdate(appointmentQuery);
 
+      // If one row was affected
       if (appointmentExecuteUpdate == 1) {
         System.out.println("Insert into appointment table was succcessful!");
       }
 
       Appointment appointment = new Appointment(
-        1,
+        1, // appointmentId
         customerId,
         userId,
         title,
@@ -371,10 +374,12 @@ public class AddAppointmentController implements Initializable {
       appointment.setUrl(url);
       appointment.setStart(selectedStartDateTime);
       appointment.setEnd(selectedEndDateTime);
-
+      // 
       DataProvider.addAppointment(appointment);
 
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+
+      // Return to main screen
       Object scene = FXMLLoader.load(
         getClass().getResource("/View_Controller/MainScreen.fxml")
       );
