@@ -180,6 +180,7 @@ public class AddCustomerController implements Initializable {
 
       // Create new statement for concurrent ResultSet
       Statement statement2 = DBConnection.getConnection().createStatement();
+      
       // Find max cityId
       ResultSet cityResultSetMax = statement2.executeQuery(
         "SELECT MAX(cityId) FROM city"
@@ -192,13 +193,6 @@ public class AddCustomerController implements Initializable {
         cityResultSetMax.next(); // Call next() to move to row 1
         customerCity = cityResultSetMax.getInt(1); // statement2
         customerCity += 1;
-        // Insert new city into city table
-        String cityInsertQuery = 
-        "INSERT INTO city SET cityId=" +
-        customerCity + ", " +
-        "countryId=(SELECT countryId FROM country WHERE country=" + customerCountry + "), " + 
-        "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
-        statement.executeUpdate(cityInsertQuery);
       }
 
       // Check if country exists in country table
@@ -218,16 +212,30 @@ public class AddCustomerController implements Initializable {
         countryResultSetMax.next();
         customerCountryId = countryResultSetMax.getInt(1); // statement2
         customerCountryId += 1;
-
-        // Insert new country into country table
-        String countryInsertQuery = 
-        "INSERT INTO country SET countryId=" +
-        customerCountryId + ", " +
-        "country='" + customerCountry + "'" + ", " +
-        "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
-        statement.executeUpdate(countryInsertQuery);
       }
       
+      // Insert new country into country table
+      String countryInsertQuery = 
+      "INSERT INTO country SET countryId=" +
+      customerCountryId + ", " +
+      "country='" + customerCountry + "'" + ", " +
+      "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
+      statement.executeUpdate(countryInsertQuery);
+
+      // Insert new city into city table
+      // String cityInsertQuery = 
+      // "INSERT INTO city SET cityId=" +
+      // customerCity + ", " +
+      // "countryId=(SELECT countryId FROM country WHERE country=" + customerCountry + "), " + 
+      // "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
+      String cityInsertQuery = 
+      "INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
+      "VALUES(" + customerCity + ", " +
+      "'" + customerCityChoiceValue + "', " + 
+      "(SELECT countryId FROM country WHERE country=" + "'" + customerCountry + "'" + "), " +
+      "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test')";
+      statement.executeUpdate(cityInsertQuery);
+
       // Update address table
       String addressQuery =
         "INSERT INTO address SET addressId=" +
