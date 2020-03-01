@@ -56,12 +56,10 @@ public class ModifyCustomerController implements Initializable {
 
   @FXML
   private TextField modifyCustomerCityText;
-
   // private ComboBox<String> modifyCustomerCityText;
 
   @FXML
   private TextField modifyCustomerCountryText;
-
   // private Label modifyCustomerCountryText;
 
   @FXML
@@ -107,16 +105,18 @@ public class ModifyCustomerController implements Initializable {
   @FXML
   void saveModifiedCustomerHandler(ActionEvent event)
     throws IOException, SQLException {
-    int addressId = 0;
     int customerId = selectedCustomer.getCustomerID();
+    int customerCountryId = 0;
+    int customerCity = 0;
+    int addressId = 0;
 
     try {
       // String customerCityChoice = modifyCustomerCityText
       //   .getSelectionModel()
       //   .getSelectedItem();
-      String customerCityChoice = modifyCustomerCityText.getText();
       String customerName = modifyCustomerText.getText();
       String customerAddress = modifyCustomerAddressText.getText();
+      String customerCityChoice = modifyCustomerCityText.getText();
       String customerCountry = modifyCustomerCountryText.getText();
       String customerZipCode = modifyCustomerZipCodeText.getText();
       String customerPhone = modifyCustomPhoneText.getText();
@@ -130,23 +130,96 @@ public class ModifyCustomerController implements Initializable {
         customerZipCode,
         customerPhone
       );
+
       DataProvider.getAllCustomersTableList().set(selectedIndex, customer);
 
+      // Create Statement objects
       Statement statement = DBConnection.getConnection().createStatement();
+      Statement statement2 = DBConnection.getConnection().createStatement();
 
+      // Get selected customer's addressId
       ResultSet selectCustomer = statement.executeQuery(
         "SELECT * FROM customer where customerId= " + customerId + ""
       );
 
-      while (selectCustomer.next()) {
+      // while (selectCustomer.next()) {
+      //   addressId = selectCustomer.getInt("addressId");
+      //   System.out.println(addressId);
+      // }
+
+      if (selectCustomer.next()) {
         addressId = selectCustomer.getInt("addressId");
-        System.out.println(addressId);
+      }  
+
+      // Check if new country exists in country table
+      ResultSet countryResultSet = statement.executeQuery(
+        "SELECT countryId from country " +
+        "WHERE country = " +
+         "'" + customerCountry + "'"
+      );
+      
+      // Find max countryId
+      ResultSet countryResultSetMax = statement2.executeQuery(
+        "SELECT MAX(countryId) FROM country"
+      );
+
+      // If new country exists in country table, use existing countryId key
+      if (countryResultSet.next()) {
+        customerCountryId = countryResultSet.getInt(1);
+      } 
+      // Else create new unique countryId key
+      else { 
+        countryResultSetMax.next();
+        customerCountryId = countryResultSetMax.getInt(1); 
+        customerCountryId += 1;
+
+        // Insert new country into country table
+        String countryInsertQuery = 
+        "INSERT INTO country SET countryId=" +
+        customerCountryId + ", " +
+        "country='" + customerCountry + "'" + ", " +
+        "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
+        statement.executeUpdate(countryInsertQuery);
       }
 
+      // Check if new city exists in city table 
+      ResultSet cityResultSet = statement.executeQuery(
+        "SELECT cityId FROM city " +
+        "WHERE city = " + 
+        "'" + customerCityChoice + "'"
+      );
+
+      // Find max cityId
+      ResultSet cityResultSetMax = statement2.executeQuery(
+        "SELECT MAX(cityId) FROM city"
+      );
+
+      // If city exists in city table, use existing cityId key
+      if (cityResultSet.next()) {
+        customerCity = cityResultSet.getInt(1); // statement1
+      } 
+      // Else create a new unique cityId key
+      else {
+        cityResultSetMax.next(); // Call next() to move to row 1
+        customerCity = cityResultSetMax.getInt(1); // statement2
+        customerCity += 1;
+
+        // Insert new city into city table
+        String cityInsertQuery = 
+        "INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
+        "VALUES(" + customerCity + ", " +
+        "'" + customerCityChoice + "', " + 
+        "(SELECT countryId FROM country WHERE country=" + "'" + customerCountry + "'" + "), " +
+        "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test')";
+        statement.executeUpdate(cityInsertQuery);
+      }
+
+      // Update Address
       String updateAddress =
-        "UPDATE address SET address = '" +
-        customerAddress +
-        "', postalCode = '" +
+        "UPDATE address SET " + 
+        "address = '" + customerAddress + "', " +
+        "cityId = " + customerCity + ", " +
+        "postalCode = '" +
         customerZipCode +
         "', phone = '" +
         customerPhone +
@@ -154,12 +227,14 @@ public class ModifyCustomerController implements Initializable {
         addressId;
       int updatedAddress = statement.executeUpdate(updateAddress);
 
+      // Update Customer 
       String updateCustomer =
         "UPDATE customer SET customerName = '" +
         customerName +
         "' WHERE customerId = " +
         customerId +
         "";
+
       int updatedCustomer = statement.executeUpdate(updateCustomer);
     } catch (NumberFormatException e) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -198,6 +273,7 @@ public class ModifyCustomerController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
+  // Fill in form w/ previously saved data
   public void setCustomer(Customer customer, int index) {
     selectedCustomer = customer;
     selectedIndex = index;
