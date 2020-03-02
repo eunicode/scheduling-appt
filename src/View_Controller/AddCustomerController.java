@@ -59,6 +59,7 @@ public class AddCustomerController implements Initializable {
 
   @FXML
   private TextField addCustomerCityComboBox;
+
   // private ComboBox<String> addCustomerCityComboBox;
 
   @FXML
@@ -112,7 +113,7 @@ public class AddCustomerController implements Initializable {
   /* -------------------------------------------------------------- */
   @FXML
   private void saveCustomerHandler(ActionEvent event) throws IOException {
-    // Initialize values 
+    // Initialize values
     // int customerID = 1;
     int customerId = 1;
     int customerCity = 1;
@@ -128,7 +129,7 @@ public class AddCustomerController implements Initializable {
 
     int addressId = 1;
     // int customerId = customerID;
-    
+
     // int customerCity =
     //   addCustomerCityComboBox.getSelectionModel().getSelectedIndex() + 1;
     // String customerCityChoice = addCustomerCityComboBox
@@ -150,7 +151,7 @@ public class AddCustomerController implements Initializable {
       Statement statement = DBConnection.getConnection().createStatement();
       // Create new Statement object for concurrent ResultSet
       Statement statement2 = DBConnection.getConnection().createStatement();
-      
+
       // Find max customerId in customer table
       ResultSet customerResultSet = statement.executeQuery(
         "SELECT MAX(customerId) FROM customer"
@@ -177,7 +178,9 @@ public class AddCustomerController implements Initializable {
       ResultSet countryResultSet = statement.executeQuery(
         "SELECT countryId from country " +
         "WHERE country = " +
-         "'" + customerCountry + "'"
+        "'" +
+        customerCountry +
+        "'"
       );
       // Find max countryId
       ResultSet countryResultSetMax = statement2.executeQuery(
@@ -186,27 +189,33 @@ public class AddCustomerController implements Initializable {
       // If country user input exists in country table, use existing countryId key
       if (countryResultSet.next()) {
         customerCountryId = countryResultSet.getInt(1); // Use statement1's resultset
-      } 
+      }
       // Else create new unique countryId key
-      else { 
+      else {
         countryResultSetMax.next();
         customerCountryId = countryResultSetMax.getInt(1); // Use statement2's resultset
         customerCountryId += 1;
 
         // Insert new country into country table
-        String countryInsertQuery = 
-        "INSERT INTO country SET countryId=" +
-        customerCountryId + ", " +
-        "country='" + customerCountry + "'" + ", " +
-        "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
+        String countryInsertQuery =
+          "INSERT INTO country SET countryId=" +
+          customerCountryId +
+          ", " +
+          "country='" +
+          customerCountry +
+          "'" +
+          ", " +
+          "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
         statement.executeUpdate(countryInsertQuery);
       }
 
-      // Check if city exists in city table 
+      // Check if city exists in city table
       ResultSet cityResultSet = statement.executeQuery(
         "SELECT cityId FROM city " +
-        "WHERE city = " + 
-        "'" + customerCityChoiceValue + "'"
+        "WHERE city = " +
+        "'" +
+        customerCityChoiceValue +
+        "'"
       );
 
       // Find max cityId
@@ -217,7 +226,7 @@ public class AddCustomerController implements Initializable {
       // If city exists in city table, use existing cityId key
       if (cityResultSet.next()) {
         customerCity = cityResultSet.getInt(1); // statement1
-      } 
+      }
       // Else create a new unique cityId key
       else {
         cityResultSetMax.next(); // Call next() to move to row 1
@@ -225,12 +234,20 @@ public class AddCustomerController implements Initializable {
         customerCity += 1;
 
         // Insert new city into city table
-        String cityInsertQuery = 
-        "INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
-        "VALUES(" + customerCity + ", " +
-        "'" + customerCityChoiceValue + "', " + 
-        "(SELECT countryId FROM country WHERE country=" + "'" + customerCountry + "'" + "), " +
-        "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test')";
+        String cityInsertQuery =
+          "INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
+          "VALUES(" +
+          customerCity +
+          ", " +
+          "'" +
+          customerCityChoiceValue +
+          "', " +
+          "(SELECT countryId FROM country WHERE country=" +
+          "'" +
+          customerCountry +
+          "'" +
+          "), " +
+          "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test')";
         statement.executeUpdate(cityInsertQuery);
       }
 
@@ -248,7 +265,7 @@ public class AddCustomerController implements Initializable {
         "', cityId= " +
         customerCity +
         ", createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
-      
+
       int addressExecuteUpdate = statement.executeUpdate(addressQuery);
 
       // Update `Customer` table
@@ -260,7 +277,7 @@ public class AddCustomerController implements Initializable {
           customerName +
           "', addressId=" +
           addressId +
-          ", active=1, createDate=NOW(), createdBy='', lastUpdate=NOW(), lastUpdateBy=''";
+          ", active=1, createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
 
         int customerExecuteUpdate = statement.executeUpdate(customerQuery);
 
@@ -268,7 +285,6 @@ public class AddCustomerController implements Initializable {
           System.out.println("Insert into SQL table was successful!");
         }
       }
-      
     } catch (SQLException ex) {
       System.out.println("Error " + ex.getMessage());
     } catch (NumberFormatException e) {
@@ -284,7 +300,7 @@ public class AddCustomerController implements Initializable {
       ) &&
       (validateZipcode(customerZipCode) && validatePhone(customerPhone))
     ) {
-      // Add customer to DataProvider 
+      // Add customer to DataProvider
       Customer customer = new Customer(
         customerId,
         // customerID,

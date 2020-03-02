@@ -39,7 +39,7 @@ public class DataProvider {
 
     String customerQuery =
       "SELECT customer.customerId, customer.customerName, address.address, address.phone, address.postalCode, city.city, country.country " +
-      "FROM customer " + 
+      "FROM customer " +
       "INNER JOIN address ON customer.addressId = address.addressId " +
       "INNER JOIN city ON address.cityId = city.cityId " +
       "INNER JOIN country ON city.countryId = country.countryId";
@@ -196,7 +196,7 @@ public class DataProvider {
       Statement statement = DBConnection.getConnection().createStatement();
 
       ObservableList<Appointment> allAppointments = DataProvider.getAllAppointmentsTableList();
-      
+
       ResultSet selectAppointment = statement.executeQuery(
         "SELECT appointmentId FROM appointment"
       );
@@ -210,7 +210,7 @@ public class DataProvider {
       for (int appointmentIDLoop : appointmentIDArray) {
         Appointment appointment = new Appointment();
         ResultSet appointmentTableData = statement.executeQuery(
-          "SELECT customer.customerName, appointmentId, appointment.customerId, userId, title, description, location, contact, type, url, start, end " + 
+          "SELECT customer.customerName, appointmentId, appointment.customerId, userId, title, description, location, contact, type, url, start, end " +
           "FROM appointment JOIN customer ON customer.customerId = appointment.customerId " +
           "WHERE appointmentId = " +
           appointmentIDLoop
@@ -333,7 +333,7 @@ public class DataProvider {
       }
 
       getSelectedAppointmentsForCustomer().clear();
-      
+
       ResultSet associatedAppointments = statement.executeQuery(
         "SELECT customerId, appointmentId, location, start FROM appointment WHERE customerId =" +
         selectedCustomer
@@ -436,7 +436,7 @@ public class DataProvider {
       ArrayList<Integer> selectedAppointmentsByWeek = new ArrayList<>();
 
       Statement statement = DBConnection.getConnection().createStatement();
-      
+
       ResultSet weeklyAppointments = statement.executeQuery(
         "SELECT appointmentId from appointment where year(start) = YEAR(date_add(curdate(), interval " +
         weekForReference +
@@ -482,6 +482,8 @@ public class DataProvider {
       System.out.println("Error " + ex.getMessage());
     }
   }
+  /* -------------------------------------------------------------- */
+
 }
 /* =================================================================  
                           	MY NOTES

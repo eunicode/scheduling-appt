@@ -373,7 +373,7 @@ public class AppointmentScreenController implements Initializable {
     }
 
     //Lambda expressions to populate appointment table
-    // Pros: 
+    // Pros:
     customerNameColumn.setCellValueFactory(
       new PropertyValueFactory<>("customerName")
     );

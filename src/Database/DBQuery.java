@@ -27,9 +27,8 @@ public class DBQuery {
 
       //Determine QUERY execution
       if (QUERY.toLowerCase().startsWith("select")) {
-        RESULT =
-        stmt.executeQuery(QUERY);
-      }  
+        RESULT = stmt.executeQuery(QUERY);
+      }
       if (
         QUERY.toLowerCase().startsWith("delete") ||
         QUERY.toLowerCase().startsWith("insert") ||

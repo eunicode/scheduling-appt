@@ -131,6 +131,7 @@ public class AddAppointmentController implements Initializable {
     "16:00:00",
     "17:00:00"
   );
+
   // ObservableList<String> appointmentLocation = FXCollections.observableArrayList(
   //   "Phoenix",
   //   "New York",
@@ -224,10 +225,10 @@ public class AddAppointmentController implements Initializable {
     //   .getSelectionModel()
     //   .getSelectedItem();
     String assignedContact = addCustomerContactText.getText();
-    
+
     String type = addAppointmentTypeText.getText();
     // String type = addAppointmentTypeText.getText();
-    
+
     String url = "";
     // String url = addAppointmentURLText.getText();
 
@@ -374,7 +375,7 @@ public class AddAppointmentController implements Initializable {
       appointment.setUrl(url);
       appointment.setStart(selectedStartDateTime);
       appointment.setEnd(selectedEndDateTime);
-      // 
+      //
       DataProvider.addAppointment(appointment);
 
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

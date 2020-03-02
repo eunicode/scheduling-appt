@@ -44,9 +44,10 @@ public class Appointment {
   private String start;
   private String end;
   private String customerName;
+
   // consultant
-  // createDate / createdBy / lastUpdate / lastUpdateBy 
-  
+  // createDate / createdBy / lastUpdate / lastUpdateBy
+
   // Constructor
   public Appointment() {}
 
@@ -117,7 +118,7 @@ public class Appointment {
   public int getCustomerId() {
     return customerId;
   }
-  
+
   public String getTitle() {
     return title;
   }
@@ -174,15 +175,15 @@ public class Appointment {
   public void setDescription(String description) {
     this.description = description;
   }
-  
+
   public void setLocation(String location) {
     this.location = location;
   }
-  
+
   public void setContact(String contact) {
     this.contact = contact;
   }
-  
+
   public void setType(String type) {
     this.type = type;
   }
@@ -206,12 +207,13 @@ public class Appointment {
   public void setCustomerName(String customerName) {
     this.customerName = customerName;
   }
+
   // public LocalDate getDate(String dateString) {
   //   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
   //   LocalDate transformedDate = LocalDate.parse(dateString, formatter);
   //   return transformedDate;
   // }
-  /* -------------------------------------------------------------- */  
+  /* -------------------------------------------------------------- */
   public static String pullCustomerName(int customerId) throws SQLException {
     Statement statement = DBConnection.getConnection().createStatement();
     Customer customer = new Customer();

@@ -127,6 +127,7 @@ public class ModifyAppointmentController implements Initializable {
     //   modifyDescriptionComboBox.setItems(appointmentDescription);
     //   modifyLocationComboBox.setItems(appointmentLocation);
   }
+
   /* -------------------------------------------------------------- */
   @FXML
   private void saveMondifyAppointmentHandler(ActionEvent event)
@@ -148,12 +149,12 @@ public class ModifyAppointmentController implements Initializable {
       String url = "";
 
       LocalDate date = modifyDate.getValue();
-      
+
       String startTime = modifyStartComboBox
         .getSelectionModel()
         .getSelectedItem();
       String endTime = modifyEndComboBox.getSelectionModel().getSelectedItem();
-      
+
       // Build date-time string
       String selectedStartTime = date + " " + startTime;
       String selectedEndTime = date + " " + endTime;
@@ -243,7 +244,7 @@ public class ModifyAppointmentController implements Initializable {
       int startUTCHour = zonedStartUTC.getHour();
       int startUTCMinute = zonedStartUTC.getMinute();
 
-      // Build UTC string 
+      // Build UTC string
       String testZonedStart =
         Integer.toString(startUTCYear) +
         "-" +
@@ -257,7 +258,7 @@ public class ModifyAppointmentController implements Initializable {
         ":" +
         Integer.toString(startUTCMinute);
 
-      // Get fields from UTC ZonedDateTime  
+      // Get fields from UTC ZonedDateTime
       int endUTCYear = zonedEndUTC.getYear();
       int endUTCMonth = zonedEndUTC.getMonthValue();
       int endUTCDay = zonedEndUTC.getDayOfMonth();
@@ -278,7 +279,7 @@ public class ModifyAppointmentController implements Initializable {
         ":" +
         Integer.toString(endUTCMinute);
 
-      // Convert ZonedDateTime to string  
+      // Convert ZonedDateTime to string
       String startConstructorValue = zonedStartLocal.toString();
       String endConstructorValue = zonedEndLocal.toString();
 
@@ -305,7 +306,7 @@ public class ModifyAppointmentController implements Initializable {
           endConstructorValue
         );
 
-        // 
+        //
         DataProvider
           .getAllAppointmentsTableList()
           .set(selectedIndex, appointment);
@@ -319,12 +320,12 @@ public class ModifyAppointmentController implements Initializable {
           ""
         );
 
-        // 
+        //
         while (selectAppointment.next()) {
           customerId = selectAppointment.getInt("customerId");
         }
 
-        // Build MySQL query - use UTC 
+        // Build MySQL query - use UTC
         String updateAppointment =
           "UPDATE appointment SET title = '" +
           title +
@@ -345,7 +346,7 @@ public class ModifyAppointmentController implements Initializable {
           "' WHERE appointmentId = " +
           appointmentId;
 
-        // Update db appointment  
+        // Update db appointment
         int updatedAppointment = statement.executeUpdate(updateAppointment);
 
         if (updatedAppointment == 1) {
@@ -360,7 +361,6 @@ public class ModifyAppointmentController implements Initializable {
       System.out.println("Error " + ex.getMessage());
     }
 
-    
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
 
     Object scene = FXMLLoader.load(
@@ -383,7 +383,7 @@ public class ModifyAppointmentController implements Initializable {
     Optional<ButtonType> result = alert.showAndWait();
     if (result.isPresent() && result.get() == ButtonType.OK) {
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-      
+
       Object scene = FXMLLoader.load(
         getClass().getResource("/View_Controller/AppointmentScreen.fxml")
       );
@@ -401,18 +401,20 @@ public class ModifyAppointmentController implements Initializable {
 
     Appointment newAppointment = (Appointment) appointment;
 
-    String dateFromZonedDateTimeString = newAppointment.getStart().substring(0,10);
+    String dateFromZonedDateTimeString = newAppointment
+      .getStart()
+      .substring(0, 10);
     System.out.println("Hi" + dateFromZonedDateTimeString);
     LocalDate dateForCal = LocalDate.parse(dateFromZonedDateTimeString);
     // LocalDate startDate = LocalDate.parse(newAppointment.getStart());
     // endDate = LocalDate.parse(newAppointment.getEnd());
-    
+
     this.modifyContactNameText.setText(newAppointment.getContact());
     this.modifyTitleText.setText(newAppointment.getTitle());
     this.modifyLocationComboBox.setText(newAppointment.getLocation());
     this.modifyDescriptionComboBox.setText(newAppointment.getDescription());
     this.modifyDate.setValue(dateForCal);
-    
+
     String selectedType = newAppointment.getType();
     if (selectedType == "Presentation") {
       this.modifyTypeText.getSelectionModel().selectFirst();

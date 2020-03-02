@@ -7,29 +7,31 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.231" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.MainScreenController">
+<AnchorPane id="AnchorPane" prefHeight="350.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.231" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.MainScreenController">
+<!-- xmlns="http://javafx.com/javafx/8.0.231" -->
    <children>
-      <GridPane hgap="12.0" layoutX="52.0" layoutY="69.0" prefHeight="144.0" prefWidth="497.0">
+      <GridPane hgap="12.0" layoutX="52.0" layoutY="76.0" prefHeight="177.0" prefWidth="497.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" /> 
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="139.0" minHeight="10.0" prefHeight="96.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="91.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="91.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="91.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="customerTableButton" mnemonicParsing="false" onAction="#customerTableHandler" prefHeight="53.0" prefWidth="156.0" text="Customers" />
-            <Button fx:id="appointmentTableButton" mnemonicParsing="false" onAction="#appointmentTableHandler" prefHeight="49.0" prefWidth="161.0" text="Appointments" GridPane.columnIndex="1" />
-            <Button fx:id="reportTableButton" mnemonicParsing="false" onAction="#reportTableHandler" prefHeight="46.0" prefWidth="175.0" text="Reports" GridPane.columnIndex="2" />
-            <Label alignment="TOP_CENTER" prefHeight="40.0" prefWidth="155.0" text="View, add, edit, delete customers" wrapText="true" GridPane.rowIndex="1" />
-            <Label alignment="TOP_CENTER" prefHeight="39.0" prefWidth="158.0" text="View, add, edit, delete appointments" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label alignment="TOP_CENTER" prefHeight="33.0" prefWidth="157.0" text="View reports" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="customerTableButton" mnemonicParsing="false" onAction="#customerTableHandler" prefHeight="48.0" prefWidth="241.0" text="Customers" GridPane.hgrow="ALWAYS" />
+            <Button fx:id="appointmentTableButton" mnemonicParsing="false" onAction="#appointmentTableHandler" prefHeight="48.0" prefWidth="244.0" text="Appointments" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+            <Button fx:id="reportTableButton" mnemonicParsing="false" onAction="#reportTableHandler" prefHeight="43.0" prefWidth="242.0" text="Reports" GridPane.rowIndex="2" />
+            <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="241.0" text="View, add, edit, delete customers" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+            <Label alignment="TOP_CENTER" prefHeight="19.0" prefWidth="242.0" text="View, add, edit, delete appointments" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+            <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="115.0" text="View reports" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
          </children>
       </GridPane>
       <Label fx:id="welcomeLabel" layoutX="200.0" layoutY="35.0" text="Welcome! Select an option below" />
-      <Button fx:id="logoutButton" layoutX="362.0" layoutY="237.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="85.0" text="Logout" />
-      <Button fx:id="exitButton" layoutX="464.0" layoutY="237.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="85.0" text="Exit" />
+      <Button fx:id="logoutButton" layoutX="464.0" layoutY="276.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="85.0" text="Logout" />
+      <Button fx:id="exitButton" layoutX="351.0" layoutY="276.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="85.0" text="Exit" />
    </children>
 </AnchorPane>

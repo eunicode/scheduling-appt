@@ -29,7 +29,7 @@ public class DBConnection {
     Class.forName(DRIVER);
     // Create bridge and update `conn`
     conn = (Connection) DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-    
+
     //Lambda expression that prints to the console when user logins
     new Thread(() -> System.out.println("Connection sucessful!")).start();
     return conn;

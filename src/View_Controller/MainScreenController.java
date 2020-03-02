@@ -10,19 +10,14 @@ import static View_Controller.LoginScreenController.getLocale;
 import Model.Appointment;
 import java.io.IOException;
 import java.net.URL;
-//import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
-//import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-//import javafx.fxml.Initializable;
-
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -146,8 +141,11 @@ public class MainScreenController implements Initializable {
   @FXML
   void reportTableHandler(ActionEvent event) throws IOException {
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+    // Object scene = FXMLLoader.load(
+    //   getClass().getResource("/View_Controller/GenerateReport.fxml")
+    // );
     Object scene = FXMLLoader.load(
-      getClass().getResource("/View_Controller/GenerateReport.fxml")
+      getClass().getResource("/View_Controller/ReportScreen.fxml")
     );
     stage.setScene(new Scene((Parent) scene));
     stage.show();

@@ -56,10 +56,12 @@ public class ModifyCustomerController implements Initializable {
 
   @FXML
   private TextField modifyCustomerCityText;
+
   // private ComboBox<String> modifyCustomerCityText;
 
   @FXML
   private TextField modifyCustomerCountryText;
+
   // private Label modifyCustomerCountryText;
 
   @FXML
@@ -149,15 +151,17 @@ public class ModifyCustomerController implements Initializable {
 
       if (selectCustomer.next()) {
         addressId = selectCustomer.getInt("addressId");
-      }  
+      }
 
       // Check if new country exists in country table
       ResultSet countryResultSet = statement.executeQuery(
         "SELECT countryId from country " +
         "WHERE country = " +
-         "'" + customerCountry + "'"
+        "'" +
+        customerCountry +
+        "'"
       );
-      
+
       // Find max countryId
       ResultSet countryResultSetMax = statement2.executeQuery(
         "SELECT MAX(countryId) FROM country"
@@ -166,27 +170,33 @@ public class ModifyCustomerController implements Initializable {
       // If new country exists in country table, use existing countryId key
       if (countryResultSet.next()) {
         customerCountryId = countryResultSet.getInt(1);
-      } 
+      }
       // Else create new unique countryId key
-      else { 
+      else {
         countryResultSetMax.next();
-        customerCountryId = countryResultSetMax.getInt(1); 
+        customerCountryId = countryResultSetMax.getInt(1);
         customerCountryId += 1;
 
         // Insert new country into country table
-        String countryInsertQuery = 
-        "INSERT INTO country SET countryId=" +
-        customerCountryId + ", " +
-        "country='" + customerCountry + "'" + ", " +
-        "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
+        String countryInsertQuery =
+          "INSERT INTO country SET countryId=" +
+          customerCountryId +
+          ", " +
+          "country='" +
+          customerCountry +
+          "'" +
+          ", " +
+          "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
         statement.executeUpdate(countryInsertQuery);
       }
 
-      // Check if new city exists in city table 
+      // Check if new city exists in city table
       ResultSet cityResultSet = statement.executeQuery(
         "SELECT cityId FROM city " +
-        "WHERE city = " + 
-        "'" + customerCityChoice + "'"
+        "WHERE city = " +
+        "'" +
+        customerCityChoice +
+        "'"
       );
 
       // Find max cityId
@@ -197,7 +207,7 @@ public class ModifyCustomerController implements Initializable {
       // If city exists in city table, use existing cityId key
       if (cityResultSet.next()) {
         customerCity = cityResultSet.getInt(1); // statement1
-      } 
+      }
       // Else create a new unique cityId key
       else {
         cityResultSetMax.next(); // Call next() to move to row 1
@@ -205,20 +215,32 @@ public class ModifyCustomerController implements Initializable {
         customerCity += 1;
 
         // Insert new city into city table
-        String cityInsertQuery = 
-        "INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
-        "VALUES(" + customerCity + ", " +
-        "'" + customerCityChoice + "', " + 
-        "(SELECT countryId FROM country WHERE country=" + "'" + customerCountry + "'" + "), " +
-        "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test')";
+        String cityInsertQuery =
+          "INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
+          "VALUES(" +
+          customerCity +
+          ", " +
+          "'" +
+          customerCityChoice +
+          "', " +
+          "(SELECT countryId FROM country WHERE country=" +
+          "'" +
+          customerCountry +
+          "'" +
+          "), " +
+          "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test')";
         statement.executeUpdate(cityInsertQuery);
       }
 
       // Update Address
       String updateAddress =
-        "UPDATE address SET " + 
-        "address = '" + customerAddress + "', " +
-        "cityId = " + customerCity + ", " +
+        "UPDATE address SET " +
+        "address = '" +
+        customerAddress +
+        "', " +
+        "cityId = " +
+        customerCity +
+        ", " +
         "postalCode = '" +
         customerZipCode +
         "', phone = '" +
@@ -227,7 +249,7 @@ public class ModifyCustomerController implements Initializable {
         addressId;
       int updatedAddress = statement.executeUpdate(updateAddress);
 
-      // Update Customer 
+      // Update Customer
       String updateCustomer =
         "UPDATE customer SET customerName = '" +
         customerName +
