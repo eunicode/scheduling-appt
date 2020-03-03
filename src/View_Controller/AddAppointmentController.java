@@ -61,6 +61,9 @@ import javafx.util.Callback;
  */
 
 public class AddAppointmentController implements Initializable {
+  @FXML 
+  private ComboBox<String> addAppointmentNameCombo;
+
   @FXML
   private TextField addCustomerContactText;
 
@@ -122,7 +125,11 @@ public class AddAppointmentController implements Initializable {
   public static int customerId;
   public static int userId;
 
-  private ObservableList<Appointment> customerSelected = FXCollections.observableArrayList();
+  private ObservableList<String> nameData = FXCollections.observableArrayList();
+
+  // never used
+  // private ObservableList<Appointment> customerSelected = FXCollections.observableArrayList();
+
   ObservableList<String> appointmentTime = FXCollections.observableArrayList(
     "09:00:00",
     "10:00:00",
@@ -211,8 +218,24 @@ public class AddAppointmentController implements Initializable {
     // );
 
     // Set options for Customer
+    try {
+      Statement statement = DBConnection.getConnection().createStatement();
+      
+      ResultSet nameListRS = statement.executeQuery(
+        "SELECT customerName FROM customer"
+      );
 
+      while(nameListRS.next()) {
+        nameData.add(nameListRS.getString("customerName"));
+      }
+
+    } catch(Exception e) {
+      e.printStackTrace();
+      System.out.println("Error building customer name list for appointment dropdown.");
+    }
     
+    // Set options for customer
+    addAppointmentNameCombo.setItems(nameData);
     // Set options for Time ComboBox
     addAppointmentStartTimeComboBox.setItems(appointmentTime);
     addAppointmentEndTimeComboBox.setItems(appointmentTime);
@@ -236,6 +259,7 @@ public class AddAppointmentController implements Initializable {
     addAppointmentDatePicker.setDayCellFactory(dayCellFactory);
     // Disable text field editing
     addAppointmentDatePicker.getEditor().setDisable(true);
+
   }
 
   /* -------------------------------------------------------------- */

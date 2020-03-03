@@ -142,7 +142,7 @@ public class AppointmentScreenController implements Initializable {
     "Next Week"
   );
 
-  private ObservableList<String> nameData = FXCollections.observableArrayList();
+  // private ObservableList<String> nameData = FXCollections.observableArrayList();
 
   /**
    * Initializes the controller class.
@@ -324,11 +324,6 @@ public class AppointmentScreenController implements Initializable {
     //   System.out.println("Error building customer name list for appointment dropdown.");
     // }
 
-    // int customerIDTransfer = customerTableView
-    // .getSelectionModel()
-    // .getSelectedItem()
-    // .getCustomerID();
-
     // DataProvider.setSelectedAppointmentsForCustomer(customerIDTransfer);
     // AddAppointmentController setCustomer = new AddAppointmentController();
     // setCustomer.setSelectedCustomerId(customerIDTransfer);
@@ -349,7 +344,7 @@ public class AppointmentScreenController implements Initializable {
     loader.load();
 
     ModifyAppointmentController controller = loader.getController();
-    
+
     Appointment appointment = appointmentTableView
       .getSelectionModel()
       .getSelectedItem();
