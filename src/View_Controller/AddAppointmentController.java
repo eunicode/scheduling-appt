@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -44,12 +45,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -131,6 +134,21 @@ public class AddAppointmentController implements Initializable {
     "16:00:00",
     "17:00:00"
   );
+  // ObservableList<String> appointmentTime = FXCollections.observableArrayList(
+  //   "09:",
+  //   "10:",
+  //   "11:",
+  //   "12:",
+  //   "13:",
+  //   "14:",
+  //   "15:",
+  //   "16:",
+  //   "17:"
+  // );
+
+  // ObservableList<String> minList= FXCollections.observableArrayList("00:00", "15:00", "30:00", "45:00");
+
+  // ObservableList<String> customerList = FXCollections.observableArrayList();
 
   // ObservableList<String> appointmentLocation = FXCollections.observableArrayList(
   //   "Phoenix",
@@ -143,6 +161,23 @@ public class AddAppointmentController implements Initializable {
   //   "Documentation Discussion",
   //   "Planning & Coordination"
   // );
+
+  // Factory to create Cell of DatePicker
+  private Callback<DatePicker, DateCell> disableWeekend() { 
+    final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) -> new DateCell() { 
+        @Override
+        public void updateItem(LocalDate item, boolean empty) {
+          LocalDate today = LocalDate.now();
+            super.updateItem(item, empty); 
+
+            // Disable weekends
+            if (item.getDayOfWeek() == DayOfWeek.SATURDAY || item.getDayOfWeek() == DayOfWeek.SUNDAY || item.compareTo(today) < 0) {
+                setDisable(true);
+            }
+        }
+    };
+    return dayCellFactory;
+  }
 
   /* -------------------------------------------------------------- */
   /**
@@ -175,10 +210,30 @@ public class AddAppointmentController implements Initializable {
     //   new PropertyValueFactory<>("start")
     // );
 
+    // Set options for Time ComboBox
     addAppointmentStartTimeComboBox.setItems(appointmentTime);
     addAppointmentEndTimeComboBox.setItems(appointmentTime);
     // addAppointmentDescriptionText.setItems(appointmentDescription);
     // addAppointmentLocationText.setItems(appointmentLocation);
+    
+    // Disable selection of weekends and past days
+    // addAppointmentDatePicker.setDayCellFactory(picker -> new DateCell() {
+    //   @Override
+    //   public void updateItem(LocalDate date, boolean empty) {
+    //       super.updateItem(date, empty);
+    //       setDisable(empty || date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek == DayOfWeek.SUNDAY);
+    //   }
+    // });
+    // addAppointmentDatePicker.setEditable(false);
+
+    // DatePicker - Set default day to today
+    addAppointmentDatePicker.setValue(LocalDate.now());
+    // Disable selecting weekends
+    Callback<DatePicker, DateCell> dayCellFactory  = this.disableWeekend();
+    addAppointmentDatePicker.setDayCellFactory(dayCellFactory);
+    // Disable text field editing
+    // addAppointmentDatePicker.getEditor().setEditable(false);
+    addAppointmentDatePicker.getEditor().setDisable(true);
   }
 
   /* -------------------------------------------------------------- */
@@ -502,6 +557,14 @@ public class AddAppointmentController implements Initializable {
                           	MY NOTES
 ================================================================= */
 /*
+How to disable the TextField of a JavaFx DatePicker?
+https://stackoverflow.com/questions/41833092/how-to-disable-the-textfield-of-a-javafx-datepicker
+
+Disable dates
+https://stackoverflow.com/questions/41001703/how-to-customize-datepicker-in-javafx-so-that-i-can-restrict-the-user-to-not-be
+https://stackoverflow.com/questions/35907325/how-to-set-minimum-and-maximum-date-in-datepicker-calander-in-javafx8
+https://stackoverflow.com/questions/48238855/how-to-disable-past-dates-in-datepicker-of-javafx-scene-builder
+
 --------------------------------------------------------------------
 */
 /* -------------------------------------------------------------- */
