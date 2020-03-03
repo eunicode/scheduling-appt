@@ -210,6 +210,9 @@ public class AddAppointmentController implements Initializable {
     //   new PropertyValueFactory<>("start")
     // );
 
+    // Set options for Customer
+
+    
     // Set options for Time ComboBox
     addAppointmentStartTimeComboBox.setItems(appointmentTime);
     addAppointmentEndTimeComboBox.setItems(appointmentTime);
@@ -228,11 +231,10 @@ public class AddAppointmentController implements Initializable {
 
     // DatePicker - Set default day to today
     addAppointmentDatePicker.setValue(LocalDate.now());
-    // Disable selecting weekends
+    // Disable selecting weekends, past dates
     Callback<DatePicker, DateCell> dayCellFactory  = this.disableWeekend();
     addAppointmentDatePicker.setDayCellFactory(dayCellFactory);
     // Disable text field editing
-    // addAppointmentDatePicker.getEditor().setEditable(false);
     addAppointmentDatePicker.getEditor().setDisable(true);
   }
 

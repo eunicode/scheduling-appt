@@ -37,6 +37,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 //import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -61,15 +62,18 @@ import scheduler.Scheduler;
  */
 
 public class AppointmentScreenController implements Initializable {
-  @FXML
-  private RadioButton viewByMonthRadioButton;
-
   // @FXML
   // private ToggleGroup appointmentRadioButtonGroup;
   private ToggleGroup weekOrMonthToggleGroup;
 
   @FXML
   private RadioButton viewByWeekRadioButton;
+
+  @FXML
+  private RadioButton viewByMonthRadioButton;
+
+  @FXML 
+  private RadioButton viewByAllRadioButton;
 
   @FXML
   private TableView<Appointment> appointmentTableView;
@@ -138,6 +142,8 @@ public class AppointmentScreenController implements Initializable {
     "Next Week"
   );
 
+  private ObservableList<String> nameData = FXCollections.observableArrayList();
+
   /**
    * Initializes the controller class.
    */
@@ -147,7 +153,7 @@ public class AppointmentScreenController implements Initializable {
     weekOrMonthToggleGroup = new ToggleGroup();
     this.viewByWeekRadioButton.setToggleGroup(weekOrMonthToggleGroup);
     this.viewByMonthRadioButton.setToggleGroup(weekOrMonthToggleGroup);
-    // this.viewByAllRadioButton.setToggleGroup(weekOrMonthToggleGroup);
+    this.viewByAllRadioButton.setToggleGroup(weekOrMonthToggleGroup);
 
     DataProvider.getAllAppointmentsTableList().clear();
     appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
@@ -278,13 +284,72 @@ public class AppointmentScreenController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
+  private void appointmentTableAddHandler(ActionEvent event)
+    throws IOException {
+    Parent parent = FXMLLoader.load(getClass().getResource("AddAppointment.fxml"));
+    Scene scene = new Scene(parent);
+    Stage stage = (Stage)((Node) event.getSource()). getScene().getWindow();
+    stage.hide();
+    stage.setScene(scene);
+    stage.show();
+    
+    // FXMLLoader loader = new FXMLLoader();
+
+    // loader.setLocation(
+    //   getClass().getResource("/View_Controller/AddAppointment.fxml")
+    // );
+
+    // loader.load();
+
+    // AddAppointmentController controller = loader.getController();
+
+    // int customerIDTransfer = customerTableView
+    //   .getSelectionModel()
+    //   .getSelectedItem()
+    //   .getCustomerID();
+
+    // try {
+    //   Statement statement = DBConnection.getConnection().createStatement();
+      
+    //   ResultSet nameListRS = statement.executeQuery(
+    //     "SELECT customerName FROM customer"
+    //   );
+
+    //   while(nameListRS.next()) {
+    //     nameData.add(nameListRS.getString("customerName"));
+    //   }
+
+    // } catch(Exception e) {
+    //   e.printStackTrace();
+    //   System.out.println("Error building customer name list for appointment dropdown.");
+    // }
+
+    // int customerIDTransfer = customerTableView
+    // .getSelectionModel()
+    // .getSelectedItem()
+    // .getCustomerID();
+
+    // DataProvider.setSelectedAppointmentsForCustomer(customerIDTransfer);
+    // AddAppointmentController setCustomer = new AddAppointmentController();
+    // setCustomer.setSelectedCustomerId(customerIDTransfer);
+
+    // stage = (Stage) modifyAppointmentButton.getScene().getWindow();
+    // Parent scene = loader.getRoot();
+    // stage.setScene(new Scene(scene));
+    // stage.show();
+  }
+
+  /* -------------------------------------------------------------- */
+  @FXML
   void modifyAppointmentHandler(ActionEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(
       getClass().getResource("/View_Controller/ModifyAppointment.fxml")
     );
     loader.load();
+
     ModifyAppointmentController controller = loader.getController();
+    
     Appointment appointment = appointmentTableView
       .getSelectionModel()
       .getSelectedItem();

@@ -96,13 +96,13 @@ public class CustomerTableController implements Initializable {
     DataProvider populateCustomers = new DataProvider();
     populateCustomers.populateCustomerTable();
 
-    //Lambda expression to populate customer table
     customerTableView.getSelectionModel().selectFirst();
 
     customerIDTable.setCellValueFactory(
       new PropertyValueFactory<>("customerID")
     );
 
+    //Lambda expression to populate customer table
     customerNameTable.setCellValueFactory(
       customer ->
         new SimpleStringProperty(customer.getValue().getCustomerName())
@@ -179,30 +179,30 @@ public class CustomerTableController implements Initializable {
     }
   }
 
-  @FXML
-  void appointmentTableAddHandler(ActionEvent event)
-    throws IOException, SQLException {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(
-      getClass().getResource("/View_Controller/AddAppointment.fxml")
-    );
-    loader.load();
-    AddAppointmentController controller = loader.getController();
+  // @FXML
+  // void appointmentTableAddHandler(ActionEvent event)
+  //   throws IOException, SQLException {
+  //   FXMLLoader loader = new FXMLLoader();
+  //   loader.setLocation(
+  //     getClass().getResource("/View_Controller/AddAppointment.fxml")
+  //   );
+  //   loader.load();
+  //   AddAppointmentController controller = loader.getController();
 
-    int customerIDTransfer = customerTableView
-      .getSelectionModel()
-      .getSelectedItem()
-      .getCustomerID();
+  //   int customerIDTransfer = customerTableView
+  //     .getSelectionModel()
+  //     .getSelectedItem()
+  //     .getCustomerID();
 
-    DataProvider.setSelectedAppointmentsForCustomer(customerIDTransfer);
-    AddAppointmentController setCustomer = new AddAppointmentController();
-    setCustomer.setSelectedCustomerId(customerIDTransfer);
+  //   DataProvider.setSelectedAppointmentsForCustomer(customerIDTransfer);
+  //   AddAppointmentController setCustomer = new AddAppointmentController();
+  //   setCustomer.setSelectedCustomerId(customerIDTransfer);
 
-    stage = (Stage) customerTableModifyButton.getScene().getWindow();
-    Parent scene = loader.getRoot();
-    stage.setScene(new Scene(scene));
-    stage.show();
-  }
+  //   stage = (Stage) customerTableModifyButton.getScene().getWindow();
+  //   Parent scene = loader.getRoot();
+  //   stage.setScene(new Scene(scene));
+  //   stage.show();
+  // }
 
   @FXML
   private void backButtonHandler(ActionEvent event) throws IOException {

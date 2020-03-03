@@ -148,6 +148,7 @@ public class ReportScreenController implements Initializable {
       while (apptTypeRS.next()) {
         // Iterate row
         ObservableList<String> row = FXCollections.observableArrayList();
+        
         for (int i = 1; i <= apptTypeRS.getMetaData().getColumnCount(); i++) {
           // Iterate column
           row.add(apptTypeRS.getString(i));
