@@ -44,6 +44,9 @@ public class AddCustomerController implements Initializable {
   @FXML
   private TextField addCustomerText;
 
+  // @FXML
+  // private java.awt.TextField addCustomerAddressText;
+
   @FXML
   private TextField addCustomerAddressText;
 
@@ -59,6 +62,7 @@ public class AddCustomerController implements Initializable {
 
   @FXML
   private TextField addCustomerCityComboBox;
+  // private java.awt.TextField addCustomerCityComboBox;
 
   // private ComboBox<String> addCustomerCityComboBox;
 
@@ -138,9 +142,11 @@ public class AddCustomerController implements Initializable {
 
     // customerID = ++customerID;
     String customerName = addCustomerText.getText();
-    String customerAddress = addCustomerAddressText.getText();
-    String customerAddressEscaped = mySQLEscapeSingleQuote(customerAddress);
-    String customerCityChoiceValue = addCustomerCityComboBox.getText();
+    // String customerAddress = addCustomerAddressText.getText();
+    String customerAddress = mySQLEscapeSingleQuote(addCustomerAddressText.getText());
+    // String customerAddressEscaped = mySQLEscapeSingleQuote(customerAddress);
+    String customerCityChoiceValue = mySQLEscapeSingleQuote(addCustomerCityComboBox.getText());
+    // String customerCityChoiceValue = addCustomerCityComboBox.getText();
     // String customerCityChoiceValue = customerCityChoice;
     String customerCountry = addCustomerCountryText.getText();
     String customerZipCode = addCustomerZipCodeText.getText();
@@ -256,8 +262,8 @@ public class AddCustomerController implements Initializable {
         "INSERT INTO address SET addressId=" +
         addressId +
         ", address='" +
-        customerAddressEscaped +
-        // customerAddress +
+        customerAddress +
+        // customerAddressEscaped +
         "', address2='none', phone='" +
         customerPhone +
         "', postalCode='" +
@@ -392,7 +398,7 @@ public class AddCustomerController implements Initializable {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning Dialog");
       alert.setContentText(
-        "Please enter a valid phone number for this customer!"
+        "Phone number is either empty or invalid"
       );
       alert.showAndWait();
       return false;
