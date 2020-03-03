@@ -1,0 +1,13 @@
+.table-view:focused {
+  -fx-background-color: -fx-table-cell-border-color, -fx-background;
+  -fx-background-insets: 0, 1, 2;
+}
+
+.table-view:focused .table-row-cell:focused {
+  -fx-background-color: -fx-table-cell-border-color, -fx-background;
+  -fx-background-insets: 0, 1, 2;
+}
+
+/* 
+https://stackoverflow.com/questions/48690143/deactivate-blue-border-from-first-row-when-table-view-is-focused
+https://stackoverflow.com/questions/23475727/how-to-attach-a-css-stylesheet-to-fxml */
