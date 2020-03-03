@@ -8,6 +8,7 @@ package View_Controller;
 import Database.DBConnection;
 import Model.Appointment;
 import Model.Customer;
+import Model.DataProvider;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -35,6 +36,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -59,7 +61,7 @@ public class ReportScreenController implements Initializable {
   private TableColumn<?, ?> typeApptCol;
 
   @FXML
-  private TableView<Appointment> reportConsultantTable;
+  private TableView reportConsultantTable;
 
   @FXML
   private TableColumn<?, ?> consultantCol;
@@ -74,21 +76,23 @@ public class ReportScreenController implements Initializable {
   private TableColumn<?, ?> endCol;
 
   @FXML
-  private TableView<Customer> reportAdditionalTable;
-
+  // private TableView<Customer> reportAdditionalTable;
+  private TableView reportAdditionalTable;
+  
   @FXML
   private TableColumn<?, ?> nameAddCol;
 
   @FXML
   private Button backButton;
 
-  private ObservableList<ObservableList> apptTypeCountData;
-
+  private ObservableList<ObservableList> apptData;
+  private ObservableList<Appointment> consultantData;
+  private ObservableList<ObservableList> additionalData;
   // private
 
   /* -------------------------------------------------------------- */
-  public void buildMonthTypeData() {
-    apptTypeCountData = FXCollections.observableArrayList();
+  public void buildApptTypeData() {
+    apptData = FXCollections.observableArrayList();
 
     try {
       String apptTypeQuery =
@@ -114,12 +118,15 @@ public class ReportScreenController implements Initializable {
       //   }
       // });
 
+      // Create columns and cell value factories
+      // Use lambdas. It is more flexible than
       for (int i = 0; i < apptTypeRS.getMetaData().getColumnCount(); i++) {
-        //We are using non property style for making dynamic table
         final int j = i;
+
         TableColumn col = new TableColumn(
           apptTypeRS.getMetaData().getColumnName(i + 1)
         );
+
         col.setCellValueFactory(
           new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 
@@ -134,7 +141,7 @@ public class ReportScreenController implements Initializable {
         );
 
         reportAppointmentTable.getColumns().addAll(col);
-        System.out.println("Column [" + i + "] ");
+        // System.out.println("Column [" + i + "] ");
       }
 
       // Add data to ObservableList
@@ -146,23 +153,118 @@ public class ReportScreenController implements Initializable {
           row.add(apptTypeRS.getString(i));
         }
 
-        apptTypeCountData.add(row);
+        apptData.add(row);
       }
 
       // Add to tableview
-      reportAppointmentTable.setItems(apptTypeCountData);
+      reportAppointmentTable.setItems(apptData);
     } catch (Exception e) {
       e.printStackTrace();
       System.out.println("Error building number of appointment types by month");
     }
   }
 
+  /* -------------------------------------------------------------- */
+  public void buildConsultantData() {
+    DataProvider.getAllAppointmentsTableList().clear();
+    reportConsultantTable.setItems(DataProvider.getAllAppointmentsTableList());
+
+    DataProvider populateAppointments = new DataProvider();
+    populateAppointments.populateAppointmentTable();
+
+    consultantCol.setCellValueFactory(
+      new PropertyValueFactory<>("userId")
+    );
+    customerCol.setCellValueFactory(
+      new PropertyValueFactory<>("customerName")
+    );
+    startCol.setCellValueFactory(
+      new PropertyValueFactory<>("start")
+    );
+    endCol.setCellValueFactory(
+      new PropertyValueFactory<>("end")
+    );
+
+    
+
+    // try {
+    //   DataProvider populateAppointments = new DataProvider();
+    //   populateAppointments.populateAppointmentTable();
+
+    // } catch(SQLException ce) {
+    //   logger.info(ce.toString());
+    // }
+  }
+
+  /* -------------------------------------------------------------- */
+  public void buildAdditionalData() {
+    additionalData = FXCollections.observableArrayList();
+
+    try {
+      String additionalQuery =
+      "SELECT customerName AS 'Customer Name' " +
+      "FROM customer " +
+      "WHERE customerId NOT IN ( " +
+      "SELECT customerId " +
+      "FROM appointment)";
+
+      Statement statement = DBConnection.getConnection().createStatement();
+
+      ResultSet additionalRS = statement.executeQuery(additionalQuery);
+
+      for (int i = 0; i < additionalRS.getMetaData().getColumnCount(); i++) {
+        final int j = i;
+
+        TableColumn col = new TableColumn(
+          additionalRS.getMetaData().getColumnName(i + 1)
+        );
+
+        col.setCellValueFactory(
+          new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+
+            public ObservableValue<String> call(
+              CellDataFeatures<ObservableList, String> param
+            ) {
+              return new SimpleStringProperty(
+                param.getValue().get(j).toString()
+              );
+            }
+          }
+        );
+
+        reportAdditionalTable.getColumns().addAll(col);
+        // System.out.println("Column [" + i + "] ");
+      }
+
+      // Add data to ObservableList
+      while (additionalRS.next()) {
+        // Iterate row
+        ObservableList<String> row = FXCollections.observableArrayList();
+        for (int i = 1; i <= additionalRS.getMetaData().getColumnCount(); i++) {
+          // Iterate column
+          row.add(additionalRS.getString(i));
+        }
+
+        additionalData.add(row);
+      }
+
+      // Add to tableview
+      reportAdditionalTable.setItems(additionalData);
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.out.println("Error building number of appointment types by month");
+    }
+  }
+
+  /* -------------------------------------------------------------- */
   /**
    * Initializes the controller class.
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    buildMonthTypeData();
+    buildApptTypeData();
+    buildConsultantData();
+    buildAdditionalData();
     // DataProvider.getAllAppointmentsTableList().clear();
     // appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
 
@@ -185,6 +287,11 @@ public class ReportScreenController implements Initializable {
                           	MY NOTES
 ================================================================= */
 /*
+TODO
+
+Make properties private and use property accessor methods, along with get and set methods.
+
+--------------------------------------------------------------------
 Java: setCellValuefactory; Lambda vs. PropertyValueFactory; advantages/disadvantages
 https://stackoverflow.com/questions/38049734/java-setcellvaluefactory-lambda-vs-propertyvaluefactory-advantages-disadvant
 
@@ -215,3 +322,59 @@ https://stackoverflow.com/questions/38049734/java-setcellvaluefactory-lambda-vs-
       "UNION ALL SELECT count(*) FROM appointment WHERE date_format(start, '%m') = '12' AND type = 'Scrum' ";
 */
 /* -------------------------------------------------------------- */
+
+/* public void buildConsultantData() {
+  consultantData = FXCollections.observableArrayList();
+
+  try {
+    String consultantQuery =
+      "SELECT 'test' AS Consultant, c.customerName AS Customer, a.start AS Start, a.end AS End " +
+      "FROM customer AS c " +
+      "INNER JOIN appointment AS a " +
+      "WHERE c.customerId = a.customerId";
+
+    Statement statement2 = DBConnection.getConnection().createStatement();
+
+    ResultSet consultantRS = statement2.executeQuery(consultantQuery);
+
+    for (int i = 0; i < consultantRS.getMetaData().getColumnCount(); i++) {
+      final int j = i;
+
+      TableColumn col = new TableColumn(consultantRS.getMetaData().getColumnName(i + 1));
+
+      col.setCellValueFactory(
+        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+          public ObservableValue<String> call(
+            CellDataFeatures<ObservableList, String> param
+          ) {
+            return new SimpleStringProperty(
+              param.getValue().get(j).toString()
+            );
+          }
+        }
+      );
+
+      reportConsultantTable.getColumns().addAll(col);
+      // System.out.println("Column [" + i + "] ");
+    }
+
+    // Add data to ObservableList
+    while (consultantRS.next()) {
+      // Iterate row
+      ObservableList<String> row = FXCollections.observableArrayList();
+      for (int i = 1; i <= consultantRS.getMetaData().getColumnCount(); i++) {
+        // Iterate column
+        row.add(consultantRS.getString(i));
+      }
+
+      consultantData.add(row);
+    }
+
+    // Add to tableview
+    reportConsultantTable.setItems(consultantData);
+  } catch (Exception e) {
+    e.printStackTrace();
+    System.out.println("Error building schedule for each consultant");
+  }
+}
+*/
