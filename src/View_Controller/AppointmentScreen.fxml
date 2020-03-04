@@ -28,7 +28,7 @@
       </TableView>
       <RadioButton fx:id="viewByWeekRadioButton" layoutX="55.0" layoutY="62.0" mnemonicParsing="false" onAction="#viewByWeekHandler" text="This week's appointments" />
       <RadioButton fx:id="viewByMonthRadioButton" layoutX="55.0" layoutY="93.0" mnemonicParsing="false" onAction="#viewByMonthHandler" text="This month's appointments" />
-      <RadioButton fx:id="viewByAllRadioButton" layoutX="55.0" layoutY="123.0" mnemonicParsing="false" text="All appointments" />
+      <RadioButton fx:id="viewByAllRadioButton" layoutX="55.0" layoutY="123.0" mnemonicParsing="false" onAction="#viewByAllHandler" text="All appointments" />
       <Label layoutX="55.0" layoutY="29.0" text="Appointment Records" />
       <Button fx:id="backButton" layoutX="741.0" layoutY="498.0" mnemonicParsing="false" onAction="#backHandler" prefHeight="27.0" prefWidth="124.0" text="Back" />
       <!-- <Button fx:id="appointmentTableAddButton" layoutX="421.0" layoutY="404.0" mnemonicParsing="false" onAction="#appointmentTableAddHandler" text="Add Appointment" /> -->

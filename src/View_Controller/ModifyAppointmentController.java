@@ -14,6 +14,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -37,9 +38,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -115,17 +118,43 @@ public class ModifyAppointmentController implements Initializable {
 
   //   ObservableList<String> appointmentLocation = FXCollections.observableArrayList("Phoenix", "New York", "London", "Internet");
   //   ObservableList<String> appointmentDescription = FXCollections.observableArrayList("There will be a meeting", "Documentation Discussion", "Planning & Coordination");
+
+  /* -------------------------------------------------------------- */
+  // Factory to create Cell of DatePicker
+  private Callback<DatePicker, DateCell> disableWeekend() { 
+    final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) -> new DateCell() { 
+        @Override
+        public void updateItem(LocalDate item, boolean empty) {
+          LocalDate today = LocalDate.now();
+            super.updateItem(item, empty); 
+
+            // Disable weekends
+            if (item.getDayOfWeek() == DayOfWeek.SATURDAY || item.getDayOfWeek() == DayOfWeek.SUNDAY || item.compareTo(today) < 0) {
+                setDisable(true);
+            }
+        }
+    };
+    return dayCellFactory;
+  }
+
   /* -------------------------------------------------------------- */
   /**
    * Initializes the controller class.
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
+    modifyTypeText.setItems(appointmentType);
     modifyStartComboBox.setItems(appointmentTime);
     modifyEndComboBox.setItems(appointmentTime);
-    modifyTypeText.setItems(appointmentType);
     //   modifyDescriptionComboBox.setItems(appointmentDescription);
     //   modifyLocationComboBox.setItems(appointmentLocation);
+
+    // Disable selecting weekends, past dates
+    Callback<DatePicker, DateCell> dayCellFactory  = this.disableWeekend();
+    modifyDate.setDayCellFactory(dayCellFactory);
+    // Disable text field editing
+    modifyDate.getEditor().setDisable(true);
+
   }
 
   /* -------------------------------------------------------------- */

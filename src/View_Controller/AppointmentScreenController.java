@@ -191,6 +191,20 @@ public class AppointmentScreenController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
+  private void viewByWeekHandler(ActionEvent event) {
+    DataProvider.getAppointmentsByMonth().clear();
+    DataProvider.getAppointmentsByWeek().clear();
+
+    if (viewByWeekRadioButton.isSelected()) {
+      DataProvider.setWeeklyView(0);
+    }
+
+    sortAppointment();
+    // viewByComboBox.setItems(viewByWeek);
+  }
+
+  /* -------------------------------------------------------------- */
+  @FXML
   private void viewByMonthHandler(ActionEvent event) {
     DataProvider.getAppointmentsByMonth().clear();
     DataProvider.getAppointmentsByWeek().clear();
@@ -203,21 +217,18 @@ public class AppointmentScreenController implements Initializable {
     }
 
     sortAppointment();
-    viewByComboBox.setItems(viewByMonth);
+    // viewByComboBox.setItems(viewByMonth);
   }
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void viewByWeekHandler(ActionEvent event) {
+  private void viewByAllHandler(ActionEvent event) {
     DataProvider.getAppointmentsByMonth().clear();
     DataProvider.getAppointmentsByWeek().clear();
 
-    if (viewByWeekRadioButton.isSelected()) {
-      DataProvider.setWeeklyView(0);
+    if (viewByMonthRadioButton.isSelected()) {
     }
 
-    sortAppointment();
-    viewByComboBox.setItems(viewByWeek);
   }
 
   /* -------------------------------------------------------------- */
@@ -380,16 +391,6 @@ public class AppointmentScreenController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
-  @FXML
-  private void backHandler(ActionEvent event) throws IOException {
-    Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-    Object scene = FXMLLoader.load(
-      getClass().getResource("/View_Controller/MainScreen.fxml")
-    );
-    stage.setScene(new Scene((Parent) scene));
-    stage.show();
-  }
-
   public void deleteAppointment(Appointment appointment) {
     int selectedID = appointment.getAppointmentId();
 
@@ -422,6 +423,7 @@ public class AppointmentScreenController implements Initializable {
         "GROUP BY appointment.contact, MONTH(start), start";
 
       ResultSet customerNameResults = statement.executeQuery(getCustomerName);
+
       while (customerNameResults.next()) {
         String customerName = customerNameResults.toString();
         customerNameColumn.setCellValueFactory(
@@ -464,6 +466,17 @@ public class AppointmentScreenController implements Initializable {
     } else {
       appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
     }
+  }
+
+  /* -------------------------------------------------------------- */
+  @FXML
+  private void backHandler(ActionEvent event) throws IOException {
+    Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+    Object scene = FXMLLoader.load(
+      getClass().getResource("/View_Controller/MainScreen.fxml")
+    );
+    stage.setScene(new Scene((Parent) scene));
+    stage.show();
   }
 }
 /* =================================================================  
