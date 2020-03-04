@@ -306,11 +306,8 @@ public class AddCustomerController implements Initializable {
     //   alert.showAndWait();
     // }
 
-    if (
-      (
-        validateCustomerName(customerName) && validateAddress(customerAddress)
-      ) &&
-      (validateZipcode(customerZipCode) && validatePhone(customerPhone))
+    if (validateCustomerName(customerName) && validateAddress(customerAddress) &&
+      validateZipcode(customerZipCode) && validatePhone(customerPhone)
     ) {
       // Add customer to DataProvider
       Customer customer = new Customer(
@@ -408,7 +405,7 @@ public class AddCustomerController implements Initializable {
 
   /* -------------------------------------------------------------- */
   public boolean validatePhone(String phone) {
-    String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
+    String pattern = "\\d{3}-\\d{4}";
 
     if (phone.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
