@@ -101,12 +101,12 @@ public class ModifyAppointmentController implements Initializable {
     "17:00:00"
   );
 
-  ObservableList<String> appointmentMin = FXCollections.observableArrayList(
-    "00:00",
-    "15:00",
-    "30:00",
-    "45:00"
-  );
+  // ObservableList<String> appointmentMin = FXCollections.observableArrayList(
+  //   "00:00",
+  //   "15:00",
+  //   "30:00",
+  //   "45:00"
+  // );
 
   ObservableList<String> appointmentType = FXCollections.observableArrayList(
     "Presentation",
@@ -415,6 +415,7 @@ public class ModifyAppointmentController implements Initializable {
     this.modifyDescriptionComboBox.setText(newAppointment.getDescription());
     this.modifyDate.setValue(dateForCal);
 
+    // Set type to previously selected type
     String selectedType = newAppointment.getType();
     if (selectedType == "Presentation") {
       this.modifyTypeText.getSelectionModel().selectFirst();

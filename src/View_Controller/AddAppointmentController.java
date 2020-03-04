@@ -71,7 +71,8 @@ public class AddAppointmentController implements Initializable {
   private TextField addAppointmentTitleText;
 
   @FXML
-  private TextField addAppointmentTypeText;
+  private ComboBox<String> addAppointmentTypeText;
+  // private TextField addAppointmentTypeText;
 
   @FXML
   private ComboBox<String> addAppointmentStartTimeComboBox;
@@ -131,6 +132,11 @@ public class AddAppointmentController implements Initializable {
   // never used
   // private ObservableList<Appointment> customerSelected = FXCollections.observableArrayList();
 
+  ObservableList<String> appointmentType = FXCollections.observableArrayList(
+    "Presentation",
+    "Scrum"
+  );
+  
   ObservableList<String> appointmentTime = FXCollections.observableArrayList(
     "09:00:00",
     "10:00:00",
@@ -237,6 +243,8 @@ public class AddAppointmentController implements Initializable {
     
     // Set options for customer
     addAppointmentNameCombo.setItems(nameData);
+    // Set options for type
+    addAppointmentTypeText.setItems(appointmentType);
     // Set options for Time ComboBox
     addAppointmentStartTimeComboBox.setItems(appointmentTime);
     addAppointmentEndTimeComboBox.setItems(appointmentTime);
@@ -311,7 +319,7 @@ public class AddAppointmentController implements Initializable {
     //   .getSelectedItem();
     String assignedContact = addCustomerContactText.getText();
 
-    String type = addAppointmentTypeText.getText();
+    String type = addAppointmentTypeText.getSelectionModel().getSelectedItem();
     // String type = addAppointmentTypeText.getText();
 
     String url = "";
@@ -470,9 +478,9 @@ public class AddAppointmentController implements Initializable {
 
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
 
-      // Return to main screen
+      // Return to appointment screen
       Object scene = FXMLLoader.load(
-        getClass().getResource("/View_Controller/MainScreen.fxml")
+        getClass().getResource("/View_Controller/AppointmentScreen.fxml")
       );
       stage.setScene(new Scene((Parent) scene));
       stage.show();
