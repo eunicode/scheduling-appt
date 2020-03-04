@@ -298,12 +298,13 @@ public class AddCustomerController implements Initializable {
       }
     } catch (SQLException ex) {
       System.out.println("Error " + ex.getMessage());
-    } catch (NumberFormatException e) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning Dialog");
-      alert.setContentText("Please enter a valid value for each text field.");
-      alert.showAndWait();
     }
+    // } catch (NumberFormatException e) {
+    //   Alert alert = new Alert(Alert.AlertType.WARNING);
+    //   alert.setTitle("Warning Dialog");
+    //   alert.setContentText("Please enter a valid value for each text field.");
+    //   alert.showAndWait();
+    // }
 
     if (
       (
@@ -339,7 +340,7 @@ public class AddCustomerController implements Initializable {
   private void cancelHandler(ActionEvent event) throws IOException {
     Alert alert = new Alert(
       Alert.AlertType.CONFIRMATION,
-      "This will clear all text field vlaues, do you want to continue?"
+      "You will lose all changes. Continue?"
     );
 
     Optional<ButtonType> result = alert.showAndWait();
@@ -363,7 +364,7 @@ public class AddCustomerController implements Initializable {
     if (customerName.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning Dialog");
-      alert.setContentText("Please enter a name for this customer!");
+      alert.setContentText("Customer name is empty");
       alert.showAndWait();
       return false;
     } else {
@@ -376,7 +377,7 @@ public class AddCustomerController implements Initializable {
     if (address.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning Dialog");
-      alert.setContentText("Please enter a valid address for this customer!");
+      alert.setContentText("Address is empty");
       alert.showAndWait();
       return false;
     } else {
@@ -386,10 +387,18 @@ public class AddCustomerController implements Initializable {
 
   /* -------------------------------------------------------------- */
   public boolean validateZipcode(String zipCode) {
+    String pattern = "\\d{5}";
+
     if (zipCode.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning Dialog");
-      alert.setContentText("Please enter a valid zip code for this customer!");
+      alert.setContentText("Zip code is empty");
+      alert.showAndWait();
+      return false;
+    } else if (!zipCode.matches(pattern)) {
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Warning Dialog");
+      alert.setContentText("Zip code is invalid");
       alert.showAndWait();
       return false;
     } else {
@@ -399,10 +408,18 @@ public class AddCustomerController implements Initializable {
 
   /* -------------------------------------------------------------- */
   public boolean validatePhone(String phone) {
+    String pattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
+
     if (phone.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning Dialog");
       alert.setContentText("Phone number is either empty or invalid");
+      alert.showAndWait();
+      return false;
+    } else if (!phone.matches(pattern)) {
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Warning Dialog");
+      alert.setContentText("Phone number is invalid");
       alert.showAndWait();
       return false;
     } else {
@@ -478,5 +495,8 @@ Returns: true if the new current row is valid; false if there are no more rows
 --------------------------------------------------------------------
 Error Operation not allowed after ResultSet closed
 
+--------------------------------------------------------------------
+Java Regular Expressions to Validate phone numbers
+https://stackoverflow.com/questions/42104546/java-regular-expressions-to-validate-phone-numbers/42105140
 */
 /* -------------------------------------------------------------- */
