@@ -157,158 +157,152 @@ public class AddCustomerController implements Initializable {
     String customerZipCode = addCustomerZipCodeText.getText();
     String customerPhone = addCustomPhoneText.getText();
 
-    try {
-      // Create Statement object
-      Statement statement = DBConnection.getConnection().createStatement();
-      // Create new Statement object for concurrent ResultSet
-      Statement statement2 = DBConnection.getConnection().createStatement();
-
-      // Find max customerId in customer table
-      ResultSet customerResultSet = statement.executeQuery(
-        "SELECT MAX(customerId) FROM customer"
-      );
-
-      // Use max customerId value to update new customer's customerId key
-      if (customerResultSet.next()) { // Way to check if table is non-empty
-        customerId = customerResultSet.getInt(1); // col 1
-        customerId += 1;
-      }
-
-      // Find max addressId in address table
-      ResultSet addressResultSet = statement.executeQuery(
-        "SELECT MAX(addressId) FROM address"
-      );
-
-      // Use max addressId value to update new customer's addressId key
-      if (addressResultSet.next()) {
-        addressId = addressResultSet.getInt(1);
-        addressId += 1;
-      }
-
-      // Check if country exists in country table
-      ResultSet countryResultSet = statement.executeQuery(
-        "SELECT countryId from country " +
-        "WHERE country = " +
-        "'" +
-        customerCountry +
-        "'"
-      );
-      // Find max countryId
-      ResultSet countryResultSetMax = statement2.executeQuery(
-        "SELECT MAX(countryId) FROM country"
-      );
-      // If country user input exists in country table, use existing countryId key
-      if (countryResultSet.next()) {
-        customerCountryId = countryResultSet.getInt(1); // Use statement1's resultset
-      }
-      // Else create new unique countryId key
-      else {
-        countryResultSetMax.next();
-        customerCountryId = countryResultSetMax.getInt(1); // Use statement2's resultset
-        customerCountryId += 1;
-
-        // Insert new country into country table
-        String countryInsertQuery =
-          "INSERT INTO country SET countryId=" +
-          customerCountryId +
-          ", " +
-          "country='" +
-          customerCountry +
-          "'" +
-          ", " +
-          "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
-        statement.executeUpdate(countryInsertQuery);
-      }
-
-      // Check if city exists in city table
-      ResultSet cityResultSet = statement.executeQuery(
-        "SELECT cityId FROM city " +
-        "WHERE city = " +
-        "'" +
-        customerCityChoiceValue +
-        "'"
-      );
-
-      // Find max cityId
-      ResultSet cityResultSetMax = statement2.executeQuery(
-        "SELECT MAX(cityId) FROM city"
-      );
-
-      // If city exists in city table, use existing cityId key
-      if (cityResultSet.next()) {
-        customerCity = cityResultSet.getInt(1); // statement1
-      }
-      // Else create a new unique cityId key
-      else {
-        cityResultSetMax.next(); // Call next() to move to row 1
-        customerCity = cityResultSetMax.getInt(1); // statement2
-        customerCity += 1;
-
-        // Insert new city into city table
-        String cityInsertQuery =
-          "INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
-          "VALUES(" +
-          customerCity +
-          ", " +
-          "'" +
-          customerCityChoiceValue +
-          "', " +
-          "(SELECT countryId FROM country WHERE country=" +
-          "'" +
-          customerCountry +
-          "'" +
-          "), " +
-          "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test')";
-        statement.executeUpdate(cityInsertQuery);
-      }
-
-      // Update address table
-      String addressQuery =
-        "INSERT INTO address SET addressId=" +
-        addressId +
-        ", address='" +
-        customerAddress +
-        // customerAddressEscaped +
-        "', address2='none', phone='" +
-        customerPhone +
-        "', postalCode='" +
-        customerZipCode +
-        "', cityId= " +
-        customerCity +
-        ", createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
-
-      int addressExecuteUpdate = statement.executeUpdate(addressQuery);
-
-      // Update `Customer` table
-      if (addressExecuteUpdate == 1) {
-        String customerQuery =
-          "INSERT INTO customer SET customerId=" +
-          customerId +
-          ", customerName='" +
-          customerName +
-          "', addressId=" +
-          addressId +
-          ", active=1, createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
-
-        int customerExecuteUpdate = statement.executeUpdate(customerQuery);
-
-        if (customerExecuteUpdate == 1) {
-          System.out.println("Insert into SQL table was successful!");
-        }
-      }
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
-    }
-    // } catch (NumberFormatException e) {
-    //   Alert alert = new Alert(Alert.AlertType.WARNING);
-    //   alert.setTitle("Warning Dialog");
-    //   alert.setContentText("Please enter a valid value for each text field.");
-    //   alert.showAndWait();
-    // }
-
     if (validateCustomerName(customerName) && validateAddress(customerAddress) &&
       validateZipcode(customerZipCode) && validatePhone(customerPhone)
     ) {
+      try {
+        // Create Statement object
+        Statement statement = DBConnection.getConnection().createStatement();
+        // Create new Statement object for concurrent ResultSet
+        Statement statement2 = DBConnection.getConnection().createStatement();
+  
+        // Find max customerId in customer table
+        ResultSet customerResultSet = statement.executeQuery(
+          "SELECT MAX(customerId) FROM customer"
+        );
+  
+        // Use max customerId value to update new customer's customerId key
+        if (customerResultSet.next()) { // Way to check if table is non-empty
+          customerId = customerResultSet.getInt(1); // col 1
+          customerId += 1;
+        }
+  
+        // Find max addressId in address table
+        ResultSet addressResultSet = statement.executeQuery(
+          "SELECT MAX(addressId) FROM address"
+        );
+  
+        // Use max addressId value to update new customer's addressId key
+        if (addressResultSet.next()) {
+          addressId = addressResultSet.getInt(1);
+          addressId += 1;
+        }
+  
+        // Check if country exists in country table
+        ResultSet countryResultSet = statement.executeQuery(
+          "SELECT countryId from country " +
+          "WHERE country = " +
+          "'" +
+          customerCountry +
+          "'"
+        );
+        // Find max countryId
+        ResultSet countryResultSetMax = statement2.executeQuery(
+          "SELECT MAX(countryId) FROM country"
+        );
+        // If country user input exists in country table, use existing countryId key
+        if (countryResultSet.next()) {
+          customerCountryId = countryResultSet.getInt(1); // Use statement1's resultset
+        }
+        // Else create new unique countryId key
+        else {
+          countryResultSetMax.next();
+          customerCountryId = countryResultSetMax.getInt(1); // Use statement2's resultset
+          customerCountryId += 1;
+  
+          // Insert new country into country table
+          String countryInsertQuery =
+            "INSERT INTO country SET countryId=" +
+            customerCountryId +
+            ", " +
+            "country='" +
+            customerCountry +
+            "'" +
+            ", " +
+            "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
+          statement.executeUpdate(countryInsertQuery);
+        }
+  
+        // Check if city exists in city table
+        ResultSet cityResultSet = statement.executeQuery(
+          "SELECT cityId FROM city " +
+          "WHERE city = " +
+          "'" +
+          customerCityChoiceValue +
+          "'"
+        );
+  
+        // Find max cityId
+        ResultSet cityResultSetMax = statement2.executeQuery(
+          "SELECT MAX(cityId) FROM city"
+        );
+  
+        // If city exists in city table, use existing cityId key
+        if (cityResultSet.next()) {
+          customerCity = cityResultSet.getInt(1); // statement1
+        }
+        // Else create a new unique cityId key
+        else {
+          cityResultSetMax.next(); // Call next() to move to row 1
+          customerCity = cityResultSetMax.getInt(1); // statement2
+          customerCity += 1;
+  
+          // Insert new city into city table
+          String cityInsertQuery =
+            "INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
+            "VALUES(" +
+            customerCity +
+            ", " +
+            "'" +
+            customerCityChoiceValue +
+            "', " +
+            "(SELECT countryId FROM country WHERE country=" +
+            "'" +
+            customerCountry +
+            "'" +
+            "), " +
+            "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test')";
+          statement.executeUpdate(cityInsertQuery);
+        }
+  
+        // Update address table
+        String addressQuery =
+          "INSERT INTO address SET addressId=" +
+          addressId +
+          ", address='" +
+          customerAddress +
+          // customerAddressEscaped +
+          "', address2='none', phone='" +
+          customerPhone +
+          "', postalCode='" +
+          customerZipCode +
+          "', cityId= " +
+          customerCity +
+          ", createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
+  
+        int addressExecuteUpdate = statement.executeUpdate(addressQuery);
+  
+        // Update `Customer` table
+        if (addressExecuteUpdate == 1) {
+          String customerQuery =
+            "INSERT INTO customer SET customerId=" +
+            customerId +
+            ", customerName='" +
+            customerName +
+            "', addressId=" +
+            addressId +
+            ", active=1, createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
+  
+          int customerExecuteUpdate = statement.executeUpdate(customerQuery);
+  
+          if (customerExecuteUpdate == 1) {
+            System.out.println("Insert into SQL table was successful!");
+          }
+        }
+      } catch (SQLException ex) {
+        System.out.println("Error " + ex.getMessage());
+      }
+
       // Add customer to DataProvider
       Customer customer = new Customer(
         customerId,
@@ -330,6 +324,39 @@ public class AddCustomerController implements Initializable {
       stage.setScene(new Scene((Parent) scene));
       stage.show();
     }
+
+    
+    // } catch (NumberFormatException e) {
+    //   Alert alert = new Alert(Alert.AlertType.WARNING);
+    //   alert.setTitle("Warning Dialog");
+    //   alert.setContentText("Please enter a valid value for each text field.");
+    //   alert.showAndWait();
+    // }
+
+    // if (validateCustomerName(customerName) && validateAddress(customerAddress) &&
+    //   validateZipcode(customerZipCode) && validatePhone(customerPhone)
+    // ) {
+      // Add customer to DataProvider
+      // Customer customer = new Customer(
+      //   customerId,
+      //   // customerID,
+      //   customerName,
+      //   customerAddress,
+      //   customerCityChoiceValue,
+      //   customerCountry,
+      //   customerZipCode,
+      //   customerPhone
+      // );
+      // DataProvider.addCustomer(customer);
+
+      // // Return to customer table
+      // Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+      // Object scene = FXMLLoader.load(
+      //   getClass().getResource("/View_Controller/CustomerTable.fxml")
+      // );
+      // stage.setScene(new Scene((Parent) scene));
+      // stage.show();
+    // }
   }
 
   /* -------------------------------------------------------------- */
