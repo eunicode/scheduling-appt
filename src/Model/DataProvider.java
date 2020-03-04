@@ -5,7 +5,7 @@
  */
 package Model;
 
-import Database.DBConnection;
+import Utilities.DBConnection;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;

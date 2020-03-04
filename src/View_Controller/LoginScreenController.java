@@ -5,9 +5,9 @@
  */
 package View_Controller;
 
-import Database.DBConnection;
-import Database.DBQuery;
-import Database.trackLoggedInUser;
+import Utilities.DBConnection;
+import Utilities.DBQuery;
+import Utilities.trackLoggedInUser;
 import Model.User;
 import java.io.IOException;
 import java.net.URL;

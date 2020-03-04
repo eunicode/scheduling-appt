@@ -9,7 +9,7 @@ package View_Controller;
 //import java.util.ResourceBundle;
 //import javafx.fxml.Initializable;
 
-import Database.DBConnection;
+import Utilities.DBConnection;
 import Model.Appointment;
 import Model.Customer;
 import Model.DataProvider;

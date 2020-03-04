@@ -7,7 +7,7 @@ package View_Controller;
 
 import static View_Controller.CustomerTableController.deleteCustomer;
 
-import Database.DBConnection;
+import Utilities.DBConnection;
 //import Database.DBConnection;
 import Model.Appointment;
 import Model.Customer;

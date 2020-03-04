@@ -5,7 +5,7 @@
  */
 package scheduler;
 
-import Database.DBConnection;
+import Utilities.DBConnection;
 import Model.Appointment;
 import Model.Customer;
 import Model.DataProvider;
