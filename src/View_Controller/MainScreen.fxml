@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="350.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.MainScreenController">
+<AnchorPane id="AnchorPane" prefHeight="375.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.MainScreenController">
 <!-- xmlns="http://javafx.com/javafx/8.0.231" -->
    <children>
       <GridPane hgap="12.0" layoutX="51.0" layoutY="113.0" prefHeight="177.0" prefWidth="497.0">
@@ -28,10 +28,12 @@
             <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="241.0" text="View, add, edit, delete customers" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
             <Label alignment="TOP_CENTER" prefHeight="19.0" prefWidth="242.0" text="View, add, edit, delete appointments" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
             <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="115.0" text="View reports" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+            <Button fx:id="dashboardLogButton" mnemonicParsing="false" onAction="#dashboardLogButtonHandler" prefHeight="40.0" prefWidth="242.0" text="Log" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="View user login log" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
       <Label fx:id="welcomeLabel" layoutX="200.0" layoutY="35.0" text="Welcome! Select an option below" />
-      <Button fx:id="logoutButton" layoutX="464.0" layoutY="290.0" mnemonicParsing="false" onAction="#logoutHandler" prefHeight="27.0" prefWidth="85.0" text="Logout" />
+      <Button fx:id="logoutButton" layoutX="464.0" layoutY="312.0" mnemonicParsing="false" onAction="#logoutHandler" prefHeight="27.0" prefWidth="85.0" text="Logout" />
       <Label layoutX="122.0" layoutY="65.0" text="(App may be slow. Please wait a few seconds for app to respond)" />
    </children>
 </AnchorPane>

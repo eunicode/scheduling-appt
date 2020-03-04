@@ -8,6 +8,8 @@ package View_Controller;
 import static View_Controller.LoginScreenController.getLocale;
 
 import Model.Appointment;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -155,6 +157,14 @@ public class MainScreenController implements Initializable {
   // private void exitHandler(ActionEvent event) {
   //   System.exit(0);
   // }
+
+  @FXML 
+  private void dashboardLogButtonHandler(ActionEvent event) throws IOException {
+    String filename = "user_login_log.txt";
+    File file = new File(filename);
+    Desktop desktop = Desktop.getDesktop();
+    desktop.open(file);
+  }
 
   @FXML
   private void logoutHandler(ActionEvent event) throws IOException {
