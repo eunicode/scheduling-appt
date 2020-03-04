@@ -390,10 +390,10 @@ public class DataProvider {
       Statement statement = DBConnection.getConnection().createStatement();
 
       String query = 
-      "SELECT appointmentId, date_format(start, '%Y-%m-%d') " +
+      "SELECT appointmentId " +
       "FROM appointment " +
-      "WHERE (year(start) = YEAR(curdate()) AND weekofyear(start) = weekofyear(date_add(curdate(),interval 7 day))) " +
-      "OR (start = curdate())";
+      "WHERE YEARWEEK(start, 1) = YEARWEEK(CURDATE(), 1) " +
+      "ORDER BY start ASC";
 
       ResultSet weeklyAppointments = statement.executeQuery(
         query
@@ -454,7 +454,8 @@ public class DataProvider {
       String query = 
       "SELECT appointmentId " +
       "FROM appointment " +
-      "WHERE start >= NOW() AND start < NOW() + INTERVAL 30 DAY " +
+      "WHERE start >= LAST_DAY(CURRENT_DATE) + INTERVAL 1 DAY - INTERVAL 1 MONTH " +
+      "AND start < LAST_DAY(CURRENT_DATE) + INTERVAL 1 DAY " +
       "ORDER BY start ASC";
 
       ResultSet monthlyAppointments = statement.executeQuery(
@@ -522,6 +523,17 @@ https://www.w3schools.com/sql/func_mysql_date_add.asp
 
 MySQL DATE_FORMAT() Function
 https://www.w3schools.com/sql/func_mysql_date_format.asp
+
+--------------------------------------------------------------------
+"SELECT appointmentId, date_format(start, '%Y-%m-%d') " +
+      "FROM appointment " +
+      "WHERE (year(start) = YEAR(curdate()) AND weekofyear(start) = weekofyear(date_add(curdate(),interval 7 day))) " +
+      "OR (start = curdate())";
+
+      "SELECT appointmentId " +
+      "FROM appointment " +
+      "WHERE start >= NOW() AND start < NOW() + INTERVAL 30 DAY " +
+      "ORDER BY start ASC";
 
 --------------------------------------------------------------------
 */
