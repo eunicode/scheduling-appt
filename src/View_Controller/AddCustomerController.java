@@ -158,7 +158,7 @@ public class AddCustomerController implements Initializable {
     String customerPhone = addCustomPhoneText.getText();
 
     if (validateCustomerName(customerName) && validateAddress(customerAddress) &&
-      validateZipcode(customerZipCode) && validatePhone(customerPhone)
+      validateCity(customerCityChoiceValue) && validateCountry(customerCountry) && validateZipcode(customerZipCode) && validatePhone(customerPhone)
     ) {
       try {
         // Create Statement object
@@ -402,6 +402,32 @@ public class AddCustomerController implements Initializable {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning Dialog");
       alert.setContentText("Address is empty");
+      alert.showAndWait();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /* -------------------------------------------------------------- */
+  public boolean validateCity(String city) {
+    if (city.isEmpty()) {
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Warning Dialog");
+      alert.setContentText("Please enter a city");
+      alert.showAndWait();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /* -------------------------------------------------------------- */
+  public boolean validateCountry(String country) {
+    if (country.isEmpty()) {
+      Alert alert = new Alert(Alert.AlertType.WARNING);
+      alert.setTitle("Warning Dialog");
+      alert.setContentText("Please enter a country");
       alert.showAndWait();
       return false;
     } else {

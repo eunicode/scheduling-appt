@@ -16,6 +16,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javax.xml.validation.ValidatorHandler;
+
 //import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -106,23 +109,42 @@ public class ModifyCustomerController implements Initializable {
 
   @FXML
   void saveModifiedCustomerHandler(ActionEvent event)
-    throws IOException, SQLException {
+    throws IOException, SQLException {  
     int customerId = selectedCustomer.getCustomerID();
-    int customerCountryId = 0;
-    int customerCity = 0;
-    int addressId = 0;
+    // Initialize variables (will overwritten later)
+    int customerCountryId = 1;
+    int customerCity = 1;
+    int addressId = 1;
 
-    try {
-      // String customerCityChoice = modifyCustomerCityText
+    // String customerCityChoice = modifyCustomerCityText
       //   .getSelectionModel()
       //   .getSelectedItem();
-      String customerName = modifyCustomerText.getText();
-      String customerAddress = modifyCustomerAddressText.getText();
-      String customerCityChoice = modifyCustomerCityText.getText();
-      String customerCountry = modifyCustomerCountryText.getText();
-      String customerZipCode = modifyCustomerZipCodeText.getText();
-      String customerPhone = modifyCustomPhoneText.getText();
+    // Get modified user input
+    String customerName = modifyCustomerText.getText();
+    String customerAddress = modifyCustomerAddressText.getText();
+    String customerCityChoice = modifyCustomerCityText.getText();
+    String customerCountry = modifyCustomerCountryText.getText();
+    String customerZipCode = modifyCustomerZipCodeText.getText();
+    String customerPhone = modifyCustomPhoneText.getText();
 
+    // Validate modified user input
+    AddCustomerController validate = new AddCustomerController();
+
+    if (!validate.validateCustomerName(customerName)) {
+      return;
+    } else if (!validate.validateAddress(customerAddress)) {
+      return;
+    } else if (!validate.validateCity(customerCityChoice)) {
+      return;
+    } else if (!validate.validateCountry(customerCountry)) {
+      return;
+    } else if (!validate.validateZipcode(customerZipCode)) {
+      return;
+    } else if (!validate.validatePhone(customerPhone)) {
+      return;
+    }
+
+    try {
       Customer customer = new Customer(
         customerId,
         customerName,
