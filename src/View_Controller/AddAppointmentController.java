@@ -122,7 +122,8 @@ public class AddAppointmentController implements Initializable {
   Appointment selectedCustomer;
   Appointment selectedAppointment;
 
-  public static int customerId;
+  private static int customerId;
+  // public static int customerId;
   public static int userId;
 
   private ObservableList<String> nameData = FXCollections.observableArrayList();
@@ -263,14 +264,15 @@ public class AddAppointmentController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
-  public void setSelectedCustomerId(int customerIdValue) {
-    customerId = customerIdValue;
-  }
+  // public void setSelectedCustomerId(int customerIdValue) {
+  //   customerId = customerIdValue;
+  // }
 
   /* -------------------------------------------------------------- */
-  public void setSelectedUserId(String selectedUserName) {
+  public void setSelectedUserId(String selectedUserName) { // Called in login screen
     try {
       Connection conn = DBConnection.getConnection();
+
       PreparedStatement getUserId = conn.prepareStatement(
         "SELECT userId FROM user WHERE userName = '" + selectedUserName + "'"
       );
@@ -296,6 +298,8 @@ public class AddAppointmentController implements Initializable {
     //   customerId = addAppointmentCustomerIDColumn.getCellData(0);
     // }
 
+    customerId = addAppointmentNameCombo.getSelectionModel().getSelectedIndex() + 1;
+
     String title = addAppointmentTitleText.getText();
     String description = addAppointmentDescriptionText.getText();
     // String description = addAppointmentDescriptionText
@@ -314,7 +318,12 @@ public class AddAppointmentController implements Initializable {
     // String url = addAppointmentURLText.getText();
 
     LocalDate appointmentDate = addAppointmentDatePicker.getValue();
-    String startTime = addAppointmentStartTimeComboBox.getValue();
+    
+    // String startTime = addAppointmentStartTimeComboBox.getValue();
+    String startTime = addAppointmentStartTimeComboBox
+      .getSelectionModel()
+      .getSelectedItem();
+
     String endTime = addAppointmentEndTimeComboBox
       .getSelectionModel()
       .getSelectedItem();

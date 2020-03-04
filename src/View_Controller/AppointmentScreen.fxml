@@ -33,7 +33,7 @@
       <Button fx:id="backButton" layoutX="741.0" layoutY="498.0" mnemonicParsing="false" onAction="#backHandler" prefHeight="27.0" prefWidth="124.0" text="Back" />
       <!-- <Button fx:id="appointmentTableAddButton" layoutX="421.0" layoutY="404.0" mnemonicParsing="false" onAction="#appointmentTableAddHandler" text="Add Appointment" /> -->
       <Button fx:id="appointmentTableAddButton" layoutX="60.0" layoutY="498.0" mnemonicParsing="false" onAction="#appointmentTableAddHandler" text="Add appointment" />
-      <Button fx:id="modifyAppointmentButton" layoutX="413.0" layoutY="498.0" mnemonicParsing="false" onAction="#modifyAppointmentHandler" prefHeight="27.0" prefWidth="134.0" text="Edit appointment" />
-      <Button fx:id="deleteAppointmentButton" layoutX="570.0" layoutY="498.0" mnemonicParsing="false" onAction="#deleteAppointmentHandler" prefHeight="27.0" prefWidth="151.0" text="Delete appointment" />
+      <Button fx:id="modifyAppointmentButton" layoutX="201.0" layoutY="498.0" mnemonicParsing="false" onAction="#modifyAppointmentHandler" prefHeight="27.0" prefWidth="134.0" text="Edit appointment" />
+      <Button fx:id="deleteAppointmentButton" layoutX="349.0" layoutY="498.0" mnemonicParsing="false" onAction="#deleteAppointmentHandler" prefHeight="27.0" prefWidth="151.0" text="Delete appointment" />
    </children>
 </AnchorPane>

@@ -38,8 +38,8 @@ public class MainScreenController implements Initializable {
   @FXML
   private Button appointmentTableButton;
 
-  @FXML
-  private Button exitButton;
+  // @FXML
+  // private Button exitButton;
 
   @FXML
   private Button logoutButton;
@@ -151,10 +151,10 @@ public class MainScreenController implements Initializable {
     stage.show();
   }
 
-  @FXML
-  private void exitHandler(ActionEvent event) {
-    System.exit(0);
-  }
+  // @FXML
+  // private void exitHandler(ActionEvent event) {
+  //   System.exit(0);
+  // }
 
   @FXML
   private void logoutHandler(ActionEvent event) throws IOException {
