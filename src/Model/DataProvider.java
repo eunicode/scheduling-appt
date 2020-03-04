@@ -382,67 +382,26 @@ public class DataProvider {
   }
 
   /* -------------------------------------------------------------- */
-  public static void setMonthlyView(String monthForReference) {
-    try {
-      ArrayList<Integer> selectedAppointmentsByMonth = new ArrayList<>();
-
-      Statement statement = DBConnection.getConnection().createStatement();
-      ResultSet monthlyAppointments = statement.executeQuery(
-        "SELECT appointmentId FROM appointment WHERE monthname(start) = '" +
-        monthForReference +
-        "'"
-      );
-
-      while (monthlyAppointments.next()) {
-        selectedAppointmentsByMonth.add(monthlyAppointments.getInt(1));
-      }
-
-      for (int appointmentId : selectedAppointmentsByMonth) {
-        ResultSet selectAppointment = statement.executeQuery(
-          "SELECT customer.customerName, customer.customerId, contact, title, type, location, description, start, end FROM appointment JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId =" +
-          appointmentId
-        );
-        selectAppointment.next();
-        Appointment appointment = new Appointment();
-
-        String customerName = selectAppointment.getString(1);
-        int customerId = selectAppointment.getInt(2);
-        String contact = selectAppointment.getString(3);
-        String title = selectAppointment.getString(4);
-        String type = selectAppointment.getString(5);
-        String location = selectAppointment.getString(6);
-        String description = selectAppointment.getString(7);
-        String start = selectAppointment.getString(8);
-        String end = selectAppointment.getString(9);
-
-        appointment.setCustomerName(customerName);
-        appointment.setContact(contact);
-        appointment.setTitle(title);
-        appointment.setType(type);
-        appointment.setLocation(location);
-        appointment.setDescription(description);
-        appointment.setStart(start);
-        appointment.setEnd(end);
-        appointmentsByMonth.add(appointment);
-      }
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
-    }
-  }
-
-  /* -------------------------------------------------------------- */
-  public static void setWeeklyView(int weekForReference) {
+  public static void setWeeklyView() {
+    // weekForReference
     try {
       ArrayList<Integer> selectedAppointmentsByWeek = new ArrayList<>();
 
       Statement statement = DBConnection.getConnection().createStatement();
 
+      String query = 
+      "SELECT appointmentId, date_format(start, '%Y-%m-%d') " +
+      "FROM appointment " +
+      "WHERE (year(start) = YEAR(curdate()) AND weekofyear(start) = weekofyear(date_add(curdate(),interval 7 day))) " +
+      "OR (start = curdate())";
+
       ResultSet weeklyAppointments = statement.executeQuery(
-        "SELECT appointmentId from appointment where year(start) = YEAR(date_add(curdate(), interval " +
-        weekForReference +
-        " WEEK)) and weekofyear(start) = weekofyear(date_add(curdate(),interval " +
-        weekForReference +
-        " WEEK));"
+        query
+        // "SELECT appointmentId FROM appointment WHERE year(start) = year(date_add(curdate(), interval " +
+        // weekForReference +
+        // " WEEK)) AND weekofyear(start) = weekofyear(date_add(curdate(),interval " +
+        // weekForReference +
+        // " WEEK));"
       );
 
       while (weeklyAppointments.next()) {
@@ -454,6 +413,7 @@ public class DataProvider {
           "SELECT customer.customerName, customer.customerId, contact, title, type, location, description, start, end FROM appointment JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId =" +
           appointmentId
         );
+
         selectAppointment.next();
 
         Appointment appointment = new Appointment();
@@ -482,6 +442,68 @@ public class DataProvider {
       System.out.println("Error " + ex.getMessage());
     }
   }
+
+  /* -------------------------------------------------------------- */
+  public static void setMonthlyView() {
+  // public static void setMonthlyView(String monthForReference) {
+    ArrayList<Integer> selectedAppointmentsByMonth = new ArrayList<>();
+
+    try {
+      Statement statement = DBConnection.getConnection().createStatement();
+
+      String query = 
+      "SELECT appointmentId " +
+      "FROM appointment " +
+      "WHERE start >= NOW() AND start < NOW() + INTERVAL 30 DAY " +
+      "ORDER BY start ASC";
+
+      ResultSet monthlyAppointments = statement.executeQuery(
+        query
+        // "SELECT appointmentId FROM appointment WHERE monthname(start) = '" +
+        // monthForReference +
+        // "'"
+      );
+
+      while (monthlyAppointments.next()) {
+        selectedAppointmentsByMonth.add(monthlyAppointments.getInt(1));
+      }
+
+      for (int appointmentId : selectedAppointmentsByMonth) {
+        ResultSet selectAppointment = statement.executeQuery(
+          "SELECT customer.customerName, customer.customerId, contact, title, type, location, description, start, end FROM appointment JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId =" +
+          appointmentId
+        );
+
+        selectAppointment.next();
+        Appointment appointment = new Appointment();
+
+        String customerName = selectAppointment.getString(1);
+        int customerId = selectAppointment.getInt(2);
+        String contact = selectAppointment.getString(3);
+        String title = selectAppointment.getString(4);
+        String type = selectAppointment.getString(5);
+        String location = selectAppointment.getString(6);
+        String description = selectAppointment.getString(7);
+        String start = selectAppointment.getString(8);
+        String end = selectAppointment.getString(9);
+
+        appointment.setCustomerName(customerName);
+        appointment.setContact(contact);
+        appointment.setTitle(title);
+        appointment.setType(type);
+        appointment.setLocation(location);
+        appointment.setDescription(description);
+        appointment.setStart(start);
+        appointment.setEnd(end);
+
+        appointmentsByMonth.add(appointment);
+      }
+    } catch (SQLException ex) {
+      System.out.println("Error " + ex.getMessage());
+    }
+  }
+
+  
   /* -------------------------------------------------------------- */
 
 }
@@ -489,6 +511,18 @@ public class DataProvider {
                           	MY NOTES
 ================================================================= */
 /*
+MySQL Select Date Equal to Today
+https://stackoverflow.com/questions/12677707/mysql-select-date-equal-to-today
+
+mysql select dates in 30-day range
+https://stackoverflow.com/questions/12098899/mysql-select-dates-in-30-day-range
+
+MySQL DATE_ADD() Function
+https://www.w3schools.com/sql/func_mysql_date_add.asp
+
+MySQL DATE_FORMAT() Function
+https://www.w3schools.com/sql/func_mysql_date_format.asp
+
 --------------------------------------------------------------------
 */
 /* -------------------------------------------------------------- */

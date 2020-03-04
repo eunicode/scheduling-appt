@@ -196,10 +196,49 @@ public class AppointmentScreenController implements Initializable {
     DataProvider.getAppointmentsByWeek().clear();
 
     if (viewByWeekRadioButton.isSelected()) {
-      DataProvider.setWeeklyView(0);
+      DataProvider.setWeeklyView();
     }
 
-    sortAppointment();
+    // Lambda expressions to populate appointment table
+    // Pros:
+    customerNameColumn.setCellValueFactory(
+      new PropertyValueFactory<>("customerName")
+    );
+    customerContactColumn.setCellValueFactory(
+      appointment ->
+        new SimpleStringProperty(appointment.getValue().getContact())
+    );
+    appointmentTitleColumn.setCellValueFactory(
+      appointment -> new SimpleStringProperty(appointment.getValue().getTitle())
+    );
+    appointmentLocationColumn.setCellValueFactory(
+      appointment ->
+        new SimpleStringProperty(appointment.getValue().getLocation())
+    );
+    appointmentDescriptionColumn.setCellValueFactory(
+      appointment ->
+        new SimpleStringProperty(appointment.getValue().getDescription())
+    );
+    appointmentStartColumn.setCellValueFactory(
+      appointment -> new SimpleStringProperty(appointment.getValue().getStart())
+    );
+    appointmentEndColumn.setCellValueFactory(
+      appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
+    );
+
+    if (viewByMonthRadioButton.isSelected()) {
+          appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
+    } else {
+          appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
+    }
+
+    // try {
+    //   Statement statement = DBConnection.getConnection().createStatement();
+
+    // } catch {
+
+    // }
+    // sortAppointment();
     // viewByComboBox.setItems(viewByWeek);
   }
 
@@ -210,13 +249,47 @@ public class AppointmentScreenController implements Initializable {
     DataProvider.getAppointmentsByWeek().clear();
 
     if (viewByMonthRadioButton.isSelected()) {
-      Calendar cal = Calendar.getInstance();
-      String month = new SimpleDateFormat("MMMM").format(cal.getTime());
+      DataProvider.setMonthlyView();
+      // Calendar cal = Calendar.getInstance();
+      // String month = new SimpleDateFormat("MMMM").format(cal.getTime());
 
-      DataProvider.setMonthlyView(month);
+      // DataProvider.setMonthlyView(month);
     }
 
-    sortAppointment();
+      // Lambda expressions to populate appointment table
+    // Pros:
+    customerNameColumn.setCellValueFactory(
+      new PropertyValueFactory<>("customerName")
+    );
+    customerContactColumn.setCellValueFactory(
+      appointment ->
+        new SimpleStringProperty(appointment.getValue().getContact())
+    );
+    appointmentTitleColumn.setCellValueFactory(
+      appointment -> new SimpleStringProperty(appointment.getValue().getTitle())
+    );
+    appointmentLocationColumn.setCellValueFactory(
+      appointment ->
+        new SimpleStringProperty(appointment.getValue().getLocation())
+    );
+    appointmentDescriptionColumn.setCellValueFactory(
+      appointment ->
+        new SimpleStringProperty(appointment.getValue().getDescription())
+    );
+    appointmentStartColumn.setCellValueFactory(
+      appointment -> new SimpleStringProperty(appointment.getValue().getStart())
+    );
+    appointmentEndColumn.setCellValueFactory(
+      appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
+    );
+
+    if (viewByMonthRadioButton.isSelected()) {
+          appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
+    } else {
+          appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
+    }
+
+    // sortAppointment();
     // viewByComboBox.setItems(viewByMonth);
   }
 
@@ -414,59 +487,59 @@ public class AppointmentScreenController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
-  public void sortAppointment() {
-    try {
-      Statement statement = DBConnection.getConnection().createStatement();
+  // public void sortAppointment() {
+  //   try {
+  //     Statement statement = DBConnection.getConnection().createStatement();
 
-      String getCustomerName =
-        "SELECT customer.customerName FROM appointment JOIN customer ON customer.customerId = appointment.customerId " +
-        "GROUP BY appointment.contact, MONTH(start), start";
+  //     String getCustomerName =
+  //       "SELECT customer.customerName FROM appointment JOIN customer ON customer.customerId = appointment.customerId " +
+  //       "GROUP BY appointment.contact, MONTH(start), start";
 
-      ResultSet customerNameResults = statement.executeQuery(getCustomerName);
+  //     ResultSet customerNameResults = statement.executeQuery(getCustomerName);
 
-      while (customerNameResults.next()) {
-        String customerName = customerNameResults.toString();
-        customerNameColumn.setCellValueFactory(
-          new PropertyValueFactory<>(customerName)
-        );
-      }
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
-    }
+  //     while (customerNameResults.next()) {
+  //       String customerName = customerNameResults.toString();
+  //       customerNameColumn.setCellValueFactory(
+  //         new PropertyValueFactory<>(customerName)
+  //       );
+  //     }
+  //   } catch (SQLException ex) {
+  //     System.out.println("Error " + ex.getMessage());
+  //   }
 
-    //Lambda expressions to populate appointment table
-    // Pros:
-    customerNameColumn.setCellValueFactory(
-      new PropertyValueFactory<>("customerName")
-    );
-    customerContactColumn.setCellValueFactory(
-      appointment ->
-        new SimpleStringProperty(appointment.getValue().getContact())
-    );
-    appointmentTitleColumn.setCellValueFactory(
-      appointment -> new SimpleStringProperty(appointment.getValue().getTitle())
-    );
-    appointmentLocationColumn.setCellValueFactory(
-      appointment ->
-        new SimpleStringProperty(appointment.getValue().getLocation())
-    );
-    appointmentDescriptionColumn.setCellValueFactory(
-      appointment ->
-        new SimpleStringProperty(appointment.getValue().getDescription())
-    );
-    appointmentStartColumn.setCellValueFactory(
-      appointment -> new SimpleStringProperty(appointment.getValue().getStart())
-    );
-    appointmentEndColumn.setCellValueFactory(
-      appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
-    );
+  //   //Lambda expressions to populate appointment table
+  //   // Pros:
+  //   customerNameColumn.setCellValueFactory(
+  //     new PropertyValueFactory<>("customerName")
+  //   );
+  //   customerContactColumn.setCellValueFactory(
+  //     appointment ->
+  //       new SimpleStringProperty(appointment.getValue().getContact())
+  //   );
+  //   appointmentTitleColumn.setCellValueFactory(
+  //     appointment -> new SimpleStringProperty(appointment.getValue().getTitle())
+  //   );
+  //   appointmentLocationColumn.setCellValueFactory(
+  //     appointment ->
+  //       new SimpleStringProperty(appointment.getValue().getLocation())
+  //   );
+  //   appointmentDescriptionColumn.setCellValueFactory(
+  //     appointment ->
+  //       new SimpleStringProperty(appointment.getValue().getDescription())
+  //   );
+  //   appointmentStartColumn.setCellValueFactory(
+  //     appointment -> new SimpleStringProperty(appointment.getValue().getStart())
+  //   );
+  //   appointmentEndColumn.setCellValueFactory(
+  //     appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
+  //   );
 
-    if (viewByMonthRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
-    } else {
-      appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
-    }
-  }
+  //   if (viewByMonthRadioButton.isSelected()) {
+  //     appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
+  //   } else {
+  //     appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
+  //   }
+  // }
 
   /* -------------------------------------------------------------- */
   @FXML
