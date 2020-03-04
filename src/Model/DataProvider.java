@@ -389,11 +389,11 @@ public class DataProvider {
 
       Statement statement = DBConnection.getConnection().createStatement();
 
-      String query = 
-      "SELECT appointmentId " +
-      "FROM appointment " +
-      "WHERE YEARWEEK(start, 1) = YEARWEEK(CURDATE(), 1) " +
-      "ORDER BY start ASC";
+      String query =
+        "SELECT appointmentId " +
+        "FROM appointment " +
+        "WHERE YEARWEEK(start, 1) = YEARWEEK(CURDATE(), 1) " +
+        "ORDER BY start ASC";
 
       ResultSet weeklyAppointments = statement.executeQuery(
         query
@@ -445,18 +445,18 @@ public class DataProvider {
 
   /* -------------------------------------------------------------- */
   public static void setMonthlyView() {
-  // public static void setMonthlyView(String monthForReference) {
+    // public static void setMonthlyView(String monthForReference) {
     ArrayList<Integer> selectedAppointmentsByMonth = new ArrayList<>();
 
     try {
       Statement statement = DBConnection.getConnection().createStatement();
 
-      String query = 
-      "SELECT appointmentId " +
-      "FROM appointment " +
-      "WHERE start >= LAST_DAY(CURRENT_DATE) + INTERVAL 1 DAY - INTERVAL 1 MONTH " +
-      "AND start < LAST_DAY(CURRENT_DATE) + INTERVAL 1 DAY " +
-      "ORDER BY start ASC";
+      String query =
+        "SELECT appointmentId " +
+        "FROM appointment " +
+        "WHERE start >= LAST_DAY(CURRENT_DATE) + INTERVAL 1 DAY - INTERVAL 1 MONTH " +
+        "AND start < LAST_DAY(CURRENT_DATE) + INTERVAL 1 DAY " +
+        "ORDER BY start ASC";
 
       ResultSet monthlyAppointments = statement.executeQuery(
         query
@@ -503,8 +503,6 @@ public class DataProvider {
       System.out.println("Error " + ex.getMessage());
     }
   }
-
-  
   /* -------------------------------------------------------------- */
 
 }

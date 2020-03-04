@@ -62,6 +62,7 @@ public class AddCustomerController implements Initializable {
 
   @FXML
   private TextField addCustomerCityComboBox;
+
   // private java.awt.TextField addCustomerCityComboBox;
 
   // private ComboBox<String> addCustomerCityComboBox;
@@ -143,9 +144,13 @@ public class AddCustomerController implements Initializable {
     // customerID = ++customerID;
     String customerName = addCustomerText.getText();
     // String customerAddress = addCustomerAddressText.getText();
-    String customerAddress = mySQLEscapeSingleQuote(addCustomerAddressText.getText());
+    String customerAddress = mySQLEscapeSingleQuote(
+      addCustomerAddressText.getText()
+    );
     // String customerAddressEscaped = mySQLEscapeSingleQuote(customerAddress);
-    String customerCityChoiceValue = mySQLEscapeSingleQuote(addCustomerCityComboBox.getText());
+    String customerCityChoiceValue = mySQLEscapeSingleQuote(
+      addCustomerCityComboBox.getText()
+    );
     // String customerCityChoiceValue = addCustomerCityComboBox.getText();
     // String customerCityChoiceValue = customerCityChoice;
     String customerCountry = addCustomerCountryText.getText();
@@ -397,9 +402,7 @@ public class AddCustomerController implements Initializable {
     if (phone.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning Dialog");
-      alert.setContentText(
-        "Phone number is either empty or invalid"
-      );
+      alert.setContentText("Phone number is either empty or invalid");
       alert.showAndWait();
       return false;
     } else {

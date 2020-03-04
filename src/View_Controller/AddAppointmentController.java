@@ -61,7 +61,7 @@ import javafx.util.Callback;
  */
 
 public class AddAppointmentController implements Initializable {
-  @FXML 
+  @FXML
   private ComboBox<String> addAppointmentNameCombo;
 
   @FXML
@@ -72,6 +72,7 @@ public class AddAppointmentController implements Initializable {
 
   @FXML
   private ComboBox<String> addAppointmentTypeText;
+
   // private TextField addAppointmentTypeText;
 
   @FXML
@@ -136,7 +137,7 @@ public class AddAppointmentController implements Initializable {
     "Presentation",
     "Scrum"
   );
-  
+
   ObservableList<String> appointmentTime = FXCollections.observableArrayList(
     "09:00:00",
     "10:00:00",
@@ -148,6 +149,7 @@ public class AddAppointmentController implements Initializable {
     "16:00:00",
     "17:00:00"
   );
+
   // ObservableList<String> appointmentTime = FXCollections.observableArrayList(
   //   "09:",
   //   "10:",
@@ -177,19 +179,25 @@ public class AddAppointmentController implements Initializable {
   // );
 
   // Factory to create Cell of DatePicker
-  private Callback<DatePicker, DateCell> disableWeekend() { 
-    final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) -> new DateCell() { 
+  private Callback<DatePicker, DateCell> disableWeekend() {
+    final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) ->
+      new DateCell() {
+
         @Override
         public void updateItem(LocalDate item, boolean empty) {
           LocalDate today = LocalDate.now();
-            super.updateItem(item, empty); 
+          super.updateItem(item, empty);
 
-            // Disable weekends
-            if (item.getDayOfWeek() == DayOfWeek.SATURDAY || item.getDayOfWeek() == DayOfWeek.SUNDAY || item.compareTo(today) < 0) {
-                setDisable(true);
-            }
+          // Disable weekends
+          if (
+            item.getDayOfWeek() == DayOfWeek.SATURDAY ||
+            item.getDayOfWeek() == DayOfWeek.SUNDAY ||
+            item.compareTo(today) < 0
+          ) {
+            setDisable(true);
+          }
         }
-    };
+      };
     return dayCellFactory;
   }
 
@@ -227,20 +235,21 @@ public class AddAppointmentController implements Initializable {
     // Set options for Customer
     try {
       Statement statement = DBConnection.getConnection().createStatement();
-      
+
       ResultSet nameListRS = statement.executeQuery(
         "SELECT customerName FROM customer"
       );
 
-      while(nameListRS.next()) {
+      while (nameListRS.next()) {
         nameData.add(nameListRS.getString("customerName"));
       }
-
-    } catch(Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
-      System.out.println("Error building customer name list for appointment dropdown.");
+      System.out.println(
+        "Error building customer name list for appointment dropdown."
+      );
     }
-    
+
     // Set options for customer
     addAppointmentNameCombo.setItems(nameData);
     // Set options for type
@@ -250,7 +259,7 @@ public class AddAppointmentController implements Initializable {
     addAppointmentEndTimeComboBox.setItems(appointmentTime);
     // addAppointmentDescriptionText.setItems(appointmentDescription);
     // addAppointmentLocationText.setItems(appointmentLocation);
-    
+
     // Disable selection of weekends and past days
     // addAppointmentDatePicker.setDayCellFactory(picker -> new DateCell() {
     //   @Override
@@ -264,11 +273,10 @@ public class AddAppointmentController implements Initializable {
     // DatePicker - Set default day to today
     addAppointmentDatePicker.setValue(LocalDate.now());
     // Disable selecting weekends, past dates
-    Callback<DatePicker, DateCell> dayCellFactory  = this.disableWeekend();
+    Callback<DatePicker, DateCell> dayCellFactory = this.disableWeekend();
     addAppointmentDatePicker.setDayCellFactory(dayCellFactory);
     // Disable text field editing
     addAppointmentDatePicker.getEditor().setDisable(true);
-
   }
 
   /* -------------------------------------------------------------- */
@@ -306,7 +314,8 @@ public class AddAppointmentController implements Initializable {
     //   customerId = addAppointmentCustomerIDColumn.getCellData(0);
     // }
 
-    customerId = addAppointmentNameCombo.getSelectionModel().getSelectedIndex() + 1;
+    customerId =
+      addAppointmentNameCombo.getSelectionModel().getSelectedIndex() + 1;
 
     String title = addAppointmentTitleText.getText();
     String description = addAppointmentDescriptionText.getText();
@@ -326,7 +335,7 @@ public class AddAppointmentController implements Initializable {
     // String url = addAppointmentURLText.getText();
 
     LocalDate appointmentDate = addAppointmentDatePicker.getValue();
-    
+
     // String startTime = addAppointmentStartTimeComboBox.getValue();
     String startTime = addAppointmentStartTimeComboBox
       .getSelectionModel()

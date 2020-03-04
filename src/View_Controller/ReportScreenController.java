@@ -78,7 +78,7 @@ public class ReportScreenController implements Initializable {
   @FXML
   // private TableView<Customer> reportAdditionalTable;
   private TableView reportAdditionalTable;
-  
+
   @FXML
   private TableColumn<?, ?> nameAddCol;
 
@@ -88,6 +88,7 @@ public class ReportScreenController implements Initializable {
   private ObservableList<ObservableList> apptData;
   private ObservableList<Appointment> consultantData;
   private ObservableList<ObservableList> additionalData;
+
   // private
 
   /* -------------------------------------------------------------- */
@@ -148,7 +149,7 @@ public class ReportScreenController implements Initializable {
       while (apptTypeRS.next()) {
         // Iterate row
         ObservableList<String> row = FXCollections.observableArrayList();
-        
+
         for (int i = 1; i <= apptTypeRS.getMetaData().getColumnCount(); i++) {
           // Iterate column
           row.add(apptTypeRS.getString(i));
@@ -173,21 +174,10 @@ public class ReportScreenController implements Initializable {
     DataProvider populateAppointments = new DataProvider();
     populateAppointments.populateAppointmentTable();
 
-    consultantCol.setCellValueFactory(
-      new PropertyValueFactory<>("userId")
-    );
-    customerCol.setCellValueFactory(
-      new PropertyValueFactory<>("customerName")
-    );
-    startCol.setCellValueFactory(
-      new PropertyValueFactory<>("start")
-    );
-    endCol.setCellValueFactory(
-      new PropertyValueFactory<>("end")
-    );
-
-    
-
+    consultantCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+    customerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+    startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+    endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
     // try {
     //   DataProvider populateAppointments = new DataProvider();
     //   populateAppointments.populateAppointmentTable();
@@ -203,11 +193,11 @@ public class ReportScreenController implements Initializable {
 
     try {
       String additionalQuery =
-      "SELECT customerName AS 'Customer Name' " +
-      "FROM customer " +
-      "WHERE customerId NOT IN ( " +
-      "SELECT customerId " +
-      "FROM appointment)";
+        "SELECT customerName AS 'Customer Name' " +
+        "FROM customer " +
+        "WHERE customerId NOT IN ( " +
+        "SELECT customerId " +
+        "FROM appointment)";
 
       Statement statement = DBConnection.getConnection().createStatement();
 
@@ -323,7 +313,6 @@ https://stackoverflow.com/questions/38049734/java-setcellvaluefactory-lambda-vs-
       "UNION ALL SELECT count(*) FROM appointment WHERE date_format(start, '%m') = '12' AND type = 'Scrum' ";
 */
 /* -------------------------------------------------------------- */
-
 /* public void buildConsultantData() {
   consultantData = FXCollections.observableArrayList();
 

@@ -121,19 +121,25 @@ public class ModifyAppointmentController implements Initializable {
 
   /* -------------------------------------------------------------- */
   // Factory to create Cell of DatePicker
-  private Callback<DatePicker, DateCell> disableWeekend() { 
-    final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) -> new DateCell() { 
+  private Callback<DatePicker, DateCell> disableWeekend() {
+    final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) ->
+      new DateCell() {
+
         @Override
         public void updateItem(LocalDate item, boolean empty) {
           LocalDate today = LocalDate.now();
-            super.updateItem(item, empty); 
+          super.updateItem(item, empty);
 
-            // Disable weekends
-            if (item.getDayOfWeek() == DayOfWeek.SATURDAY || item.getDayOfWeek() == DayOfWeek.SUNDAY || item.compareTo(today) < 0) {
-                setDisable(true);
-            }
+          // Disable weekends
+          if (
+            item.getDayOfWeek() == DayOfWeek.SATURDAY ||
+            item.getDayOfWeek() == DayOfWeek.SUNDAY ||
+            item.compareTo(today) < 0
+          ) {
+            setDisable(true);
+          }
         }
-    };
+      };
     return dayCellFactory;
   }
 
@@ -150,11 +156,10 @@ public class ModifyAppointmentController implements Initializable {
     //   modifyLocationComboBox.setItems(appointmentLocation);
 
     // Disable selecting weekends, past dates
-    Callback<DatePicker, DateCell> dayCellFactory  = this.disableWeekend();
+    Callback<DatePicker, DateCell> dayCellFactory = this.disableWeekend();
     modifyDate.setDayCellFactory(dayCellFactory);
     // Disable text field editing
     modifyDate.getEditor().setDisable(true);
-
   }
 
   /* -------------------------------------------------------------- */
