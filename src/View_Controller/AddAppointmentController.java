@@ -118,6 +118,7 @@ public class AddAppointmentController implements Initializable {
     // Lambda: A lambda is used so we can use a callback without an anonymous inner class.
     final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) ->
       new DateCell() {
+
         @Override
         public void updateItem(LocalDate item, boolean empty) {
           LocalDate today = LocalDate.now();
@@ -146,15 +147,21 @@ public class AddAppointmentController implements Initializable {
   public void initialize(final URL url, final ResourceBundle rb) {
     // Set options for Customer
     try {
-      final Statement statement = DBConnection.getConnection().createStatement();
+      final Statement statement = DBConnection
+        .getConnection()
+        .createStatement();
 
-      final ResultSet nameListRS = statement.executeQuery("SELECT customerName FROM customer");
+      final ResultSet nameListRS = statement.executeQuery(
+        "SELECT customerName FROM customer"
+      );
 
       while (nameListRS.next()) {
         nameData.add(nameListRS.getString("customerName"));
       }
     } catch (final SQLException e) {
-      System.out.println("Error building customer name list for appointment dropdown.");
+      System.out.println(
+        "Error building customer name list for appointment dropdown."
+      );
     }
 
     // Set options for customer
@@ -176,14 +183,14 @@ public class AddAppointmentController implements Initializable {
 
   /* -------------------------------------------------------------- */
   // Called in login screen
-  public void setSelectedUserId(final String selectedUserName) { 
+  public void setSelectedUserId(final String selectedUserName) {
     try {
       final Connection conn = DBConnection.getConnection();
-      
-      String query = "SELECT userId FROM user WHERE userName = '" + selectedUserName + "'";
 
-      final PreparedStatement getUserId = conn
-          .prepareStatement(query);
+      String query =
+        "SELECT userId FROM user WHERE userName = '" + selectedUserName + "'";
+
+      final PreparedStatement getUserId = conn.prepareStatement(query);
 
       final ResultSet resultSetStatement = getUserId.executeQuery();
 
@@ -198,7 +205,10 @@ public class AddAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   private boolean validateName(final int id) {
     if (id == 0) {
-      final Alert alert = new Alert(Alert.AlertType.ERROR, "Customer is unselected");
+      final Alert alert = new Alert(
+        Alert.AlertType.ERROR,
+        "Customer is unselected"
+      );
       alert.showAndWait();
       return false;
     } else {
@@ -209,7 +219,10 @@ public class AddAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   private boolean validateType(final String type) {
     if (type == null) {
-      final Alert alert = new Alert(Alert.AlertType.ERROR, "Type is unselected");
+      final Alert alert = new Alert(
+        Alert.AlertType.ERROR,
+        "Type is unselected"
+      );
       alert.showAndWait();
       return false;
     } else {
@@ -220,7 +233,10 @@ public class AddAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   private boolean validateStartAndEnd(final String start, final String end) {
     if (start == null || end == null) {
-      final Alert alert = new Alert(Alert.AlertType.ERROR, "Start and/or end time is unselected");
+      final Alert alert = new Alert(
+        Alert.AlertType.ERROR,
+        "Start and/or end time is unselected"
+      );
       alert.showAndWait();
       return false;
     } else {
@@ -229,22 +245,39 @@ public class AddAppointmentController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
-  public static boolean validateAppointmentStart(final String appointmentStartTime, final String appointmentEndTime) {
-    final DateTimeFormatter formatMask = DateTimeFormatter.ofPattern("yyyy-M-d H:m:s");
+  public static boolean validateAppointmentStart(
+    final String appointmentStartTime,
+    final String appointmentEndTime
+  ) {
+    final DateTimeFormatter formatMask = DateTimeFormatter.ofPattern(
+      "yyyy-M-d H:m:s"
+    );
 
-    final LocalDateTime startDateTime = LocalDateTime.parse(appointmentStartTime, formatMask);
-    final LocalDateTime endDateTime = LocalDateTime.parse(appointmentEndTime, formatMask);
+    final LocalDateTime startLocalTimeF = LocalDateTime.parse(
+      appointmentStartTime,
+      formatMask
+    );
+    final LocalDateTime endLocalTimeF = LocalDateTime.parse(
+      appointmentEndTime,
+      formatMask
+    );
 
     // Alerts for invalid start and end times
-    final boolean earlyAppointment = endDateTime.isBefore(startDateTime);
-    final boolean sameAppointment = endDateTime.isEqual(startDateTime);
+    final boolean endBeforeStart = endLocalTimeF.isBefore(startLocalTimeF);
+    final boolean endSameAsStart = endLocalTimeF.isEqual(startLocalTimeF);
 
-    if (sameAppointment) {
-      final Alert alert = new Alert(Alert.AlertType.ERROR, "Cannot have same start and end times");
+    if (endSameAsStart) {
+      final Alert alert = new Alert(
+        Alert.AlertType.ERROR,
+        "Cannot have same start and end times"
+      );
       alert.showAndWait();
       return false;
-    } else if (earlyAppointment) {
-      final Alert alert = new Alert(Alert.AlertType.ERROR, "Cannot have end time before start time");
+    } else if (endBeforeStart) {
+      final Alert alert = new Alert(
+        Alert.AlertType.ERROR,
+        "Cannot have end time before start time"
+      );
       alert.showAndWait();
       return false;
     }
@@ -252,17 +285,32 @@ public class AddAppointmentController implements Initializable {
     // If start and end times are not the same or invalid, check if the interval is
     // valid
     try {
-      final Statement statement = DBConnection.getConnection().createStatement();
-      final String currentAppointments = "SELECT * FROM appointment WHERE ('" + appointmentStartTime
-          + "' BETWEEN start AND end OR '" + appointmentEndTime + "' BETWEEN start AND end OR '" + appointmentStartTime
-          + "' > start AND '" + appointmentEndTime + "' < end)";
+      final Statement statement = DBConnection
+        .getConnection()
+        .createStatement();
 
-      final ResultSet checkAppointmentTimes = statement.executeQuery(currentAppointments);
+      final String overlapQuery =
+        "SELECT * FROM appointment " +
+        "WHERE ('" +
+        appointmentStartTime +
+        "' BETWEEN start AND end " +
+        "OR '" +
+        appointmentEndTime +
+        "' BETWEEN start AND end " +
+        "OR '" +
+        appointmentStartTime +
+        "' > start AND '" +
+        appointmentEndTime +
+        "' < end)";
+
+      final ResultSet overlapRS = statement.executeQuery(overlapQuery);
 
       // If there appointments with the given times, show alert
-      if (checkAppointmentTimes.next()) {
-        final Alert alert = new Alert(Alert.AlertType.ERROR,
-            "These times are unavailable because of overlap. Choose different times.");
+      if (overlapRS.next()) {
+        final Alert alert = new Alert(
+          Alert.AlertType.ERROR,
+          "These times are unavailable because of overlap. Choose different times."
+        );
         alert.showAndWait();
         return false; // boolean function
       }
@@ -276,78 +324,136 @@ public class AddAppointmentController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void saveAppointmentHandler(final ActionEvent event)
-      throws IOException, ParseException, ClassNotFoundException, SQLException {
+  private void saveApptAddHandler(final ActionEvent event)
+    throws IOException, ParseException, ClassNotFoundException, SQLException {
     // Assign customer ID from selected drop list item.
     // Customer drop list corresponds to customer table
-    customerId = appointmentNameCombo.getSelectionModel().getSelectedIndex() + 1; // This is not reliable for getting
-                                                                                  // customerId, but it is being used to
-                                                                                  // validate that customer is selected
-    selectedCustomerName = appointmentNameCombo.getValue();
+    customerId =
+      appointmentNameCombo.getSelectionModel().getSelectedIndex() + 1; // This is not reliable for getting
+    // customerId, but it is being used to
+    // validate that customer is selected
+    selectedCustomerName = appointmentNameCombo.getValue(); // get selected name from combobox
     final String title = appointmentTitle.getText();
     final String description = appointmentDescription.getText();
     final String location = appointmentLocation.getText();
     final String assignedContact = appointmentContact.getText();
-    final String type = appointmentTypeCombo.getSelectionModel().getSelectedItem();
+    final String type = appointmentTypeCombo
+      .getSelectionModel()
+      .getSelectedItem();
     final String url = "";
     final LocalDate appointmentDate = appointmentDatePicker.getValue();
 
-    // String startTime = appointmentStartCombo.getValue();
-    final String startTime = appointmentStartCombo.getSelectionModel().getSelectedItem();
-
-    final String endTime = appointmentEndCombo.getSelectionModel().getSelectedItem();
+    // String startTime = appointmentStartCombo.getValue(); // either can be used for combobox
+    final String startTime = appointmentStartCombo
+      .getSelectionModel()
+      .getSelectedItem();
+    final String endTime = appointmentEndCombo
+      .getSelectionModel()
+      .getSelectedItem();
 
     // Validate data
-    if (!validateName(customerId) || !validateType(type) || !validateStartAndEnd(startTime, endTime)) {
+    if (
+      !validateName(customerId) ||
+      !validateType(type) ||
+      !validateStartAndEnd(startTime, endTime)
+    ) {
       return;
     }
 
-    final String selectedStartDateTime = appointmentDate + " " + startTime;
-    final String selectedEndDateTime = appointmentDate + " " + endTime;
+    final String startDateTime = appointmentDate + " " + startTime;
+    final String endDateTime = appointmentDate + " " + endTime;
 
     final ZoneId zoneIdLocal = ZoneId.of(TimeZone.getDefault().getID());
 
-    final DateTimeFormatter formatMask = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    final DateTimeFormatter formatMask = DateTimeFormatter.ofPattern(
+      "yyyy-MM-dd HH:mm:ss"
+    );
 
-    final LocalDateTime startDateTime = LocalDateTime.parse(selectedStartDateTime, formatMask);
-    final LocalDateTime endDateTime = LocalDateTime.parse(selectedEndDateTime, formatMask);
+    final LocalDateTime startLocalTimeF = LocalDateTime.parse(
+      startDateTime,
+      formatMask
+    );
+    final LocalDateTime endLocalTimeF = LocalDateTime.parse(
+      endDateTime,
+      formatMask
+    );
 
-    final ZonedDateTime zonedStartLocal = ZonedDateTime.of(startDateTime, zoneIdLocal);
-    final ZonedDateTime zonedStartUTC = zonedStartLocal.withZoneSameInstant(ZoneId.of("UTC"));
+    final ZonedDateTime zonedStartLocal = ZonedDateTime.of(
+      startLocalTimeF,
+      zoneIdLocal
+    );
+    final ZonedDateTime zonedStartUTC = zonedStartLocal.withZoneSameInstant(
+      ZoneId.of("UTC")
+    );
 
-    final ZonedDateTime zonedEndLocal = ZonedDateTime.of(endDateTime, zoneIdLocal);
-    final ZonedDateTime zonedEndUTC = zonedEndLocal.withZoneSameInstant(ZoneId.of("UTC"));
+    final ZonedDateTime zonedEndLocal = ZonedDateTime.of(
+      endLocalTimeF,
+      zoneIdLocal
+    );
+    final ZonedDateTime zonedEndUTC = zonedEndLocal.withZoneSameInstant(
+      ZoneId.of("UTC")
+    );
 
-    final int startUTCYear = zonedStartUTC.getYear();
-    final int startUTCMonth = zonedStartUTC.getMonthValue();
-    final int startUTCDay = zonedStartUTC.getDayOfMonth();
-    final int startUTCHour = zonedStartUTC.getHour();
-    final int startUTCMinute = zonedStartUTC.getMinute();
+    final int startYearUTC = zonedStartUTC.getYear();
+    final int startMonthUTC = zonedStartUTC.getMonthValue();
+    final int startDayUTC = zonedStartUTC.getDayOfMonth();
+    final int startHourUTC = zonedStartUTC.getHour();
+    final int startMinUTC = zonedStartUTC.getMinute();
 
-    final String testZonedStart = Integer.toString(startUTCYear) + "-" + Integer.toString(startUTCMonth) + "-"
-        + Integer.toString(startUTCDay) + " " + Integer.toString(startUTCHour) + ":" + Integer.toString(startUTCMinute)
-        + ":" + Integer.toString(startUTCMinute);
+    final String startDateTimeUTCString =
+      Integer.toString(startYearUTC) +
+      "-" +
+      Integer.toString(startMonthUTC) +
+      "-" +
+      Integer.toString(startDayUTC) +
+      " " +
+      Integer.toString(startHourUTC) +
+      ":" +
+      Integer.toString(startMinUTC) +
+      ":" +
+      Integer.toString(startMinUTC);
 
-    final int endUTCYear = zonedEndUTC.getYear();
-    final int endUTCMonth = zonedEndUTC.getMonthValue();
-    final int endUTCDay = zonedEndUTC.getDayOfMonth();
-    final int endUTCHour = zonedEndUTC.getHour();
-    final int endUTCMinute = zonedEndUTC.getMinute();
+    final int endYearUTC = zonedEndUTC.getYear();
+    final int endMonthUTC = zonedEndUTC.getMonthValue();
+    final int endDayUTC = zonedEndUTC.getDayOfMonth();
+    final int endHourUTC = zonedEndUTC.getHour();
+    final int endMinUTC = zonedEndUTC.getMinute();
 
-    final String testZonedEnd = Integer.toString(endUTCYear) + "-" + Integer.toString(endUTCMonth) + "-"
-        + Integer.toString(endUTCDay) + " " + Integer.toString(endUTCHour) + ":" + Integer.toString(endUTCMinute) + ":"
-        + Integer.toString(endUTCMinute);
+    final String endDateTimeUTCString =
+      Integer.toString(endYearUTC) +
+      "-" +
+      Integer.toString(endMonthUTC) +
+      "-" +
+      Integer.toString(endDayUTC) +
+      " " +
+      Integer.toString(endHourUTC) +
+      ":" +
+      Integer.toString(endMinUTC) +
+      ":" +
+      Integer.toString(endMinUTC);
 
-    final String startConstructorValue = zonedStartLocal.toString();
-    final String endConstructorValue = zonedEndLocal.toString();
+    final String zonedStartLocalString = zonedStartLocal.toString();
+    final String zonedEndLocalString = zonedEndLocal.toString();
 
     // If the times are kosher, and there is no overlap, execute SQL command
-    if (validateAppointmentStart(testZonedStart, testZonedEnd)) {
-      final Statement statement = DBConnection.getConnection().createStatement();
-      final Statement statement2 = DBConnection.getConnection().createStatement();
+    if (
+      validateAppointmentStart(startDateTimeUTCString, endDateTimeUTCString)
+    ) {
+      final Statement statement = DBConnection
+        .getConnection()
+        .createStatement();
+      final Statement statement2 = DBConnection
+        .getConnection()
+        .createStatement();
 
-      final String nameQuery = "SELECT customerId " + "FROM customer " + "WHERE customerName = " + "'"
-          + selectedCustomerName + "'";
+      // Get customer ID from customer name
+      final String nameQuery =
+        "SELECT customerId " +
+        "FROM customer " +
+        "WHERE customerName = " +
+        "'" +
+        selectedCustomerName +
+        "'";
 
       final ResultSet nameRS = statement2.executeQuery(nameQuery);
 
@@ -355,15 +461,36 @@ public class AddAppointmentController implements Initializable {
         customerId = nameRS.getInt("customerId");
       }
 
-      final String appointmentQuery = "INSERT INTO appointment(customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy)"
-          + " VALUES (" + customerId + ", " + "1" + // consultant/user
-          ", '" + title + "', '" + description + "', '" + location + "', '" + assignedContact + "', '" + type + "', '"
-          + url + "', '" + testZonedStart + "', '" + testZonedEnd + "', NOW(), " + // createDate
-          "'test'" + // createdBy
-          ", NOW(), " + // lastUpdate
-          "'test')"; // lastUpdateBy
+      final String appointmentQuery =
+        "INSERT INTO appointment(customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy)" +
+        " VALUES (" +
+        customerId +
+        ", " +
+        "1" + // consultant/user
+        ", '" +
+        title +
+        "', '" +
+        description +
+        "', '" +
+        location +
+        "', '" +
+        assignedContact +
+        "', '" +
+        type +
+        "', '" +
+        url +
+        "', '" +
+        startDateTimeUTCString +
+        "', '" +
+        endDateTimeUTCString +
+        "', NOW(), " + // createDate
+        "'test'" + // createdBy
+        ", NOW(), " + // lastUpdate
+        "'test')"; // lastUpdateBy
 
-      final int appointmentExecuteUpdate = statement.executeUpdate(appointmentQuery);
+      final int appointmentExecuteUpdate = statement.executeUpdate(
+        appointmentQuery
+      );
 
       // If one row was affected
       if (appointmentExecuteUpdate == 1) {
@@ -371,9 +498,19 @@ public class AddAppointmentController implements Initializable {
       }
 
       // Create appointment object with user input
-      final Appointment appointment = new Appointment(1, // appointmentId
-          customerId, userId, title, description, location, assignedContact, type, url, startConstructorValue,
-          endConstructorValue);
+      final Appointment appointment = new Appointment(
+        1, // appointmentId
+        customerId,
+        userId,
+        title,
+        description,
+        location,
+        assignedContact,
+        type,
+        url,
+        zonedStartLocalString,
+        zonedEndLocalString
+      );
 
       appointment.setAppointmentId(1);
       appointment.setCustomerId(customerId);
@@ -384,16 +521,19 @@ public class AddAppointmentController implements Initializable {
       appointment.setContact(assignedContact);
       appointment.setType(type);
       appointment.setUrl(url);
-      appointment.setStart(selectedStartDateTime);
-      appointment.setEnd(selectedEndDateTime);
+      appointment.setStart(startDateTime);
+      appointment.setEnd(endDateTime);
 
       // Add appointment object to appointment ObservableList
       DataProvider.addAppointment(appointment);
 
       // Return to appointment screen
-      final Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+      final Stage stage = (Stage) ((Button) event.getSource()).getScene()
+        .getWindow();
 
-      final Object scene = FXMLLoader.load(getClass().getResource("/View_Controller/AppointmentScreen.fxml"));
+      final Object scene = FXMLLoader.load(
+        getClass().getResource("/View_Controller/AppointmentScreen.fxml")
+      );
       stage.setScene(new Scene((Parent) scene));
       stage.show();
     } else {
@@ -403,14 +543,20 @@ public class AddAppointmentController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void backAppointmentHandler(final ActionEvent event) throws IOException {
-    final Alert alert = new Alert(AlertType.CONFIRMATION, "You will lose any entered data. Continue?", ButtonType.YES);
+  private void backAppointmentHandler(final ActionEvent event)
+    throws IOException {
+    final Alert alert = new Alert(
+      AlertType.CONFIRMATION,
+      "You will lose any entered data. Continue?",
+      ButtonType.YES
+    );
 
     final Optional<ButtonType> result = alert.showAndWait();
 
     // user chooses YES
     if (result.get() == ButtonType.YES) {
-      final Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+      final Stage stage = (Stage) ((Button) event.getSource()).getScene()
+        .getWindow();
       final Object scene = FXMLLoader.load(
         getClass().getResource("/View_Controller/AppointmentScreen.fxml")
       );

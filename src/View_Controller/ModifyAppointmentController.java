@@ -127,8 +127,8 @@ public class ModifyAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   /**
    * Initializes the controller class.
-     * @param url
-     * @param rb
+   * @param url
+   * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -200,16 +200,19 @@ public class ModifyAppointmentController implements Initializable {
       );
 
       // Parse string to LocalDateTime
-      LocalDateTime startDateTime = LocalDateTime.parse(
+      LocalDateTime startLocalTimeF = LocalDateTime.parse(
         selectedStartTime,
         format
       );
 
-      LocalDateTime endDateTime = LocalDateTime.parse(selectedEndTime, format);
+      LocalDateTime endLocalTimeF = LocalDateTime.parse(
+        selectedEndTime,
+        format
+      );
 
       // Get local ZonedDateTime: start
       ZonedDateTime zonedStartLocal = ZonedDateTime.of(
-        startDateTime, // LocalDateTime
+        startLocalTimeF, // LocalDateTime
         zoneIdLocal // ZoneId
       );
 
@@ -219,7 +222,10 @@ public class ModifyAppointmentController implements Initializable {
       );
 
       // Get local ZonedDateTime: end
-      ZonedDateTime zonedEndLocal = ZonedDateTime.of(endDateTime, zoneIdLocal);
+      ZonedDateTime zonedEndLocal = ZonedDateTime.of(
+        endLocalTimeF,
+        zoneIdLocal
+      );
 
       // Get UTC zoned date-time: end
       ZonedDateTime zonedEndUTC = zonedEndLocal.withZoneSameInstant(
@@ -227,56 +233,56 @@ public class ModifyAppointmentController implements Initializable {
       );
 
       // Get fields from UTC ZonedDateTime
-      int startUTCYear = zonedStartUTC.getYear();
-      int startUTCMonth = zonedStartUTC.getMonthValue();
+      int startYearUTC = zonedStartUTC.getYear();
+      int startMonthUTC = zonedStartUTC.getMonthValue();
       int startUTCDay = zonedStartUTC.getDayOfMonth();
-      int startUTCHour = zonedStartUTC.getHour();
-      int startUTCMinute = zonedStartUTC.getMinute();
+      int startHourUTC = zonedStartUTC.getHour();
+      int startMinUTC = zonedStartUTC.getMinute();
 
       // Build UTC string
-      String testZonedStart =
-        Integer.toString(startUTCYear) +
+      String startDateTimeUTCString =
+        Integer.toString(startYearUTC) +
         "-" +
-        Integer.toString(startUTCMonth) +
+        Integer.toString(startMonthUTC) +
         "-" +
         Integer.toString(startUTCDay) +
         " " +
-        Integer.toString(startUTCHour) +
+        Integer.toString(startHourUTC) +
         ":" +
-        Integer.toString(startUTCMinute) +
+        Integer.toString(startMinUTC) +
         ":" +
-        Integer.toString(startUTCMinute);
+        Integer.toString(startMinUTC);
 
       // Get fields from UTC ZonedDateTime
-      int endUTCYear = zonedEndUTC.getYear();
-      int endUTCMonth = zonedEndUTC.getMonthValue();
-      int endUTCDay = zonedEndUTC.getDayOfMonth();
-      int endUTCHour = zonedEndUTC.getHour();
-      int endUTCMinute = zonedEndUTC.getMinute();
+      int endYearUTC = zonedEndUTC.getYear();
+      int endMonthUTC = zonedEndUTC.getMonthValue();
+      int endDayUTC = zonedEndUTC.getDayOfMonth();
+      int endHourUTC = zonedEndUTC.getHour();
+      int endMinUTC = zonedEndUTC.getMinute();
 
       // Build UTC datetime string for MySQL command
-      String testZonedEnd =
-        Integer.toString(endUTCYear) +
+      String endDateTimeUTCString =
+        Integer.toString(endYearUTC) +
         "-" +
-        Integer.toString(endUTCMonth) +
+        Integer.toString(endMonthUTC) +
         "-" +
-        Integer.toString(endUTCDay) +
+        Integer.toString(endDayUTC) +
         " " +
-        Integer.toString(endUTCHour) +
+        Integer.toString(endHourUTC) +
         ":" +
-        Integer.toString(endUTCMinute) +
+        Integer.toString(endMinUTC) +
         ":" +
-        Integer.toString(endUTCMinute);
+        Integer.toString(endMinUTC);
 
       // Convert ZonedDateTime to string
-      String startConstructorValue = zonedStartLocal.toString();
-      String endConstructorValue = zonedEndLocal.toString();
+      String zonedStartLocalString = zonedStartLocal.toString();
+      String zonedEndLocalString = zonedEndLocal.toString();
 
       // Check if appointment has overlap
       if (
         AddAppointmentController.validateAppointmentStart(
-          testZonedStart,
-          testZonedEnd
+          startDateTimeUTCString,
+          endDateTimeUTCString
         )
       ) {
         // Create appointment instance
@@ -290,14 +296,12 @@ public class ModifyAppointmentController implements Initializable {
           assignedContact,
           type,
           url,
-          startConstructorValue,
-          endConstructorValue
+          zonedStartLocalString,
+          zonedEndLocalString
         );
 
         //
-        DataProvider
-          .getAppointmentsAllList()
-          .set(selectedIndex, appointment);
+        DataProvider.getAppointmentsAllList().set(selectedIndex, appointment);
 
         Statement statement = DBConnection.getConnection().createStatement();
 
@@ -328,9 +332,9 @@ public class ModifyAppointmentController implements Initializable {
           "', url = '" +
           url +
           "', start = '" +
-          testZonedStart +
+          startDateTimeUTCString +
           "', end = '" +
-          testZonedEnd +
+          endDateTimeUTCString +
           "' WHERE appointmentId = " +
           appointmentId;
 

@@ -40,7 +40,7 @@ public class Appointment {
   private LocalTime time;
   private String start;
   private String end;
-  
+
   // Constructor
   public Appointment() {} // no args
 
@@ -210,10 +210,10 @@ public class Appointment {
       Statement statement = DBConnection.getConnection().createStatement();
 
       ResultSet todaysAppointmentsRS = statement.executeQuery(
-        "SELECT customer.customerName, start " + 
-        "FROM appointment " + 
-        "INNER JOIN customer " + 
-        "ON customer.customerId = appointment.customerId " + 
+        "SELECT customer.customerName, start " +
+        "FROM appointment " +
+        "INNER JOIN customer " +
+        "ON customer.customerId = appointment.customerId " +
         "WHERE DATE(start) = curdate()"
       );
 
@@ -233,9 +233,7 @@ public class Appointment {
           dateFormatMask
         );
 
-        ZonedDateTime zonedTimeF_UTC = localTimeF.atZone(
-          ZoneId.of("UTC")
-        );
+        ZonedDateTime zonedTimeF_UTC = localTimeF.atZone(ZoneId.of("UTC"));
 
         ZoneId zoneIdLocal = ZoneId.systemDefault();
 
@@ -243,14 +241,19 @@ public class Appointment {
           zoneIdLocal
         );
 
-        DateTimeFormatter formatMaskHrMin = DateTimeFormatter.ofPattern("kk:mm");
+        DateTimeFormatter formatMaskHrMin = DateTimeFormatter.ofPattern(
+          "kk:mm"
+        );
 
         LocalTime localTime = LocalTime.parse(
           zonedTimeUTC.toString().substring(11, 16),
           formatMaskHrMin
         );
 
-        long difference = ChronoUnit.MINUTES.between(currentLocalTime, localTime);
+        long difference = ChronoUnit.MINUTES.between(
+          currentLocalTime,
+          localTime
+        );
 
         if (difference > 0 && difference <= 15) {
           if (getLocale().toString().equals("ko_KR")) {

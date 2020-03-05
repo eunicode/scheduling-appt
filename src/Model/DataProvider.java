@@ -31,11 +31,11 @@ public class DataProvider {
   // Customer ObservableList
   public static ObservableList<Customer> customersAllList = FXCollections.observableArrayList();
 
-   // Appointment ObservableLists
-   private static final ObservableList<Appointment> appointmentsAllList = FXCollections.observableArrayList();
-   private static final ObservableList<Appointment> appointmentsWeekList = FXCollections.observableArrayList();
-   private static final ObservableList<Appointment> appointmentsMonthList = FXCollections.observableArrayList();
- 
+  // Appointment ObservableLists
+  private static final ObservableList<Appointment> appointmentsAllList = FXCollections.observableArrayList();
+  private static final ObservableList<Appointment> appointmentsWeekList = FXCollections.observableArrayList();
+  private static final ObservableList<Appointment> appointmentsMonthList = FXCollections.observableArrayList();
+
   /* -------------------------------------------------------------- */
   public static void addCustomer(Customer customer) {
     customersAllList.add(customer);
@@ -75,7 +75,7 @@ public class DataProvider {
       for (int custID : customerIdArray) {
         // Create customer object
         Customer customer = new Customer();
-        
+
         // Create customer resultset
         ResultSet customerRS = statement.executeQuery(
           "SELECT customerId, customerName, addressId FROM customer WHERE customerId = '" +
@@ -124,7 +124,7 @@ public class DataProvider {
         // Get data from country result set
         String country = cityRS.getString("country");
 
-        // Set properties for customer object 
+        // Set properties for customer object
         customer.setCustomerID(customerID);
         customer.setCustomerName(customerName);
         customer.setAddress(address);
@@ -194,11 +194,11 @@ public class DataProvider {
         ZoneId zoneIdLocal = ZoneId.of(TimeZone.getDefault().getID());
         ZoneId UTCZoneID = ZoneId.of("UTC");
 
-        LocalDateTime startDateTime = LocalDateTime.parse(start, format);
-        LocalDateTime endDateTime = LocalDateTime.parse(end, format);
+        LocalDateTime startLocalTimeF = LocalDateTime.parse(start, format);
+        LocalDateTime endLocalTimeF = LocalDateTime.parse(end, format);
 
-        ZonedDateTime zonedStartLocal = startDateTime.atZone(UTCZoneID);
-        ZonedDateTime zonedEndLocal = endDateTime.atZone(UTCZoneID);
+        ZonedDateTime zonedStartLocal = startLocalTimeF.atZone(UTCZoneID);
+        ZonedDateTime zonedEndLocal = endLocalTimeF.atZone(UTCZoneID);
 
         ZonedDateTime convertedStartTime = zonedStartLocal.withZoneSameInstant(
           zoneIdLocal
@@ -277,10 +277,12 @@ public class DataProvider {
       for (int appointmentId : appointmentsWeekArray) {
         // Get customer data associated with appointment ID
         ResultSet selectAppointment = statement.executeQuery(
-          "SELECT customer.customerName, customer.customerId, contact, title, type, location, description, start, end " + "FROM appointment " + 
-          "INNER JOIN customer " + 
-          "ON customer.customerId = appointment.customerId " + 
-          "WHERE appointmentId =" + appointmentId
+          "SELECT customer.customerName, customer.customerId, contact, title, type, location, description, start, end " +
+          "FROM appointment " +
+          "INNER JOIN customer " +
+          "ON customer.customerId = appointment.customerId " +
+          "WHERE appointmentId =" +
+          appointmentId
         );
 
         selectAppointment.next();

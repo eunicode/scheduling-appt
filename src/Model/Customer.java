@@ -114,7 +114,7 @@ public class Customer {
   public void setCustomerID(int customerID) {
     this.customerID = customerID;
   }
-  
+
   public void setCustomerName(String customerName) {
     this.customerName = customerName;
   }

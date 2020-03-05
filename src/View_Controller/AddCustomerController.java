@@ -36,28 +36,28 @@ import javafx.stage.Stage;
 
 public class AddCustomerController implements Initializable {
   @FXML
-  private TextField addCustomerText;
+  private TextField customerAddName;
 
   @FXML
-  private TextField addCustomerAddressText;
+  private TextField customerAddAddress;
 
   @FXML
-  private TextField addCustomerCityComboBox;
+  private TextField customerAddCity;
 
   @FXML
-  private TextField addCustomerCountryText;
+  private TextField customerAddCountry;
 
   @FXML
-  private TextField addCustomerZipCodeText;
+  private TextField customerAddZipcode;
 
   @FXML
-  private TextField addCustomPhoneText;
+  private TextField customerAddPhone;
 
   @FXML
-  private Button saveCustomerButton;
+  private Button saveCustomerAddButton;
 
   @FXML
-  private Button cancelButton;
+  private Button cancelCustomerAddButton;
 
   /**
    * Initializes the controller class.
@@ -73,9 +73,96 @@ public class AddCustomerController implements Initializable {
     return escapedString;
   }
 
+    /* -------------------------------------------------------------- */
+    public boolean checkCustomerName(String customerName) {
+      if (customerName.isEmpty()) {
+        Alert alert = new Alert(
+          Alert.AlertType.WARNING,
+          "Customer name is empty"
+        );
+        alert.showAndWait();
+        return false;
+      } else {
+        return true;
+      }
+    }
+  
+    /* -------------------------------------------------------------- */
+    public boolean checkAddress(String address) {
+      if (address.isEmpty()) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, "Address is empty");
+        alert.showAndWait();
+        return false;
+      } else {
+        return true;
+      }
+    }
+  
+    /* -------------------------------------------------------------- */
+    public boolean checkCity(String city) {
+      if (city.isEmpty()) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, "City is empty");
+        alert.showAndWait();
+        return false;
+      } else {
+        return true;
+      }
+    }
+  
+    /* -------------------------------------------------------------- */
+    public boolean checkCountry(String country) {
+      if (country.isEmpty()) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, "Country is empty");
+        alert.showAndWait();
+        return false;
+      } else {
+        return true;
+      }
+    }
+  
+    /* -------------------------------------------------------------- */
+    public boolean checkZipcode(String zipCode) {
+      String pattern = "\\d{5}";
+  
+      if (zipCode.isEmpty()) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, "Zip code is empty");
+        alert.showAndWait();
+        return false;
+      } else if (!zipCode.matches(pattern)) {
+        Alert alert = new Alert(
+          Alert.AlertType.WARNING,
+          "Zip code is invalid. Must be 5 digits"
+        );
+        alert.showAndWait();
+        return false;
+      } else {
+        return true;
+      }
+    }
+  
+    /* -------------------------------------------------------------- */
+    public boolean checkPhone(String phone) {
+      String pattern = "\\d{3}-\\d{4}";
+  
+      if (phone.isEmpty()) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, "Phone number is empty");
+        alert.showAndWait();
+        return false;
+      } else if (!phone.matches(pattern)) {
+        Alert alert = new Alert(
+          Alert.AlertType.WARNING,
+          "Phone number is invalid. Must be 000-0000 format"
+        );
+        alert.showAndWait();
+        return false;
+      } else {
+        return true;
+      }
+    }
+    
   /* -------------------------------------------------------------- */
   @FXML
-  private void saveCustomerHandler(ActionEvent event) throws IOException {
+  private void saveCustomerAddHandler(ActionEvent event) throws IOException {
     // Initialize values
     int customerId = 1;
     int customerCity = 1;
@@ -83,30 +170,29 @@ public class AddCustomerController implements Initializable {
     int addressId = 1;
 
     // Get user input
-    String customerName = addCustomerText.getText();
+    String customerName = customerAddName.getText();
 
     String customerAddress = mySQLEscapeSingleQuote(
-      addCustomerAddressText.getText()
+      customerAddAddress.getText()
     );
 
-    String customerCityChoiceValue = mySQLEscapeSingleQuote(
-      addCustomerCityComboBox.getText()
+    String customerCityEsc = mySQLEscapeSingleQuote(
+      customerAddCity.getText()
     );
 
-    String customerCountry = addCustomerCountryText.getText();
-    String customerZipCode = addCustomerZipCodeText.getText();
-    String customerPhone = addCustomPhoneText.getText();
+    String customerCountry = customerAddCountry.getText();
+    String customerZipCode = customerAddZipcode.getText();
+    String customerPhone = customerAddPhone.getText();
 
     // Validate user input
     if (
-      validateCustomerName(customerName) &&
-      validateAddress(customerAddress) &&
-      validateCity(customerCityChoiceValue) &&
-      validateCountry(customerCountry) &&
-      validateZipcode(customerZipCode) &&
-      validatePhone(customerPhone)
-    ) // If user input is valid add customer to customer table
-    {
+      checkCustomerName(customerName) &&
+      checkAddress(customerAddress) &&
+      checkCity(customerCityEsc) &&
+      checkCountry(customerCountry) &&
+      checkZipcode(customerZipCode) &&
+      checkPhone(customerPhone)
+    ) { // If user input is valid add customer to customer table
       try {
         // Create Statement object
         Statement statement = DBConnection.getConnection().createStatement();
@@ -114,47 +200,48 @@ public class AddCustomerController implements Initializable {
         Statement statement2 = DBConnection.getConnection().createStatement();
 
         // Find max customerId in customer table
-        ResultSet customerResultSet = statement.executeQuery(
+        ResultSet customerIdRS = statement.executeQuery(
           "SELECT MAX(customerId) FROM customer"
         );
 
         // Use max customerId value to update new customer's customerId key
-        if (customerResultSet.next()) { // Way to check if table is non-empty
-          customerId = customerResultSet.getInt(1); // col 1
+        if (customerIdRS.next()) { // Way to check if table is non-empty
+          customerId = customerIdRS.getInt(1); // col 1
           customerId += 1;
         }
 
         // Find max addressId in address table
-        ResultSet addressResultSet = statement.executeQuery(
+        ResultSet addressIdRS = statement.executeQuery(
           "SELECT MAX(addressId) FROM address"
         );
 
         // Use max addressId value to update new customer's addressId key
-        if (addressResultSet.next()) {
-          addressId = addressResultSet.getInt(1);
+        if (addressIdRS.next()) {
+          addressId = addressIdRS.getInt(1);
           addressId += 1;
         }
 
         // Check if country exists in country table
-        ResultSet countryResultSet = statement.executeQuery(
+        ResultSet countryIdRS = statement.executeQuery(
           "SELECT countryId from country " +
           "WHERE country = " +
           "'" +
           customerCountry +
           "'"
         );
+
         // Find max countryId
-        ResultSet countryResultSetMax = statement2.executeQuery(
+        ResultSet countryIdMaxRS = statement2.executeQuery(
           "SELECT MAX(countryId) FROM country"
         );
         // If country user input exists in country table, use existing countryId key
-        if (countryResultSet.next()) {
-          customerCountryId = countryResultSet.getInt(1); // Use statement1's resultset
+        if (countryIdRS.next()) {
+          customerCountryId = countryIdRS.getInt(1); // Use statement1's resultset
         }
         // Else create new unique countryId key
         else {
-          countryResultSetMax.next();
-          customerCountryId = countryResultSetMax.getInt(1); // Use statement2's resultset
+          countryIdMaxRS.next();
+          customerCountryId = countryIdMaxRS.getInt(1); // Use statement2's resultset
           customerCountryId += 1;
 
           // Insert new country into country table
@@ -175,7 +262,7 @@ public class AddCustomerController implements Initializable {
           "SELECT cityId FROM city " +
           "WHERE city = " +
           "'" +
-          customerCityChoiceValue +
+          customerCityEsc +
           "'"
         );
 
@@ -201,7 +288,7 @@ public class AddCustomerController implements Initializable {
             customerCity +
             ", " +
             "'" +
-            customerCityChoiceValue +
+            customerCityEsc +
             "', " +
             "(SELECT countryId FROM country WHERE country=" +
             "'" +
@@ -213,7 +300,7 @@ public class AddCustomerController implements Initializable {
         }
 
         // Update address table
-        String addressQuery =
+        String addressSQL =
           "INSERT INTO address SET addressId=" +
           addressId +
           ", address='" +
@@ -227,11 +314,11 @@ public class AddCustomerController implements Initializable {
           customerCity +
           ", createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
 
-        int addressExecuteUpdate = statement.executeUpdate(addressQuery);
+        int checkInsertSuccess = statement.executeUpdate(addressSQL);
 
         // Update `Customer` table
-        if (addressExecuteUpdate == 1) {
-          String customerQuery =
+        if (checkInsertSuccess == 1) {
+          String customerSQL =
             "INSERT INTO customer SET customerId=" +
             customerId +
             ", customerName='" +
@@ -240,9 +327,9 @@ public class AddCustomerController implements Initializable {
             addressId +
             ", active=1, createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
 
-          int customerExecuteUpdate = statement.executeUpdate(customerQuery);
+          int checkInsertSuccessCustomer = statement.executeUpdate(customerSQL);
 
-          if (customerExecuteUpdate == 1) {
+          if (checkInsertSuccessCustomer == 1) {
             System.out.println("One row was inserted into customer table");
           }
         }
@@ -253,10 +340,9 @@ public class AddCustomerController implements Initializable {
       // Add customer to DataProvider
       Customer customer = new Customer(
         customerId,
-        // customerID,
         customerName,
         customerAddress,
-        customerCityChoiceValue,
+        customerCityEsc,
         customerCountry,
         customerZipCode,
         customerPhone
@@ -275,7 +361,7 @@ public class AddCustomerController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void cancelHandler(ActionEvent event) throws IOException {
+  private void cancelCustomerAddHandler(ActionEvent event) throws IOException {
     Alert alert = new Alert(
       Alert.AlertType.CONFIRMATION,
       "You will lose all changes. Continue?"
@@ -305,98 +391,6 @@ public class AddCustomerController implements Initializable {
           }
         }
       );
-  }
-
-  /* -------------------------------------------------------------- */
-  public static int getID(int ID) {
-    return ID;
-  }
-
-  /* -------------------------------------------------------------- */
-  public boolean validateCustomerName(String customerName) {
-    if (customerName.isEmpty()) {
-      Alert alert = new Alert(
-        Alert.AlertType.WARNING,
-        "Customer name is empty"
-      );
-      alert.showAndWait();
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  /* -------------------------------------------------------------- */
-  public boolean validateAddress(String address) {
-    if (address.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING, "Address is empty");
-      alert.showAndWait();
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  /* -------------------------------------------------------------- */
-  public boolean validateCity(String city) {
-    if (city.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING, "City is empty");
-      alert.showAndWait();
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  /* -------------------------------------------------------------- */
-  public boolean validateCountry(String country) {
-    if (country.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING, "Country is empty");
-      alert.showAndWait();
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  /* -------------------------------------------------------------- */
-  public boolean validateZipcode(String zipCode) {
-    String pattern = "\\d{5}";
-
-    if (zipCode.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING, "Zip code is empty");
-      alert.showAndWait();
-      return false;
-    } else if (!zipCode.matches(pattern)) {
-      Alert alert = new Alert(
-        Alert.AlertType.WARNING,
-        "Zip code is invalid. Must be 5 digits"
-      );
-      alert.showAndWait();
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  /* -------------------------------------------------------------- */
-  public boolean validatePhone(String phone) {
-    String pattern = "\\d{3}-\\d{4}";
-
-    if (phone.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING, "Phone number is empty");
-      alert.showAndWait();
-      return false;
-    } else if (!phone.matches(pattern)) {
-      Alert alert = new Alert(
-        Alert.AlertType.WARNING,
-        "Phone number is invalid. Must be 000-0000 format"
-      );
-      alert.showAndWait();
-      return false;
-    } else {
-      return true;
-    }
   }
 }
 /* =================================================================  

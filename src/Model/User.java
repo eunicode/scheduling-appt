@@ -18,7 +18,7 @@ public class User {
   private String userName;
   private String userPassword;
   private int active;
-  
+
   public static ObservableList<Customer> allUsers = FXCollections.observableArrayList();
 
   public User() {}
@@ -57,7 +57,6 @@ public class User {
   public void setUserPassword(String userPassword) {
     this.userPassword = userPassword;
   }
-
 }
 /* =================================================================  
                           	MY NOTES

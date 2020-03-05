@@ -137,7 +137,7 @@ public class ModifyCustomerController implements Initializable {
       }
 
       // Check if new country exists in country table
-      ResultSet countryResultSet = statement.executeQuery(
+      ResultSet countryIdRS = statement.executeQuery(
         "SELECT countryId from country " +
         "WHERE country = " +
         "'" +
@@ -146,18 +146,18 @@ public class ModifyCustomerController implements Initializable {
       );
 
       // Find max countryId
-      ResultSet countryResultSetMax = statement2.executeQuery(
+      ResultSet countryIdMaxRS = statement2.executeQuery(
         "SELECT MAX(countryId) FROM country"
       );
 
       // If new country exists in country table, use existing countryId key
-      if (countryResultSet.next()) {
-        customerCountryId = countryResultSet.getInt(1);
+      if (countryIdRS.next()) {
+        customerCountryId = countryIdRS.getInt(1);
       }
       // Else create new unique countryId key
       else {
-        countryResultSetMax.next();
-        customerCountryId = countryResultSetMax.getInt(1);
+        countryIdMaxRS.next();
+        customerCountryId = countryIdMaxRS.getInt(1);
         customerCountryId += 1;
 
         // Insert new country into country table

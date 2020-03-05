@@ -31,15 +31,15 @@
             <Label text="Country:" GridPane.rowIndex="3" />
             <Label text="Zipcode:" GridPane.rowIndex="4" />
             <Label text="Phone:" GridPane.rowIndex="5" />
-            <TextField fx:id="addCustomerText" GridPane.columnIndex="1" />
-            <TextField fx:id="addCustomerAddressText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="addCustomerCountryText" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="addCustomPhoneText" promptText="000-0000 format" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="addCustomerZipCodeText" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="addCustomerCityComboBox" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="customerAddName" GridPane.columnIndex="1" />
+            <TextField fx:id="customerAddAddress" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="customerAddCountry" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="customerAddPhone" promptText="000-0000 format" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="customerAddZipcode" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="customerAddCity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Button fx:id="saveCustomerButton" layoutX="221.0" layoutY="329.0" mnemonicParsing="false" onAction="#saveCustomerHandler" prefHeight="27.0" prefWidth="98.0" text="Save" />
-      <Button fx:id="cancelButton" layoutX="333.0" layoutY="329.0" mnemonicParsing="false" onAction="#cancelHandler" prefHeight="27.0" prefWidth="98.0" text="Cancel" />
+      <Button fx:id="saveCustomerAddButton" layoutX="221.0" layoutY="329.0" mnemonicParsing="false" onAction="#saveCustomerAddHandler" prefHeight="27.0" prefWidth="98.0" text="Save" />
+      <Button fx:id="cancelCustomerAddButton" layoutX="333.0" layoutY="329.0" mnemonicParsing="false" onAction="#cancelCustomerAddHandler" prefHeight="27.0" prefWidth="98.0" text="Cancel" />
    </children>
 </AnchorPane>
