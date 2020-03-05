@@ -16,7 +16,7 @@
         <URL value="@loginscreen.css" />
     </stylesheets>
    <children>
-      <Label fx:id="welcomeMessageLabel" layoutX="141.0" layoutY="60.0" text="Appointment Scheduling App">
+      <Label fx:id="loginTitle" layoutX="141.0" layoutY="60.0" text="Appointment Scheduling App">
          <font>
             <Font name="Arial Bold" size="15.0" />
          </font>

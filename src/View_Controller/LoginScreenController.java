@@ -57,6 +57,9 @@ import javafx.stage.Stage;
 
 public class LoginScreenController implements Initializable {
   @FXML
+  private Label loginTitle;
+
+  @FXML
   private TextField usernameTextField;
 
   @FXML
@@ -64,9 +67,6 @@ public class LoginScreenController implements Initializable {
 
   @FXML
   private Button submitButton;
-
-  @FXML
-  private Label welcomeMessageLabel;
 
   @FXML
   private Label usernameLabel;
@@ -89,14 +89,22 @@ public class LoginScreenController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle rb) {
     // ResourceBundle userLanguage; // rb
-    // Locale current = getLocale();
+    // Locale currentLocale = getLocale();
     // userLanguage =
     //   ResourceBundle.getBundle("scheduler/Nat", current);
-    ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat");
 
-    welcomeMessageLabel.setText(userLanguage.getString("welcome"));
+    ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat", Locale.getDefault());
+    // ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat", currentLocale);
+    // ResourceBundle userLanguage = ResourceBundle.getBundle("Nat");
+    // ResourceBundle userLanguage = ResourceBundle.getBundle("./", currentLocale);
+    // ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat");
+    // ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat");
+
+    loginTitle.setText(userLanguage.getString("title"));
     usernameLabel.setText(userLanguage.getString("username"));
     passwordLabel.setText(userLanguage.getString("password"));
+    submitButton.setText(userLanguage.getString("login"));
+
   }
 
   @FXML

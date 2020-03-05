@@ -30,15 +30,11 @@ public class trackLoggedInUser {
 
       PrintWriter logFile = new PrintWriter(fwriter);
 
-      // LocalDateTime localTime = LocalDateTime.now();
-
       logFile.println(
         user + " logged in on: " + Calendar.getInstance().getTime()
       );
 
       logFile.close();
-
-      System.out.println(user + " - has been written to the log");
     } catch (IOException e) {
       System.out.println(e.getMessage());
     }
