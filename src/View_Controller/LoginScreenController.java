@@ -5,25 +5,15 @@
  */
 package View_Controller;
 
-import Model.User;
 import Utilities.DBConnection;
-import Utilities.DBQuery;
 import Utilities.trackLoggedInUser;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.io.IOException;
-//import java.net.URL;
-//import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
-//import java.util.Locale;
-//import java.util.ResourceBundle;
-
-import java.util.TimeZone;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,22 +23,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-//import javafx.event.ActionEvent;
-//import javafx.fxml.FXML;
-//import javafx.fxml.FXMLLoader;
-//import javafx.fxml.Initializable;
-//import javafx.scene.Parent;
-//import javafx.scene.Scene;
-//import javafx.scene.control.Alert;
-//import javafx.scene.control.Button;
-//import javafx.scene.control.Label;
-//import javafx.scene.control.TextArea;
-//import javafx.scene.control.TextField;
-//import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -79,6 +55,7 @@ public class LoginScreenController implements Initializable {
 
   /**
    * Initializes the Locale on Login screen.
+     * @return 
    */
 
   public static Locale getLocale() {

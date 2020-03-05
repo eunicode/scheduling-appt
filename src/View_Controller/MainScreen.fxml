@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="375.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.MainScreenController">
+<AnchorPane id="AnchorPane" prefHeight="375.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.231" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.MainScreenController">
 <!-- xmlns="http://javafx.com/javafx/8.0.231" -->
    <children>
       <GridPane hgap="12.0" layoutX="51.0" layoutY="113.0" prefHeight="177.0" prefWidth="497.0">

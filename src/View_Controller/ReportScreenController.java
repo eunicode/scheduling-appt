@@ -6,7 +6,6 @@
 package View_Controller;
 
 import Model.Appointment;
-import Model.Customer;
 import Model.DataProvider;
 import Utilities.DBConnection;
 import java.io.IOException;
@@ -14,17 +13,12 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Collections;
 import java.util.ResourceBundle;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -32,14 +26,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
 /**
@@ -111,6 +101,7 @@ public class ReportScreenController implements Initializable {
         col.setCellValueFactory(
           new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 
+            @Override
             public ObservableValue<String> call(
               CellDataFeatures<ObservableList, String> param
             ) {
@@ -139,8 +130,7 @@ public class ReportScreenController implements Initializable {
 
       // Add to tableview
       reportAppointmentTable.setItems(apptData);
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (SQLException e) {
       System.out.println("Error building number of appointment types by month");
     }
   }
@@ -151,7 +141,7 @@ public class ReportScreenController implements Initializable {
     reportConsultantTable.setItems(DataProvider.getAllAppointmentsTableList());
 
     DataProvider populateAppointments = new DataProvider();
-    populateAppointments.populateAppointmentTable();
+    DataProvider.populateAppointmentTable();
 
     consultantCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
     customerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
@@ -185,6 +175,7 @@ public class ReportScreenController implements Initializable {
         col.setCellValueFactory(
           new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 
+            @Override
             public ObservableValue<String> call(
               CellDataFeatures<ObservableList, String> param
             ) {
@@ -212,8 +203,7 @@ public class ReportScreenController implements Initializable {
 
       // Add to tableview
       reportAdditionalTable.setItems(additionalData);
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (SQLException e) {
       System.out.println("Error building number of appointment types by month");
     }
   }
@@ -221,6 +211,8 @@ public class ReportScreenController implements Initializable {
   /* -------------------------------------------------------------- */
   /**
    * Initializes the controller class.
+     * @param url
+     * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -279,58 +271,5 @@ https://stackoverflow.com/questions/38049734/java-setcellvaluefactory-lambd a-vs
       "UNION ALL SELECT count(*) FROM appointment WHERE date_format(start, '%m') = '12' AND type = 'Scrum' ";
 */
 /* -------------------------------------------------------------- */
-/* public void buildConsultantData() {
-  consultantData = FXCollections.observableArrayList();
 
-  try {
-    String consultantQuery =
-      "SELECT 'test' AS Consultant, c.customerName AS Customer, a.start AS Start, a.end AS End " +
-      "FROM customer AS c " +
-      "INNER JOIN appointment AS a " +
-      "WHERE c.customerId = a.customerId";
 
-    Statement statement2 = DBConnection.getConnection().createStatement();
-
-    ResultSet consultantRS = statement2.executeQuery(consultantQuery);
-
-    for (int i = 0; i < consultantRS.getMetaData().getColumnCount(); i++) {
-      final int j = i;
-
-      TableColumn col = new TableColumn(consultantRS.getMetaData().getColumnName(i + 1));
-
-      col.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-          public ObservableValue<String> call(
-            CellDataFeatures<ObservableList, String> param
-          ) {
-            return new SimpleStringProperty(
-              param.getValue().get(j).toString()
-            );
-          }
-        }
-      );
-
-      reportConsultantTable.getColumns().addAll(col);
-      // System.out.println("Column [" + i + "] ");
-    }
-
-    // Add data to ObservableList
-    while (consultantRS.next()) {
-      // Iterate row
-      ObservableList<String> row = FXCollections.observableArrayList();
-      for (int i = 1; i <= consultantRS.getMetaData().getColumnCount(); i++) {
-        // Iterate column
-        row.add(consultantRS.getString(i));
-      }
-
-      consultantData.add(row);
-    }
-
-    // Add to tableview
-    reportConsultantTable.setItems(consultantData);
-  } catch (Exception e) {
-    e.printStackTrace();
-    System.out.println("Error building schedule for each consultant");
-  }
-}
-*/

@@ -29,7 +29,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -345,11 +344,7 @@ public class ModifyAppointmentController implements Initializable {
           System.out.println("Appointment was updated successfully!");
         }
       }
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
-    } catch (NullPointerException ex) {
-      System.out.println("Error " + ex.getMessage());
-    } catch (DateTimeParseException ex) {
+    } catch (SQLException | NullPointerException | DateTimeParseException ex) {
       System.out.println("Error " + ex.getMessage());
     }
 
@@ -407,7 +402,7 @@ public class ModifyAppointmentController implements Initializable {
 
     // Set type to previously selected type
     String selectedType = newAppointment.getType();
-    if (selectedType == "Presentation") {
+    if ("Presentation".equals(selectedType)) {
       this.modifyTypeText.getSelectionModel().selectFirst();
     } else {
       this.modifyTypeText.getSelectionModel().select(1);

@@ -8,7 +8,6 @@ package Utilities;
 import java.io.*;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 
@@ -26,13 +25,10 @@ public class trackLoggedInUser {
     try {
       FileWriter fwriter = new FileWriter(filename, true);
 
-      PrintWriter logFile = new PrintWriter(fwriter);
-
-      logFile.println(
-        user + " logged in on: " + Calendar.getInstance().getTime()
-      );
-
-      logFile.close();
+        try (PrintWriter logFile = new PrintWriter(fwriter)) {
+            logFile.println(
+                    user + " logged in on: " + Calendar.getInstance().getTime()
+            );}
     } catch (IOException e) {
       System.out.println("Writing to log failed");
     }

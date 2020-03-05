@@ -5,7 +5,6 @@
  */
 package View_Controller;
 
-import Model.Appointment;
 import Model.Customer;
 import Model.DataProvider;
 import Utilities.DBConnection;
@@ -13,11 +12,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -84,14 +80,15 @@ public class CustomerTableController implements Initializable {
 
   /**
    * Initializes the controller class.
+     * @param url
+     * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
     DataProvider.getAllCustomersTableList().clear();
     customerTableView.setItems(DataProvider.getAllCustomersTableList());
 
-    DataProvider populateCustomers = new DataProvider();
-    populateCustomers.populateCustomerTable();
+    DataProvider.populateCustomerTable();
 
     customerTableView.getSelectionModel().selectFirst();
 
@@ -176,8 +173,7 @@ public class CustomerTableController implements Initializable {
       // Refresh customer table
       DataProvider.getAllCustomersTableList().clear();
       customerTableView.setItems(DataProvider.getAllCustomersTableList());
-      DataProvider populateCustomers = new DataProvider();
-      populateCustomers.populateCustomerTable();
+      DataProvider.populateCustomerTable();
     }
   }
 

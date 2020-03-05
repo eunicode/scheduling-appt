@@ -24,7 +24,7 @@ public class DBQuery {
 
     try {
       // Create a Statement Object
-      Statement statement = DBConnection.makeConnection().createStatement();
+      statement = DBConnection.makeConnection().createStatement();
 
       // Execute SELECT queries
       if (query.startsWith("select")) {

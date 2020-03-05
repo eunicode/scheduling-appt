@@ -5,30 +5,16 @@
  */
 package View_Controller;
 
-import static View_Controller.CustomerTableController.deleteCustomer;
 import Model.Appointment;
-import Model.Customer;
 import Model.DataProvider;
-import Model.User;
 import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Calendar;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,7 +32,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import scheduler.Scheduler;
 
 /**
  * FXML Controller class
@@ -114,6 +99,8 @@ public class AppointmentScreenController implements Initializable {
 
   /**
    * Initializes the controller class.
+     * @param url
+     * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -127,7 +114,7 @@ public class AppointmentScreenController implements Initializable {
     appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
 
     DataProvider populateAppointments = new DataProvider();
-    populateAppointments.populateAppointmentTable();
+    DataProvider.populateAppointmentTable();
 
     // Have first appointment selected by default
     appointmentTableView.getSelectionModel().selectFirst();

@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AppointmentScreenController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.231" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AppointmentScreenController">
 <!-- xmlns="http://javafx.com/javafx/8.0.231" -->
    <children>
       <TableView fx:id="appointmentTableView" layoutX="15.0" layoutY="186.0" prefHeight="295.0" prefWidth="970.0">

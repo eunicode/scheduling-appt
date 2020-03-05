@@ -6,7 +6,6 @@
 package View_Controller;
 
 import Model.Appointment;
-import Model.Customer;
 import Model.DataProvider;
 import Utilities.DBConnection;
 import java.io.IOException;
@@ -23,8 +22,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
@@ -34,7 +31,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -47,7 +43,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -118,7 +113,7 @@ public class AddAppointmentController implements Initializable {
   private static int customerId = 0;
   public static int userId;
 
-  private ObservableList<String> nameData = FXCollections.observableArrayList();
+  private final ObservableList<String> nameData = FXCollections.observableArrayList();
 
   ObservableList<String> appointmentType = FXCollections.observableArrayList(
     "Presentation",
