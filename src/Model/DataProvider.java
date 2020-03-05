@@ -30,10 +30,12 @@ import javafx.collections.ObservableList;
 
 public class DataProvider {
 
+  // Constructor
   public DataProvider() {}
 
+  // Customer ObservableLists
   public static ObservableList<Customer> allCustomersTableList = FXCollections.observableArrayList();
-
+  
   public static ObservableList<Customer> getAllCustomers() throws SQLException {
     Statement statement = DBConnection.getConnection().createStatement();
 
@@ -61,6 +63,12 @@ public class DataProvider {
 
     return DataProvider.allCustomersTableList;
   }
+
+  // Appointment ObservableLists
+  private static ObservableList<Appointment> allAppointmentsTableList = FXCollections.observableArrayList();
+  private static ObservableList<Appointment> selectedAppointmentsForCustomer = FXCollections.observableArrayList();
+  private static ObservableList<Appointment> appointmentsByWeek = FXCollections.observableArrayList();
+  private static ObservableList<Appointment> appointmentsByMonth = FXCollections.observableArrayList();
 
   /* -------------------------------------------------------------- */
   public static ObservableList<Appointment> getAllAppointments()
@@ -95,12 +103,6 @@ public class DataProvider {
 
     return DataProvider.allAppointmentsTableList;
   }
-
-  /* -------------------------------------------------------------- */
-  private static ObservableList<Appointment> selectedAppointmentsForCustomer = FXCollections.observableArrayList();
-  private static ObservableList<Appointment> allAppointmentsTableList = FXCollections.observableArrayList();
-  private static ObservableList<Appointment> appointmentsByWeek = FXCollections.observableArrayList();
-  private static ObservableList<Appointment> appointmentsByMonth = FXCollections.observableArrayList();
 
   /* -------------------------------------------------------------- */
   public static void addCustomer(Customer customer) {

@@ -10,7 +10,6 @@ import Model.DataProvider;
 import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
-//import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,20 +17,17 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-//import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-// import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -83,44 +79,27 @@ public class AddCustomerController implements Initializable {
   @FXML
   private void saveCustomerHandler(ActionEvent event) throws IOException {
     // Initialize values
-    // int customerID = 1;
     int customerId = 1;
     int customerCity = 1;
     int customerCountryId = 1;
-    // Find greatest customerID in `Customer` table
-    // for (Customer customer : DataProvider.allCustomersTableList) {
-    //   if (customer.getCustomerID() > customerID) {
-    //     customerID = customer.getCustomerID();
-    //   }
-    // }
-
-    // Check if city exists in city table
-
     int addressId = 1;
-    // int customerId = customerID;
 
-    // int customerCity =
-    //   addCustomerCityComboBox.getSelectionModel().getSelectedIndex() + 1;
-    // String customerCityChoice = addCustomerCityComboBox
-    //   .getSelectionModel()
-    //   .getSelectedItem();
-
-    // customerID = ++customerID;
+    // Get user input
     String customerName = addCustomerText.getText();
-    // String customerAddress = addCustomerAddressText.getText();
+
     String customerAddress = mySQLEscapeSingleQuote(
       addCustomerAddressText.getText()
     );
-    // String customerAddressEscaped = mySQLEscapeSingleQuote(customerAddress);
+
     String customerCityChoiceValue = mySQLEscapeSingleQuote(
       addCustomerCityComboBox.getText()
     );
-    // String customerCityChoiceValue = addCustomerCityComboBox.getText();
-    // String customerCityChoiceValue = customerCityChoice;
+
     String customerCountry = addCustomerCountryText.getText();
     String customerZipCode = addCustomerZipCodeText.getText();
     String customerPhone = addCustomPhoneText.getText();
 
+    // Validate user input
     if (
       validateCustomerName(customerName) &&
       validateAddress(customerAddress) &&
@@ -128,7 +107,9 @@ public class AddCustomerController implements Initializable {
       validateCountry(customerCountry) &&
       validateZipcode(customerZipCode) &&
       validatePhone(customerPhone)
-    ) {
+    ) 
+    // If user input is valid add customer to customer table
+    {
       try {
         // Create Statement object
         Statement statement = DBConnection.getConnection().createStatement();

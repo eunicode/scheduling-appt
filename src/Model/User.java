@@ -30,6 +30,7 @@ public class User {
   }
 
   /* -------------------------------------------------------------- */
+  // Getters
   public int getUserID() {
     return userID;
   }
@@ -47,7 +48,6 @@ public class User {
   }
   /* -------------------------------------------------------------- */
   // Setters
-
   public void setUserID(int userID) {
     this.userID = userID;
   }

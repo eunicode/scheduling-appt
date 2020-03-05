@@ -19,10 +19,8 @@ import java.util.Calendar;
 // createFile
 public class trackLoggedInUser {
   public static String filename = "user_login_log.txt";
-  // public static final String filename = "user_login_log.txt";
-  File file = new File(filename);
 
-  // public trackLoggedInUser() {}
+  File file = new File(filename);
 
   public static void trackLog(String user, boolean loggedIn) {
     try {
@@ -36,7 +34,7 @@ public class trackLoggedInUser {
 
       logFile.close();
     } catch (IOException e) {
-      System.out.println(e.getMessage());
+      System.out.println("Writing to log failed");
     }
   }
 }

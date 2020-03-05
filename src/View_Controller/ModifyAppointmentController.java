@@ -10,7 +10,6 @@ import Model.DataProvider;
 import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
-// import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,7 +22,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 import java.util.ResourceBundle;
-// import java.util.ResourceBundle;
 import java.util.TimeZone;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -139,8 +137,6 @@ public class ModifyAppointmentController implements Initializable {
     modifyTypeText.setItems(appointmentType);
     modifyStartComboBox.setItems(appointmentTime);
     modifyEndComboBox.setItems(appointmentTime);
-    //   modifyDescriptionComboBox.setItems(appointmentDescription);
-    //   modifyLocationComboBox.setItems(appointmentLocation);
 
     // Disable selecting weekends, past dates
     Callback<DatePicker, DateCell> dayCellFactory = this.disableWeekend();
@@ -160,13 +156,9 @@ public class ModifyAppointmentController implements Initializable {
 
       String title = modifyTitleText.getText();
       String description = modifyDescriptionComboBox.getText();
-      //   String description = modifyDescriptionComboBox.getSelectionModel().getSelectedItem();
       String location = modifyLocationComboBox.getText();
-      //   String location = modifyLocationComboBox.getSelectionModel().getSelectedItem();
       String assignedContact = modifyContactNameText.getText();
       String type = modifyTypeText.getSelectionModel().getSelectedItem();
-      //   String type = modifyTypeText.getText();
-      //   String url = modifyURLText.getText();
       String url = "";
 
       LocalDate date = modifyDate.getValue();
@@ -292,7 +284,6 @@ public class ModifyAppointmentController implements Initializable {
         )
       ) {
         // Create appointment instance
-        //   Appointment appointment = new Appointment(appointmentId, customerId, userId, title, description, location, assignedContact, type, url, startConstructorValue, endConstructorValue);
         Appointment appointment = new Appointment(
           appointmentId,
           customerId,
@@ -407,8 +398,6 @@ public class ModifyAppointmentController implements Initializable {
       .substring(0, 10);
     System.out.println("Hi" + dateFromZonedDateTimeString);
     LocalDate dateForCal = LocalDate.parse(dateFromZonedDateTimeString);
-    // LocalDate startDate = LocalDate.parse(newAppointment.getStart());
-    // endDate = LocalDate.parse(newAppointment.getEnd());
 
     this.modifyContactNameText.setText(newAppointment.getContact());
     this.modifyTitleText.setText(newAppointment.getTitle());
@@ -423,8 +412,6 @@ public class ModifyAppointmentController implements Initializable {
     } else {
       this.modifyTypeText.getSelectionModel().select(1);
     }
-    //   this.modifyURLText.setText(newAppointment.getUrl());
-    //   this.modifyTypeText.setText((newAppointment.getType()));
 
   }
 }

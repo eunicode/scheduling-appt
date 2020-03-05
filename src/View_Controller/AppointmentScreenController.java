@@ -6,8 +6,6 @@
 package View_Controller;
 
 import static View_Controller.CustomerTableController.deleteCustomer;
-
-//import Database.DBConnection;
 import Model.Appointment;
 import Model.Customer;
 import Model.DataProvider;
@@ -15,7 +13,6 @@ import Model.User;
 import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
-//import java.net.URL;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +23,6 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Optional;
 import java.util.ResourceBundle;
-//import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleObjectProperty;
@@ -38,7 +34,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-//import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -53,8 +48,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import scheduler.Scheduler;
 
-//import utils.DBConnection;
-
 /**
  * FXML Controller class
  *
@@ -62,8 +55,6 @@ import scheduler.Scheduler;
  */
 
 public class AppointmentScreenController implements Initializable {
-  // @FXML
-  // private ToggleGroup appointmentRadioButtonGroup;
   private ToggleGroup weekOrMonthToggleGroup;
 
   @FXML
@@ -121,29 +112,6 @@ public class AppointmentScreenController implements Initializable {
   Parent scene;
   private Appointment selectedAppointment;
 
-  // Get rid of?
-  ObservableList<String> viewByMonth = FXCollections.observableArrayList(
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  );
-  ObservableList<String> viewByWeek = FXCollections.observableArrayList(
-    "Previous Week",
-    "This Week",
-    "Next Week"
-  );
-
-  // private ObservableList<String> nameData = FXCollections.observableArrayList();
-
   /**
    * Initializes the controller class.
    */
@@ -164,6 +132,7 @@ public class AppointmentScreenController implements Initializable {
     // Have first appointment selected by default
     appointmentTableView.getSelectionModel().selectFirst();
 
+    // Bind columns to values from customer object
     customerNameColumn.setCellValueFactory(
       new PropertyValueFactory<>("customerName")
     );
@@ -204,7 +173,6 @@ public class AppointmentScreenController implements Initializable {
     customerNameColumn.setCellValueFactory(
       appointment -> 
         new SimpleStringProperty(appointment.getValue().getCustomerName())
-      // new PropertyValueFactory<>("customerName")
     );
     customerContactColumn.setCellValueFactory(
       appointment ->
@@ -228,6 +196,7 @@ public class AppointmentScreenController implements Initializable {
       appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
     );
 
+    // Change table view depending on selected radio button
     if (viewByWeekRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
     } else if (viewByMonthRadioButton.isSelected()) {
@@ -235,14 +204,6 @@ public class AppointmentScreenController implements Initializable {
     } else if (viewByAllRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
     }
-    // try {
-    //   Statement statement = DBConnection.getConnection().createStatement();
-
-    // } catch {
-
-    // }
-    // sortAppointment();
-    // viewByComboBox.setItems(viewByWeek);
   }
 
   /* -------------------------------------------------------------- */
@@ -258,7 +219,6 @@ public class AppointmentScreenController implements Initializable {
     customerNameColumn.setCellValueFactory(
       appointment ->
         new SimpleStringProperty(appointment.getValue().getCustomerName())
-      // new PropertyValueFactory<>("customerName")
     );
     customerContactColumn.setCellValueFactory(
       appointment ->
@@ -282,12 +242,6 @@ public class AppointmentScreenController implements Initializable {
       appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
     );
 
-    // if (viewByMonthRadioButton.isSelected()) {
-    //   appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
-    // } else {
-    //   appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
-    // }
-
     if (viewByWeekRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
     } else if (viewByMonthRadioButton.isSelected()) {
@@ -295,8 +249,6 @@ public class AppointmentScreenController implements Initializable {
     } else if (viewByAllRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
     }
-    // sortAppointment();
-    // viewByComboBox.setItems(viewByMonth);
   }
 
   /* -------------------------------------------------------------- */
@@ -305,25 +257,15 @@ public class AppointmentScreenController implements Initializable {
     DataProvider.getAllAppointmentsTableList().clear();
     DataProvider.getAppointmentsByMonth().clear();
     DataProvider.getAppointmentsByWeek().clear();
-    // appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
 
     DataProvider populateAppointments = new DataProvider();
     populateAppointments.populateAppointmentTable();
-
-    if (viewByAllRadioButton.isSelected()) {
-      // DataProvider.setMonthlyView();
-
-      //   DataProvider populateAppointments = new DataProvider();
-      //  populateAppointments.populateAppointmentTable();
-
-    }
 
     customerNameColumn.setCellValueFactory(
       new PropertyValueFactory<>("customerName")
     );
     customerContactColumn.setCellValueFactory(
       new PropertyValueFactory<>("contact")
-      // new PropertyValueFactory<>("")
     );
     appointmentTitleColumn.setCellValueFactory(
       new PropertyValueFactory<>("title")
@@ -341,12 +283,6 @@ public class AppointmentScreenController implements Initializable {
       new PropertyValueFactory<>("start")
     );
     appointmentEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
-
-    // if (viewByMonthRadioButton.isSelected()) {
-    //   appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
-    // } else {
-    //   appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
-    // }
 
     if (viewByWeekRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
@@ -369,45 +305,6 @@ public class AppointmentScreenController implements Initializable {
     stage.hide();
     stage.setScene(scene);
     stage.show();
-    // FXMLLoader loader = new FXMLLoader();
-
-    // loader.setLocation(
-    //   getClass().getResource("/View_Controller/AddAppointment.fxml")
-    // );
-
-    // loader.load();
-
-    // AddAppointmentController controller = loader.getController();
-
-    // int customerIDTransfer = customerTableView
-    //   .getSelectionModel()
-    //   .getSelectedItem()
-    //   .getCustomerID();
-
-    // try {
-    //   Statement statement = DBConnection.getConnection().createStatement();
-
-    //   ResultSet nameListRS = statement.executeQuery(
-    //     "SELECT customerName FROM customer"
-    //   );
-
-    //   while(nameListRS.next()) {
-    //     nameData.add(nameListRS.getString("customerName"));
-    //   }
-
-    // } catch(Exception e) {
-    //   e.printStackTrace();
-    //   System.out.println("Error building customer name list for appointment dropdown.");
-    // }
-
-    // DataProvider.setSelectedAppointmentsForCustomer(customerIDTransfer);
-    // AddAppointmentController setCustomer = new AddAppointmentController();
-    // setCustomer.setSelectedCustomerId(customerIDTransfer);
-
-    // stage = (Stage) modifyAppointmentButton.getScene().getWindow();
-    // Parent scene = loader.getRoot();
-    // stage.setScene(new Scene(scene));
-    // stage.show();
   }
 
   /* -------------------------------------------------------------- */

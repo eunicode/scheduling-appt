@@ -11,20 +11,17 @@ import Model.DataProvider;
 import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
-//import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-//import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-//import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -99,34 +96,26 @@ public class CustomerTableController implements Initializable {
     customerTableView.getSelectionModel().selectFirst();
 
     customerIDTable.setCellValueFactory(
-      // new PropertyValueFactory<>("getCustomerID")
       new PropertyValueFactory<>("customerID")
     );
 
     customerNameTable.setCellValueFactory(
       new PropertyValueFactory<>("customerName")
-      // customer ->
-      //   new SimpleStringProperty(customer.getValue().getCustomerName())
     );
     customerAddressTable.setCellValueFactory(
       new PropertyValueFactory<>("address")
-      // customer -> new SimpleStringProperty(customer.getValue().getAddress())
     );
     customerCityTable.setCellValueFactory(
       new PropertyValueFactory<>("city")
-      // customer -> new SimpleStringProperty(customer.getValue().getCity())
     );
     customerCountryTable.setCellValueFactory(
       new PropertyValueFactory<>("country")
-      // customer -> new SimpleStringProperty(customer.getValue().getCountry())
     );
     customerPostalCodeTable.setCellValueFactory(
       new PropertyValueFactory<>("postalCode")
-      // customer -> new SimpleStringProperty(customer.getValue().getPostalCode())
     );
     customerPhoneTable.setCellValueFactory(
       new PropertyValueFactory<>("phone")
-      // customer -> new SimpleStringProperty(customer.getValue().getPhone())
     );
   }
 
@@ -205,8 +194,6 @@ public class CustomerTableController implements Initializable {
 
   /* -------------------------------------------------------------- */
   public static void deleteCustomer(Customer customer) {
-    // public static void deleteCustomer(int selectedID) {
-    // ++selectedID;
     int selectedID = customer.getCustomerID();
     System.out.println(selectedID);
 

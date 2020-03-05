@@ -8,10 +8,6 @@ package View_Controller;
 import Model.Appointment;
 import Model.Customer;
 import Model.DataProvider;
-//import java.net.URL;
-//import java.util.ResourceBundle;
-//import javafx.fxml.Initializable;
-
 import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
@@ -337,23 +333,12 @@ public class AddAppointmentController implements Initializable {
     // Customer drop list corresponds to customer table
     customerId =
       addAppointmentNameCombo.getSelectionModel().getSelectedIndex() + 1;
-
     String title = addAppointmentTitleText.getText();
     String description = addAppointmentDescriptionText.getText();
-    // String description = addAppointmentDescriptionText
-    //   .getSelectionModel()
-    //   .getSelectedItem();
     String location = addAppointmentLocationText.getText();
-    // String location = addAppointmentLocationText
-    //   .getSelectionModel()
-    //   .getSelectedItem();
     String assignedContact = addCustomerContactText.getText();
-
     String type = addAppointmentTypeText.getSelectionModel().getSelectedItem();
-    // String type = addAppointmentTypeText.getText();
-
     String url = "";
-
     LocalDate appointmentDate = addAppointmentDatePicker.getValue();
 
     // String startTime = addAppointmentStartTimeComboBox.getValue();
@@ -446,6 +431,7 @@ public class AddAppointmentController implements Initializable {
 
     // If there is no overlap
     if (validateAppointmentStart(testZonedStart, testZonedEnd)) {
+      // Execute SQL command
       Statement statement = DBConnection.getConnection().createStatement();
 
       String appointmentQuery =
@@ -479,9 +465,10 @@ public class AddAppointmentController implements Initializable {
 
       // If one row was affected
       if (appointmentExecuteUpdate == 1) {
-        System.out.println("Insert into appointment table was succcessful!");
+        System.out.println("One row was inserted into appointment table");
       }
 
+      // Create appointment object with user input
       Appointment appointment = new Appointment(
         1, // appointmentId
         customerId,
@@ -508,12 +495,12 @@ public class AddAppointmentController implements Initializable {
       appointment.setStart(selectedStartDateTime);
       appointment.setEnd(selectedEndDateTime);
 
-      //
+      // Add appointmnet object to appointment ObservableList
       DataProvider.addAppointment(appointment);
 
+      // Return to appointment screen
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
 
-      // Return to appointment screen
       Object scene = FXMLLoader.load(
         getClass().getResource("/View_Controller/AppointmentScreen.fxml")
       );

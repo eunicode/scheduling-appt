@@ -52,8 +52,6 @@ public class ReportScreenController implements Initializable {
   @FXML
   private TableView reportAppointmentTable;
 
-  // private TableView<Appointment> reportAppointmentTable;
-
   @FXML
   private TableColumn<?, ?> monthApptCol;
 
@@ -76,7 +74,6 @@ public class ReportScreenController implements Initializable {
   private TableColumn<?, ?> endCol;
 
   @FXML
-  // private TableView<Customer> reportAdditionalTable;
   private TableView reportAdditionalTable;
 
   @FXML
@@ -88,8 +85,6 @@ public class ReportScreenController implements Initializable {
   private ObservableList<ObservableList> apptData;
   private ObservableList<Appointment> consultantData;
   private ObservableList<ObservableList> additionalData;
-
-  // private
 
   /* -------------------------------------------------------------- */
   public void buildApptTypeData() {
@@ -127,7 +122,6 @@ public class ReportScreenController implements Initializable {
         );
 
         reportAppointmentTable.getColumns().addAll(col);
-        // System.out.println("Column [" + i + "] ");
       }
 
       // Add data to ObservableList
@@ -163,13 +157,6 @@ public class ReportScreenController implements Initializable {
     customerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
     startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
     endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
-    // try {
-    //   DataProvider populateAppointments = new DataProvider();
-    //   populateAppointments.populateAppointmentTable();
-
-    // } catch(SQLException ce) {
-    //   logger.info(ce.toString());
-    // }
   }
 
   /* -------------------------------------------------------------- */
@@ -209,7 +196,6 @@ public class ReportScreenController implements Initializable {
         );
 
         reportAdditionalTable.getColumns().addAll(col);
-        // System.out.println("Column [" + i + "] ");
       }
 
       // Add data to ObservableList
@@ -241,11 +227,6 @@ public class ReportScreenController implements Initializable {
     buildApptTypeData();
     buildConsultantData();
     buildAdditionalData();
-    // DataProvider.getAllAppointmentsTableList().clear();
-    // appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
-
-    // DataProvider populateAppointments = new DataProvider();
-    // populateAppointments.populateAppointmentTable();
   }
 
   /* -------------------------------------------------------------- */

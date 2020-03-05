@@ -85,21 +85,9 @@ public class LoginScreenController implements Initializable {
     return Locale.getDefault();
   }
 
-  // Locale[] localeLanguages = { Locale.ENGLISH, Locale.KOREAN };
-
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    // ResourceBundle userLanguage; // rb
-    // Locale currentLocale = getLocale();
-    // userLanguage =
-    //   ResourceBundle.getBundle("scheduler/Nat", current);
-
     ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat", Locale.getDefault());
-    // ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat", currentLocale);
-    // ResourceBundle userLanguage = ResourceBundle.getBundle("Nat");
-    // ResourceBundle userLanguage = ResourceBundle.getBundle("./", currentLocale);
-    // ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat");
-    // ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat");
 
     loginTitle.setText(userLanguage.getString("title"));
     usernameLabel.setText(userLanguage.getString("username"));

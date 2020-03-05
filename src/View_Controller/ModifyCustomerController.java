@@ -10,26 +10,22 @@ import Model.DataProvider;
 import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
-//import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 import java.util.ResourceBundle;
-//import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-//import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-// import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -74,12 +70,6 @@ public class ModifyCustomerController implements Initializable {
   Customer selectedCustomer;
   int selectedIndex;
 
-  // ObservableList<String> cityIDList = FXCollections.observableArrayList(
-  //   "Phoenix, Arizona",
-  //   " New York, New York",
-  //   "London, England"
-  // );
-
   /**
    * Initializes the controller class.
    */
@@ -87,23 +77,6 @@ public class ModifyCustomerController implements Initializable {
   public void initialize(URL url, ResourceBundle rb) {
     // TODO
   }
-
-  // @FXML
-  // private void modifyCustomerCityHandler(ActionEvent event) {
-  //   int customerCity =
-  //     modifyCustomerCityText.getSelectionModel().getSelectedIndex() + 1;
-
-  //   if (customerCity == 1 || customerCity == 2) {
-  //     modifyCustomerCountryText.setText("United States");
-  //   }
-
-  //   if (customerCity == 3) {
-  //     modifyCustomerCountryText.setText("United Kingdom");
-  //   }
-  // }
-
-  // @FXML
-  // private void modifyCustomerCountryHandler(MouseEvent event) {}
 
   @FXML
   void saveModifiedCustomerHandler(ActionEvent event)
@@ -114,9 +87,6 @@ public class ModifyCustomerController implements Initializable {
     int customerCity = 1;
     int addressId = 1;
 
-    // String customerCityChoice = modifyCustomerCityText
-    //   .getSelectionModel()
-    //   .getSelectedItem();
     // Get modified user input
     String customerName = modifyCustomerText.getText();
     String customerAddress = modifyCustomerAddressText.getText();
@@ -164,11 +134,7 @@ public class ModifyCustomerController implements Initializable {
         "SELECT * FROM customer where customerId= " + customerId + ""
       );
 
-      // while (selectCustomer.next()) {
-      //   addressId = selectCustomer.getInt("addressId");
-      //   System.out.println(addressId);
-      // }
-
+      // If a row is returned
       if (selectCustomer.next()) {
         addressId = selectCustomer.getInt("addressId");
       }
@@ -326,6 +292,7 @@ public class ModifyCustomerController implements Initializable {
     this.modifyCustomPhoneText.setText((newCustomer.getPhone()));
   }
 }
+
 /* =================================================================  
                           	MY NOTES
 ================================================================= */
