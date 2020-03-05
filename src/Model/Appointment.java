@@ -7,6 +7,7 @@ package Model;
 
 import Utilities.DBConnection;
 import View_Controller.LoginScreenController;
+import static View_Controller.LoginScreenController.getLocale;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -242,6 +243,7 @@ public class Appointment {
 
       LocalTime currentTime = LocalTime.now();
 
+      // Iterate upcoming appointments
       while (upcomingAppointments.next()) {
         String customerName = upcomingAppointments.getString("customerName");
         String startTime = upcomingAppointments.getString("start");
@@ -276,22 +278,23 @@ public class Appointment {
         long difference = ChronoUnit.MINUTES.between(currentTime, localTime);
 
         if (difference > 0 && difference <= 15) {
-          // Add Korean alternative
-          String alertMessage = String.format(
-            "Reminder! You have an appointment coming up with %s at %s",
-            customerName,
-            appointmentTime
-          );
-
-          Alert alert = new Alert(Alert.AlertType.INFORMATION);
-          alert.setTitle("Appointment Reminder");
-          alert.setHeaderText("Upcoming appointment within 15 minutes!");
-          alert.setContentText(alertMessage);
-          alert.showAndWait();
-
-          break;
+          if (getLocale().toString().equals("ko_KR")) {
+            Alert alert = new Alert(
+              Alert.AlertType.INFORMATION,
+              "15 분 내에 약속이 있습니다."
+            );
+            alert.showAndWait();
+            break;
+          } else {
+            Alert alert = new Alert(
+              Alert.AlertType.INFORMATION,
+              "You have an appointment within 15 minutes."
+            );
+            alert.showAndWait();
+            break;
+          }
         }
-      }
+      } // while
     } catch (SQLException ex) {
       System.out.println(ex.getMessage());
     }

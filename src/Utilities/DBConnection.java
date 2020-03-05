@@ -30,18 +30,18 @@ public class DBConnection {
     // Create bridge and update `conn`
     conn = (Connection) DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 
-    //Lambda expression that prints to the console when user logins
-    new Thread(() -> System.out.println("Connection sucessful!")).start();
+    // System.out.println("Connection successful");
+
+    return conn;
+  }
+
+  public static Connection getConnection() {
     return conn;
   }
 
   public static void closeConnection()
     throws ClassNotFoundException, SQLException, Exception {
     conn.close();
-  }
-
-  public static Connection getConnection() {
-    return conn;
   }
 }
 /* =================================================================  

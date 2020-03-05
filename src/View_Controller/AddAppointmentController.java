@@ -42,6 +42,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -73,8 +74,6 @@ public class AddAppointmentController implements Initializable {
   @FXML
   private ComboBox<String> addAppointmentTypeText;
 
-  // private TextField addAppointmentTypeText;
-
   @FXML
   private ComboBox<String> addAppointmentStartTimeComboBox;
 
@@ -85,7 +84,6 @@ public class AddAppointmentController implements Initializable {
   private TextField addAppointmentLocationText;
 
   @FXML
-  // private ComboBox<String> addAppointmentDescriptionText;
   private TextField addAppointmentDescriptionText;
 
   @FXML
@@ -125,13 +123,9 @@ public class AddAppointmentController implements Initializable {
   Appointment selectedAppointment;
 
   private static int customerId;
-  // public static int customerId;
   public static int userId;
 
   private ObservableList<String> nameData = FXCollections.observableArrayList();
-
-  // never used
-  // private ObservableList<Appointment> customerSelected = FXCollections.observableArrayList();
 
   ObservableList<String> appointmentType = FXCollections.observableArrayList(
     "Presentation",
@@ -150,35 +144,8 @@ public class AddAppointmentController implements Initializable {
     "17:00:00"
   );
 
-  // ObservableList<String> appointmentTime = FXCollections.observableArrayList(
-  //   "09:",
-  //   "10:",
-  //   "11:",
-  //   "12:",
-  //   "13:",
-  //   "14:",
-  //   "15:",
-  //   "16:",
-  //   "17:"
-  // );
-
-  // ObservableList<String> minList= FXCollections.observableArrayList("00:00", "15:00", "30:00", "45:00");
-
-  // ObservableList<String> customerList = FXCollections.observableArrayList();
-
-  // ObservableList<String> appointmentLocation = FXCollections.observableArrayList(
-  //   "Phoenix",
-  //   "New York",
-  //   "London",
-  //   "Internet"
-  // );
-  // ObservableList<String> appointmentDescription = FXCollections.observableArrayList(
-  //   "There will be a meeting",
-  //   "Documentation Discussion",
-  //   "Planning & Coordination"
-  // );
-
   // Factory to create Cell of DatePicker
+  // Lambda
   private Callback<DatePicker, DateCell> disableWeekend() {
     final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) ->
       new DateCell() {
@@ -207,31 +174,6 @@ public class AddAppointmentController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    // DataProvider.getAllAppointmentsTableList().clear();
-
-    // addCustomerTableView.setItems(
-    //   DataProvider.getSelectedAppointmentsForCustomer()
-    // );
-
-    // DataProvider populateAppointments = new DataProvider();
-    // populateAppointments.populateAppointmentTable();
-
-    // addAppointmentCustomerIDColumn.setCellValueFactory(
-    //   new PropertyValueFactory<>("customerId")
-    // );
-    // addAppointmentIDColumn.setCellValueFactory(
-    //   new PropertyValueFactory<>("appointmentId")
-    // );
-    // addAppointmentLocationColumn.setCellValueFactory(
-    //   new PropertyValueFactory<>("location")
-    // );
-    // addAppointmentLocalDateColumn.setCellValueFactory(
-    //   new PropertyValueFactory<>("url")
-    // );
-    // addAppointmentUTCDateColumn.setCellValueFactory(
-    //   new PropertyValueFactory<>("start")
-    // );
-
     // Set options for Customer
     try {
       Statement statement = DBConnection.getConnection().createStatement();
@@ -257,18 +199,6 @@ public class AddAppointmentController implements Initializable {
     // Set options for Time ComboBox
     addAppointmentStartTimeComboBox.setItems(appointmentTime);
     addAppointmentEndTimeComboBox.setItems(appointmentTime);
-    // addAppointmentDescriptionText.setItems(appointmentDescription);
-    // addAppointmentLocationText.setItems(appointmentLocation);
-
-    // Disable selection of weekends and past days
-    // addAppointmentDatePicker.setDayCellFactory(picker -> new DateCell() {
-    //   @Override
-    //   public void updateItem(LocalDate date, boolean empty) {
-    //       super.updateItem(date, empty);
-    //       setDisable(empty || date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek == DayOfWeek.SUNDAY);
-    //   }
-    // });
-    // addAppointmentDatePicker.setEditable(false);
 
     // DatePicker - Set default day to today
     addAppointmentDatePicker.setValue(LocalDate.now());
@@ -278,11 +208,6 @@ public class AddAppointmentController implements Initializable {
     // Disable text field editing
     addAppointmentDatePicker.getEditor().setDisable(true);
   }
-
-  /* -------------------------------------------------------------- */
-  // public void setSelectedCustomerId(int customerIdValue) {
-  //   customerId = customerIdValue;
-  // }
 
   /* -------------------------------------------------------------- */
   public void setSelectedUserId(String selectedUserName) { // Called in login screen
@@ -307,13 +232,8 @@ public class AddAppointmentController implements Initializable {
   @FXML
   private void saveAppointmentHandler(ActionEvent event)
     throws IOException, ParseException, ClassNotFoundException, SQLException {
-    // add code for selecting user from list
-
-    // old code: if this customer already has appointments?
-    // if (addAppointmentCustomerIDColumn.getCellData(0) != null) {
-    //   customerId = addAppointmentCustomerIDColumn.getCellData(0);
-    // }
-
+    // Assign customer ID from selected drop list item. 
+    // Customer drop list corresponds to customer table  
     customerId =
       addAppointmentNameCombo.getSelectionModel().getSelectedIndex() + 1;
 
@@ -499,39 +419,19 @@ public class AddAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   @FXML
   private void backAppointmentHandler(ActionEvent event) throws IOException {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    alert.setTitle("Alert!");
-    alert.setHeaderText("Warning");
-    alert.setContentText(
-      "This will clear all text field vlaues, do you want to continue?"
-    );
-    //Lambda expression to handle alert back to mainscreen
-    alert
-      .showAndWait()
-      .ifPresent(
-        (
-          response -> {
-            if (response == ButtonType.OK) {
-              Parent main = null;
-              try {
-                main =
-                  FXMLLoader.load(
-                    getClass().getResource("/View_Controller/MainScreen.fxml")
-                  );
-                Scene scene = new Scene(main);
+    Alert alert = new Alert(AlertType.CONFIRMATION, "You will lose any entered data. Continue?", ButtonType.YES);
 
-                Stage stage = (Stage) ((Node) event.getSource()).getScene()
-                  .getWindow();
-                stage.setScene(scene);
+    Optional<ButtonType> result = alert.showAndWait();
 
-                stage.show();
-              } catch (IOException ex) {
-                ex.printStackTrace();
-              }
-            }
-          }
-        )
-      );
+    if (result.get() == ButtonType.YES){
+      // user chooses YES
+      Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+      Object scene = FXMLLoader.load(getClass().getResource("/View_Controller/AppointmentScreen.fxml"));
+      stage.setScene(new Scene((Parent) scene));
+      stage.show();
+    } else {
+      // user closes the dialog
+    }
   }
 
   /* -------------------------------------------------------------- */
@@ -592,9 +492,9 @@ public class AddAppointmentController implements Initializable {
       if (checkAppointmentTimes.next()) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Error");
-        alert.setHeaderText("Invalid time interval");
+        alert.setHeaderText("Invalid time");
         alert.setContentText(
-          "There is a customer who already has an appointment within this time frame. Please select an approiate time interval!"
+          "This time is unavailable. Choose another time!"
         );
         alert.showAndWait();
         return false;
@@ -616,6 +516,9 @@ Disable dates
 https://stackoverflow.com/questions/41001703/how-to-customize-datepicker-in-javafx-so-that-i-can-restrict-the-user-to-not-be
 https://stackoverflow.com/questions/35907325/how-to-set-minimum-and-maximum-date-in-datepicker-calander-in-javafx8
 https://stackoverflow.com/questions/48238855/how-to-disable-past-dates-in-datepicker-of-javafx-scene-builder
+
+https://www.geeksforgeeks.org/javafx-alert-with-examples/
+https://stackoverflow.com/questions/39900229/alert-in-java-fx
 
 --------------------------------------------------------------------
 */

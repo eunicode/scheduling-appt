@@ -364,68 +364,6 @@ public class AppointmentScreenController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
-  // @FXML
-  // void searchTableSorterHandler(ActionEvent event) {
-  //   DataProvider.getAppointmentsByMonth().clear();
-  //   DataProvider.getAppointmentsByWeek().clear();
-
-  //   if (viewByMonthRadioButton.isSelected()) {
-  //     String selectedMonth = viewByComboBox.getValue();
-  //     DataProvider.setMonthlyView(selectedMonth);
-  //   }
-
-  //   if (viewByWeekRadioButton.isSelected()) {
-  //     int numberOfWeeks = 0;
-
-  //     if (viewByComboBox.getValue() == "Previous Week") {
-  //       numberOfWeeks = -1;
-  //     } else if (viewByComboBox.getValue() == "This Week") {
-  //       numberOfWeeks = 0;
-  //     } else {
-  //       numberOfWeeks = 1;
-  //     }
-
-  //     DataProvider.setWeeklyView(numberOfWeeks);
-  //   }
-
-  //   sortAppointment();
-
-  //   //Lambda expressions to populate appointment table
-  //   customerNameColumn.setCellValueFactory(
-  //     new PropertyValueFactory<>("customerName")
-  //   );
-
-  //   customerContactColumn.setCellValueFactory(
-  //     appointment ->
-  //       new SimpleStringProperty(appointment.getValue().getContact())
-  //   );
-
-  //   appointmentTitleColumn.setCellValueFactory(
-  //     appointment -> new SimpleStringProperty(appointment.getValue().getTitle())
-  //   );
-  //   appointmentLocationColumn.setCellValueFactory(
-  //     appointment ->
-  //       new SimpleStringProperty(appointment.getValue().getLocation())
-  //   );
-  //   appointmentDescriptionColumn.setCellValueFactory(
-  //     appointment ->
-  //       new SimpleStringProperty(appointment.getValue().getDescription())
-  //   );
-  //   appointmentStartColumn.setCellValueFactory(
-  //     appointment -> new SimpleStringProperty(appointment.getValue().getStart())
-  //   );
-  //   appointmentEndColumn.setCellValueFactory(
-  //     appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
-  //   );
-
-  //   if (viewByMonthRadioButton.isSelected()) {
-  //     appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
-  //   } else {
-  //     appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
-  //   }
-  // }
-
-  /* -------------------------------------------------------------- */
   @FXML
   private void appointmentTableAddHandler(ActionEvent event)
     throws IOException {
@@ -545,61 +483,6 @@ public class AppointmentScreenController implements Initializable {
       System.out.println(ex.getMessage());
     }
   }
-
-  /* -------------------------------------------------------------- */
-  // public void sortAppointment() {
-  //   try {
-  //     Statement statement = DBConnection.getConnection().createStatement();
-
-  //     String getCustomerName =
-  //       "SELECT customer.customerName FROM appointment JOIN customer ON customer.customerId = appointment.customerId " +
-  //       "GROUP BY appointment.contact, MONTH(start), start";
-
-  //     ResultSet customerNameResults = statement.executeQuery(getCustomerName);
-
-  //     while (customerNameResults.next()) {
-  //       String customerName = customerNameResults.toString();
-  //       customerNameColumn.setCellValueFactory(
-  //         new PropertyValueFactory<>(customerName)
-  //       );
-  //     }
-  //   } catch (SQLException ex) {
-  //     System.out.println("Error " + ex.getMessage());
-  //   }
-
-  //   //Lambda expressions to populate appointment table
-  //   // Pros:
-  //   customerNameColumn.setCellValueFactory(
-  //     new PropertyValueFactory<>("customerName")
-  //   );
-  //   customerContactColumn.setCellValueFactory(
-  //     appointment ->
-  //       new SimpleStringProperty(appointment.getValue().getContact())
-  //   );
-  //   appointmentTitleColumn.setCellValueFactory(
-  //     appointment -> new SimpleStringProperty(appointment.getValue().getTitle())
-  //   );
-  //   appointmentLocationColumn.setCellValueFactory(
-  //     appointment ->
-  //       new SimpleStringProperty(appointment.getValue().getLocation())
-  //   );
-  //   appointmentDescriptionColumn.setCellValueFactory(
-  //     appointment ->
-  //       new SimpleStringProperty(appointment.getValue().getDescription())
-  //   );
-  //   appointmentStartColumn.setCellValueFactory(
-  //     appointment -> new SimpleStringProperty(appointment.getValue().getStart())
-  //   );
-  //   appointmentEndColumn.setCellValueFactory(
-  //     appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
-  //   );
-
-  //   if (viewByMonthRadioButton.isSelected()) {
-  //     appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
-  //   } else {
-  //     appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
-  //   }
-  // }
 
   /* -------------------------------------------------------------- */
   @FXML

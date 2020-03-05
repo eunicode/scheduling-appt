@@ -105,20 +105,6 @@ public class ReportScreenController implements Initializable {
 
       ResultSet apptTypeRS = statement.executeQuery(apptTypeQuery);
 
-      // Create cell value factories
-      // Use lambdas. It is more flexible than
-      // monthApptCol.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-      //   public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-      //       return new SimpleStringProperty(param.getValue().get(0).toString());
-      //   }
-      // });
-
-      // typeApptCol.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-      //   public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-      //       return new SimpleStringProperty(param.getValue().get(1).toString());
-      //   }
-      // });
-
       // Create columns and cell value factories
       // Use lambdas. It is more flexible than
       for (int i = 0; i < apptTypeRS.getMetaData().getColumnCount(); i++) {
@@ -283,8 +269,8 @@ TODO
 Make properties private and use property accessor methods, along with get and set methods.
 
 --------------------------------------------------------------------
-Java: setCellValuefactory; Lambda vs. PropertyValueFactory; advantages/disadvantages
-https://stackoverflow.com/questions/38049734/java-setcellvaluefactory-lambda-vs-propertyvaluefactory-advantages-disadvant
+Java: setCellValuefactory; Lambd a vs. PropertyValueFactory; advantages/disadvantages
+https://stackoverflow.com/questions/38049734/java-setcellvaluefactory-lambd a-vs-propertyvaluefactory-advantages-disadvant
 
 --------------------------------------------------------------------
 "SELECT count(*) FROM appointment WHERE date_format(start, '%m') = '01' AND type = 'Presentation' " +

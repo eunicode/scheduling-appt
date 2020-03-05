@@ -64,7 +64,7 @@ Writing a function inside the main method
 https://stackoverflow.com/questions/20888208/writing-a-function-inside-the-main-method-java
 
 you can't declare a method inside another method.
-Unless you use Java 8's Closure/Lambda functionality
+Unless you use Java 8's Closure/Lambd a functionality
 
 --------------------------------------------------------------------
 STATIC METHODS
