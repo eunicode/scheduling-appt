@@ -24,7 +24,7 @@ public class Customer {
   private String postalCode;
   private String phone;
 
-  public ObservableList<Appointment> associatedAppointments = FXCollections.observableArrayList();
+  public ObservableList<Appointment> appointmentsForCustomer = FXCollections.observableArrayList();
 
   // Constructor
   public Customer() {} // no args
@@ -148,7 +148,7 @@ public class Customer {
   }
 
   public void addAppointment(Appointment appointment) {
-    associatedAppointments.add(appointment);
+    appointmentsForCustomer.add(appointment);
   }
 }
 /* =================================================================  

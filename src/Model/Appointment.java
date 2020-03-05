@@ -209,7 +209,7 @@ public class Appointment {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
 
-      ResultSet upcomingAppointments = statement.executeQuery(
+      ResultSet todaysAppointmentsRS = statement.executeQuery(
         "SELECT customer.customerName, start " + 
         "FROM appointment " + 
         "INNER JOIN customer " + 
@@ -217,41 +217,40 @@ public class Appointment {
         "WHERE DATE(start) = curdate()"
       );
 
-      LocalTime currentTime = LocalTime.now();
+      LocalTime currentLocalTime = LocalTime.now();
 
       // Iterate upcoming appointments
-      while (upcomingAppointments.next()) {
-        String customerName = upcomingAppointments.getString("customerName");
-        String startTime = upcomingAppointments.getString("start");
+      while (todaysAppointmentsRS.next()) {
+        String customerName = todaysAppointmentsRS.getString("customerName");
+        String startTime = todaysAppointmentsRS.getString("start");
 
-        DateTimeFormatter formateDateTime = DateTimeFormatter.ofPattern(
+        DateTimeFormatter dateFormatMask = DateTimeFormatter.ofPattern(
           "yyyy-MM-dd HH:mm:ss.S"
         );
 
-        LocalDateTime localFormattedTime = LocalDateTime.parse(
+        LocalDateTime localTimeF = LocalDateTime.parse(
           startTime,
-          formateDateTime
+          dateFormatMask
         );
 
-        ZonedDateTime zonedFormattedTime = localFormattedTime.atZone(
+        ZonedDateTime zonedTimeF_UTC = localTimeF.atZone(
           ZoneId.of("UTC")
         );
 
-        ZoneId localZoneId = ZoneId.systemDefault();
+        ZoneId zoneIdLocal = ZoneId.systemDefault();
 
-        ZonedDateTime zonedUTCTime = zonedFormattedTime.withZoneSameInstant(
-          localZoneId
+        ZonedDateTime zonedTimeUTC = zonedTimeF_UTC.withZoneSameInstant(
+          zoneIdLocal
         );
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("kk:mm");
+
+        DateTimeFormatter formatMaskHrMin = DateTimeFormatter.ofPattern("kk:mm");
 
         LocalTime localTime = LocalTime.parse(
-          zonedUTCTime.toString().substring(11, 16),
-          format
+          zonedTimeUTC.toString().substring(11, 16),
+          formatMaskHrMin
         );
 
-        String appointmentTime = localTime.toString();
-
-        long difference = ChronoUnit.MINUTES.between(currentTime, localTime);
+        long difference = ChronoUnit.MINUTES.between(currentLocalTime, localTime);
 
         if (difference > 0 && difference <= 15) {
           if (getLocale().toString().equals("ko_KR")) {
@@ -296,5 +295,9 @@ https://stackoverflow.com/questions/36968122/how-to-set-javafx-datepicker-value-
 --------------------------------------------------------------------
 Retrieving and Modifying Values from Result Sets
 https://docs.oracle.com/javase/tutorial/jdbc/basics/retrieving.html
+
+ZonedDateTime withZoneSameInstant()
+https://www.geeksforgeeks.org/zoneddatetime-withzonesameinstant-method-in-java-with-examples/
+
 */
 /* -------------------------------------------------------------- */

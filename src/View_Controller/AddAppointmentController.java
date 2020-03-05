@@ -112,6 +112,7 @@ public class AddAppointmentController implements Initializable {
 
   private static int customerId = 0;
   public static int userId;
+  private String selectedCustomerName = "";
 
   private final ObservableList<String> nameData = FXCollections.observableArrayList();
 
@@ -286,6 +287,7 @@ public class AddAppointmentController implements Initializable {
       return false;
     }
 
+    // If start and end times are not the same or invalid, check if the interval is valid
     try {
       Statement statement = DBConnection.getConnection().createStatement();
       String currentAppointments =
@@ -303,6 +305,7 @@ public class AddAppointmentController implements Initializable {
         currentAppointments
       );
 
+      // If there appointments with the given times, show alert
       if (checkAppointmentTimes.next()) {
         Alert alert = new Alert(
           Alert.AlertType.ERROR,
@@ -314,6 +317,8 @@ public class AddAppointmentController implements Initializable {
     } catch (SQLException ex) {
       ex.getMessage();
     }
+
+    // If the times pass all 3 tests, return true
     return true;
   }
 
@@ -324,7 +329,8 @@ public class AddAppointmentController implements Initializable {
     // Assign customer ID from selected drop list item.
     // Customer drop list corresponds to customer table
     customerId =
-      addAppointmentNameCombo.getSelectionModel().getSelectedIndex() + 1;
+      addAppointmentNameCombo.getSelectionModel().getSelectedIndex() + 1; // This is not reliable for getting customerId, but it is being used to validate that customer is selected
+    selectedCustomerName = addAppointmentNameCombo.getValue();
     String title = addAppointmentTitleText.getText();
     String description = addAppointmentDescriptionText.getText();
     String location = addAppointmentLocationText.getText();
@@ -354,7 +360,7 @@ public class AddAppointmentController implements Initializable {
     String selectedStartDateTime = appointmentDate + " " + startTime;
     String selectedEndDateTime = appointmentDate + " " + endTime;
 
-    ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
+    ZoneId zoneIdLocal = ZoneId.of(TimeZone.getDefault().getID());
 
     DateTimeFormatter format = DateTimeFormatter.ofPattern(
       "yyyy-MM-dd HH:mm:ss"
@@ -371,13 +377,13 @@ public class AddAppointmentController implements Initializable {
 
     ZonedDateTime zonedStartLocal = ZonedDateTime.of(
       startDateTime,
-      localZoneId
+      zoneIdLocal
     );
     ZonedDateTime zonedStartUTC = zonedStartLocal.withZoneSameInstant(
       ZoneId.of("UTC")
     );
 
-    ZonedDateTime zonedEndLocal = ZonedDateTime.of(endDateTime, localZoneId);
+    ZonedDateTime zonedEndLocal = ZonedDateTime.of(endDateTime, zoneIdLocal);
     ZonedDateTime zonedEndUTC = zonedEndLocal.withZoneSameInstant(
       ZoneId.of("UTC")
     );
@@ -423,11 +429,21 @@ public class AddAppointmentController implements Initializable {
     String startConstructorValue = zonedStartLocal.toString();
     String endConstructorValue = zonedEndLocal.toString();
 
-    // If there is no overlap, execute SQL command
-
+    // If the times are kosher, and there is no overlap, execute SQL command
     if (validateAppointmentStart(testZonedStart, testZonedEnd)) {
       Statement statement = DBConnection.getConnection().createStatement();
+      Statement statement2 = DBConnection.getConnection().createStatement();
 
+      String nameQuery = "SELECT customerId " + 
+      "FROM customer " + 
+      "WHERE customerName = " + "'" + selectedCustomerName + "'";
+
+      ResultSet nameRS = statement2.executeQuery(nameQuery);
+
+      if (nameRS.next()) {
+          customerId = nameRS.getInt("customerId");
+      } 
+      
       String appointmentQuery =
         "INSERT INTO appointment(customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy)" +
         " VALUES (" +
@@ -489,7 +505,7 @@ public class AddAppointmentController implements Initializable {
       appointment.setStart(selectedStartDateTime);
       appointment.setEnd(selectedEndDateTime);
 
-      // Add appointmnet object to appointment ObservableList
+      // Add appointment object to appointment ObservableList
       DataProvider.addAppointment(appointment);
 
       // Return to appointment screen
@@ -500,6 +516,8 @@ public class AddAppointmentController implements Initializable {
       );
       stage.setScene(new Scene((Parent) scene));
       stage.show();
+    } else {
+      return;
     }
   }
 

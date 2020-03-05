@@ -28,90 +28,27 @@ public class DataProvider {
   // Constructor
   public DataProvider() {}
 
-  // Customer ObservableLists
-  public static ObservableList<Customer> allCustomersTableList = FXCollections.observableArrayList();
+  // Customer ObservableList
+  public static ObservableList<Customer> customersAllList = FXCollections.observableArrayList();
 
-  public static ObservableList<Customer> getAllCustomers() throws SQLException {
-    Statement statement = DBConnection.getConnection().createStatement();
-
-    String customerQuery =
-      "SELECT customer.customerId, customer.customerName, address.address, address.phone, address.postalCode, city.city, country.country " +
-      "FROM customer " +
-      "INNER JOIN address ON customer.addressId = address.addressId " +
-      "INNER JOIN city ON address.cityId = city.cityId " +
-      "INNER JOIN country ON city.countryId = country.countryId";
-
-    ResultSet customerResults = statement.executeQuery(customerQuery);
-
-    while (customerResults.next()) {
-      Customer customer = new Customer(
-        customerResults.getInt("customerId"),
-        customerResults.getString("customerName"),
-        customerResults.getString("address"),
-        customerResults.getString("city"),
-        customerResults.getString("country"),
-        customerResults.getString("postalCode"),
-        customerResults.getString("phone")
-      );
-      DataProvider.allCustomersTableList.add(customer);
-    }
-
-    return DataProvider.allCustomersTableList;
-  }
-
-  // Appointment ObservableLists
-  private static ObservableList<Appointment> allAppointmentsTableList = FXCollections.observableArrayList();
-  private static ObservableList<Appointment> selectedAppointmentsForCustomer = FXCollections.observableArrayList();
-  private static ObservableList<Appointment> appointmentsByWeek = FXCollections.observableArrayList();
-  private static ObservableList<Appointment> appointmentsByMonth = FXCollections.observableArrayList();
-
-  /* -------------------------------------------------------------- */
-  public static ObservableList<Appointment> getAllAppointments()
-    throws SQLException {
-    Statement statement = DBConnection.getConnection().createStatement();
-    String appointmentQuery =
-      "SELECT customer.customerName, appointment.appointmentId, customer.customerId, user.userId, appointment.title, appointment.description, appointment.location, appointment.contact, appointment.type, appointment.url, appointment.start, appointment.end " +
-      "FROM user " +
-      "INNER JOIN appointment ON user.userId = appointment.userId " +
-      "INNER JOIN customer ON appointment.customerId = customer.customerId";
-
-    ResultSet appointmentResults = statement.executeQuery(appointmentQuery);
-
-    while (appointmentResults.next()) {
-      Appointment appointment = new Appointment(
-        appointmentResults.getString("customerName"),
-        appointmentResults.getInt("appointmentId"),
-        appointmentResults.getInt("customerId"),
-        appointmentResults.getInt("userId"),
-        appointmentResults.getString("title"),
-        appointmentResults.getString("description"),
-        appointmentResults.getString("location"),
-        appointmentResults.getString("contact"),
-        appointmentResults.getString("type"),
-        appointmentResults.getString("url"),
-        appointmentResults.getString("start"),
-        appointmentResults.getString("end")
-      );
-
-      DataProvider.allAppointmentsTableList.add(appointment);
-    }
-
-    return DataProvider.allAppointmentsTableList;
-  }
-
+   // Appointment ObservableLists
+   private static final ObservableList<Appointment> appointmentsAllList = FXCollections.observableArrayList();
+   private static final ObservableList<Appointment> appointmentsWeekList = FXCollections.observableArrayList();
+   private static final ObservableList<Appointment> appointmentsMonthList = FXCollections.observableArrayList();
+ 
   /* -------------------------------------------------------------- */
   public static void addCustomer(Customer customer) {
-    allCustomersTableList.add(customer);
+    customersAllList.add(customer);
   }
 
   /* -------------------------------------------------------------- */
   public static void addAppointment(Appointment appointment) {
-    allAppointmentsTableList.add(appointment);
+    appointmentsAllList.add(appointment);
   }
 
   /* -------------------------------------------------------------- */
   public static ObservableList<Customer> getAllCustomersTableList() {
-    return allCustomersTableList;
+    return customersAllList;
   }
 
   /* -------------------------------------------------------------- */
@@ -231,7 +168,7 @@ public class DataProvider {
         DateTimeFormatter format = DateTimeFormatter.ofPattern(
           "yyyy-MM-dd HH:mm:ss"
         );
-        ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
+        ZoneId zoneIdLocal = ZoneId.of(TimeZone.getDefault().getID());
         ZoneId UTCZoneID = ZoneId.of("UTC");
 
         LocalDateTime startDateTime = LocalDateTime.parse(start, format);
@@ -241,10 +178,10 @@ public class DataProvider {
         ZonedDateTime zonedEndLocal = endDateTime.atZone(UTCZoneID);
 
         ZonedDateTime convertedStartTime = zonedStartLocal.withZoneSameInstant(
-          localZoneId
+          zoneIdLocal
         );
         ZonedDateTime convertedEndTime = zonedEndLocal.withZoneSameInstant(
-          localZoneId
+          zoneIdLocal
         );
 
         LocalDateTime startFinalTime = convertedStartTime.toLocalDateTime();
@@ -294,78 +231,18 @@ public class DataProvider {
   }
 
   /* -------------------------------------------------------------- */
-  public static ObservableList<Appointment> getSelectedAppointmentsForCustomer() {
-    return selectedAppointmentsForCustomer;
-  }
-
-  /* -------------------------------------------------------------- */
   public static ObservableList<Appointment> getAllAppointmentsTableList() {
-    return allAppointmentsTableList;
+    return appointmentsAllList;
   }
 
   /* -------------------------------------------------------------- */
   public static ObservableList<Appointment> getAppointmentsByWeek() {
-    return appointmentsByWeek;
+    return appointmentsWeekList;
   }
 
   /* -------------------------------------------------------------- */
   public static ObservableList<Appointment> getAppointmentsByMonth() {
-    return appointmentsByMonth;
-  }
-
-  /* -------------------------------------------------------------- */
-  public static void setSelectedAppointmentsForCustomer(int selectedCustomer) {
-    try {
-      Statement statement = DBConnection.getConnection().createStatement();
-      
-      getSelectedAppointmentsForCustomer().clear();
-
-      ResultSet associatedAppointments = statement.executeQuery(
-        "SELECT customerId, appointmentId, location, start " + 
-        "FROM appointment WHERE customerId = " + selectedCustomer
-      );
-
-      while (associatedAppointments.next()) {
-        int customerId = associatedAppointments.getInt(1);
-        int appointmentId = associatedAppointments.getInt(2);
-        String location = associatedAppointments.getString(3);
-        String start = associatedAppointments.getString(4);
-
-        start = start.substring(0, start.length() - 2);
-
-        DateTimeFormatter format = DateTimeFormatter.ofPattern(
-          "yyyy-MM-dd HH:mm:ss"
-        );
-        ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
-        ZoneId UTCZoneID = ZoneId.of("UTC");
-
-        LocalDateTime startDateTime = LocalDateTime.parse(start, format);
-
-        ZonedDateTime zonedStartLocal = startDateTime.atZone(UTCZoneID);
-
-        ZonedDateTime convertedStartTime = zonedStartLocal.withZoneSameInstant(
-          localZoneId
-        );
-
-        LocalDateTime startFinalTime = convertedStartTime.toLocalDateTime();
-
-        String adjustedStart = startFinalTime.toString();
-
-        String url = adjustedStart.replace("T", " ");
-
-        Appointment appointment = new Appointment();
-
-        appointment.setCustomerId(customerId);
-        appointment.setAppointmentId(appointmentId);
-        appointment.setLocation(location);
-        appointment.setStart(start);
-        appointment.setUrl(url);
-        
-        selectedAppointmentsForCustomer.add(appointment);
-      }
-    } catch (SQLException e) {
-      System.out.println("Error: " + e.getMessage());
-    }
+    return appointmentsMonthList;
   }
 
   /* -------------------------------------------------------------- */
@@ -382,10 +259,10 @@ public class DataProvider {
         "WHERE YEARWEEK(start, 1) = YEARWEEK(CURDATE(), 1) " +
         "ORDER BY start ASC";
 
-      ResultSet weeklyAppointments = statement.executeQuery(query);
+      ResultSet appointmentsWeekRS = statement.executeQuery(query);
 
-      while (weeklyAppointments.next()) {
-        selectedAppointmentsByWeek.add(weeklyAppointments.getInt(1));
+      while (appointmentsWeekRS.next()) {
+        selectedAppointmentsByWeek.add(appointmentsWeekRS.getInt(1));
       }
 
       for (int appointmentId : selectedAppointmentsByWeek) {
@@ -416,7 +293,8 @@ public class DataProvider {
         appointment.setDescription(description);
         appointment.setStart(start);
         appointment.setEnd(end);
-        appointmentsByWeek.add(appointment);
+
+        appointmentsWeekList.add(appointment);
       }
     } catch (SQLException e) {
       System.out.println("Error: " + e.getMessage());
@@ -471,7 +349,7 @@ public class DataProvider {
         appointment.setStart(start);
         appointment.setEnd(end);
 
-        appointmentsByMonth.add(appointment);
+        appointmentsMonthList.add(appointment);
       }
     } catch (SQLException e) {
       System.out.println("Error: " + e.getMessage());

@@ -191,8 +191,8 @@ public class ModifyAppointmentController implements Initializable {
         return;
       }
 
-      // Get ID of system's default timezone
-      ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
+      // Get zone ID of system's default timezone
+      ZoneId zoneIdLocal = ZoneId.of(TimeZone.getDefault().getID());
 
       // Format mask - format used to translate string to LocalDateTime
       DateTimeFormatter format = DateTimeFormatter.ofPattern(
@@ -210,7 +210,7 @@ public class ModifyAppointmentController implements Initializable {
       // Get local ZonedDateTime: start
       ZonedDateTime zonedStartLocal = ZonedDateTime.of(
         startDateTime, // LocalDateTime
-        localZoneId // ZoneId
+        zoneIdLocal // ZoneId
       );
 
       // Get UTC ZonedDateTime: start
@@ -219,7 +219,7 @@ public class ModifyAppointmentController implements Initializable {
       );
 
       // Get local ZonedDateTime: end
-      ZonedDateTime zonedEndLocal = ZonedDateTime.of(endDateTime, localZoneId);
+      ZonedDateTime zonedEndLocal = ZonedDateTime.of(endDateTime, zoneIdLocal);
 
       // Get UTC zoned date-time: end
       ZonedDateTime zonedEndUTC = zonedEndLocal.withZoneSameInstant(
