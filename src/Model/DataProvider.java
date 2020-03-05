@@ -6,20 +6,15 @@
 package Model;
 
 import Utilities.DBConnection;
-import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -157,10 +152,8 @@ public class DataProvider {
         addressTableData.next();
 
         String address = addressTableData.getString("address");
-        String cityId = addressTableData.getString("cityId");
         String postalCode = addressTableData.getString("postalCode");
         String phone = addressTableData.getString("phone");
-
         int cityID = addressTableData.getInt("cityId");
 
         ResultSet cityTableData = statement.executeQuery(
@@ -323,22 +316,13 @@ public class DataProvider {
   /* -------------------------------------------------------------- */
   public static void setSelectedAppointmentsForCustomer(int selectedCustomer) {
     try {
-      ArrayList<Integer> selectedCustomerAppointments = new ArrayList<>();
-
       Statement statement = DBConnection.getConnection().createStatement();
-      ResultSet selectedAppointments = statement.executeQuery(
-        "SELECT * FROM appointment WHERE customerId =" + selectedCustomer
-      );
-
-      while (selectedAppointments.next()) {
-        selectedCustomerAppointments.add(selectedAppointments.getInt(1));
-      }
-
+      
       getSelectedAppointmentsForCustomer().clear();
 
       ResultSet associatedAppointments = statement.executeQuery(
-        "SELECT customerId, appointmentId, location, start FROM appointment WHERE customerId =" +
-        selectedCustomer
+        "SELECT customerId, appointmentId, location, start " + 
+        "FROM appointment WHERE customerId = " + selectedCustomer
       );
 
       while (associatedAppointments.next()) {
@@ -376,6 +360,7 @@ public class DataProvider {
         appointment.setLocation(location);
         appointment.setStart(start);
         appointment.setUrl(url);
+        
         selectedAppointmentsForCustomer.add(appointment);
       }
     } catch (SQLException e) {

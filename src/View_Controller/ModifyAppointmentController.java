@@ -70,9 +70,6 @@ public class ModifyAppointmentController implements Initializable {
   private TextField modifyLocationComboBox;
 
   @FXML
-  private TextField modifyURLText;
-
-  @FXML
   private TextField modifyDescriptionComboBox;
 
   @FXML
@@ -130,6 +127,8 @@ public class ModifyAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   /**
    * Initializes the controller class.
+     * @param url
+     * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -173,6 +172,7 @@ public class ModifyAppointmentController implements Initializable {
 
       if (modifyTypeText.getSelectionModel().isEmpty()) {
         Alert alert = new Alert(Alert.AlertType.WARNING, "Type is unselected");
+        alert.showAndWait();
         return;
       }
 
@@ -190,9 +190,6 @@ public class ModifyAppointmentController implements Initializable {
         alert.showAndWait();
         return;
       }
-
-      // Get current date-time from system clock in default timezone
-      LocalDateTime localTime = LocalDateTime.now();
 
       // Get ID of system's default timezone
       ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());

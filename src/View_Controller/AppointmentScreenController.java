@@ -90,9 +90,6 @@ public class AppointmentScreenController implements Initializable {
   @FXML
   private ComboBox<String> viewByComboBox;
 
-  @FXML
-  private Button searchTableSorterButton;
-
   Stage stage;
   Parent scene;
   private Appointment selectedAppointment;

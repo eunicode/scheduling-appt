@@ -306,7 +306,7 @@ public class AddAppointmentController implements Initializable {
       if (checkAppointmentTimes.next()) {
         Alert alert = new Alert(
           Alert.AlertType.ERROR,
-          "These times are invalid"
+          "These times are unavailable because of overlap. Choose different times."
         );
         alert.showAndWait();
         return false; // boolean function

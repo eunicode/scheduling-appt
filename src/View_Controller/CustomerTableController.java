@@ -71,9 +71,6 @@ public class CustomerTableController implements Initializable {
   @FXML
   private Button backButton;
 
-  @FXML
-  private Button appointmentTableAddButton;
-
   Stage stage;
   Parent scene;
   private Customer selectedCustomer;

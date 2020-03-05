@@ -43,42 +43,6 @@ public class MainScreenController implements Initializable {
   @FXML
   private Label welcomeLabel;
 
-  @FXML
-  private Label optionsLabel;
-
-  @FXML
-  private Label customerLabel;
-
-  @FXML
-  private Label appointmentLabel;
-
-  @FXML
-  private Label reportLabel;
-
-  @FXML
-  private Label customerLabel1;
-
-  @FXML
-  private Label appointmentLabel1;
-
-  @FXML
-  private Label appointmentLabel2;
-
-  @FXML
-  private Label customerLabel2;
-
-  @FXML
-  private Label reportLabel1;
-
-  @FXML
-  private Label reportLabel2;
-
-  @FXML
-  private Label reportLabel3;
-
-  @FXML
-  private Label reportLabel4;
-
   /**
    * Initializes the controller class.
    * @param url
@@ -87,7 +51,7 @@ public class MainScreenController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle rb) {
     Appointment checkAppointments = new Appointment();
-    checkAppointments.setAppointmentAlert();
+    checkAppointments.upcomingAppointmentAlert();
   }
 
   @FXML

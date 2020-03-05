@@ -282,7 +282,6 @@ public class ModifyCustomerController implements Initializable {
 
     this.modifyCustomerText.setText(newCustomer.getCustomerName());
     this.modifyCustomerAddressText.setText((newCustomer.getAddress()));
-    // this.modifyCustomerCityText.setItems(cityIDList);
     this.modifyCustomerCityText.setText((newCustomer.getCity()));
     this.modifyCustomerCountryText.setText((newCustomer.getCountry()));
     this.modifyCustomerZipCodeText.setText((newCustomer.getPostalCode()));

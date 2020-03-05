@@ -8,21 +8,15 @@ package Model;
 import static View_Controller.LoginScreenController.getLocale;
 
 import Utilities.DBConnection;
-import View_Controller.LoginScreenController;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 /**
@@ -35,6 +29,7 @@ public class Appointment {
   // Class field names match `Appointment` table columns
   private int appointmentId;
   private int customerId;
+  private String customerName;
   private int userId;
   private String title;
   private String description;
@@ -45,8 +40,7 @@ public class Appointment {
   private LocalTime time;
   private String start;
   private String end;
-  private String customerName;
-
+  
   // Constructor
   public Appointment() {} // no args
 
@@ -211,30 +205,16 @@ public class Appointment {
   }
 
   /* -------------------------------------------------------------- */
-  public static String pullCustomerName(int customerId) throws SQLException {
-    Statement statement = DBConnection.getConnection().createStatement();
-    Customer customer = new Customer();
-
-    ResultSet customerTableData = statement.executeQuery(
-      "SELECT customerName from customer WHERE customerId =" + customerId
-    );
-
-    customerTableData.next();
-
-    String customerName = customerTableData.getString("customerName");
-
-    customer.setCustomerName(customerName);
-
-    return customerName;
-  }
-
-  /* -------------------------------------------------------------- */
-  public void setAppointmentAlert() {
+  public void upcomingAppointmentAlert() {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
 
       ResultSet upcomingAppointments = statement.executeQuery(
-        "SELECT customer.customerName, start FROM appointment JOIN customer ON customer.customerId = appointment.customerId WHERE DATE(start) = curdate()"
+        "SELECT customer.customerName, start " + 
+        "FROM appointment " + 
+        "INNER JOIN customer " + 
+        "ON customer.customerId = appointment.customerId " + 
+        "WHERE DATE(start) = curdate()"
       );
 
       LocalTime currentTime = LocalTime.now();

@@ -5,11 +5,6 @@
  */
 package Model;
 
-import Utilities.DBConnection;
-import View_Controller.LoginScreenController;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -82,16 +77,32 @@ public class Customer {
     return customerID;
   }
 
-  public void setCustomerID(int customerID) {
-    this.customerID = customerID;
-  }
-
   public String getCustomerName() {
     return customerName;
   }
 
-  public void setCustomerName(String customerName) {
-    this.customerName = customerName;
+  public String getAddress() {
+    return address;
+  }
+
+  public String getAddress2() {
+    return address2;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public String getCountry() {
+    return Country;
+  }
+
+  public String getPostalCode() {
+    return postalCode;
+  }
+
+  public String getPhone() {
+    return phone;
   }
 
   public int getActive() {
@@ -100,60 +111,40 @@ public class Customer {
 
   /* -------------------------------------------------------------- */
   // Setters
-  public void setActive(int active) {
-    this.active = active;
+  public void setCustomerID(int customerID) {
+    this.customerID = customerID;
+  }
+  
+  public void setCustomerName(String customerName) {
+    this.customerName = customerName;
   }
 
-  public String getAddress() {
-    return address;
+  public void setActive(int active) {
+    this.active = active;
   }
 
   public void setAddress(String address) {
     this.address = address;
   }
 
-  public String getAddress2() {
-    return address2;
-  }
-
   public void setAddress2(String address2) {
     this.address2 = address2;
-  }
-
-  public String getCity() {
-    return city;
   }
 
   public void setCity(String city) {
     this.city = city;
   }
 
-  public String getCountry() {
-    return Country;
-  }
-
   public void setCountry(String Country) {
     this.Country = Country;
-  }
-
-  public String getPostalCode() {
-    return postalCode;
   }
 
   public void setPostalCode(String postalCode) {
     this.postalCode = postalCode;
   }
 
-  public String getPhone() {
-    return phone;
-  }
-
   public void setPhone(String phone) {
     this.phone = phone;
-  }
-
-  public ObservableList<Appointment> getassociatedAppointments() {
-    return associatedAppointments;
   }
 
   public void addAppointment(Appointment appointment) {
