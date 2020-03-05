@@ -82,7 +82,7 @@ public class ModifyAppointmentController implements Initializable {
   int selectedIndex;
 
   // hour
-  ObservableList<String> appointmentTime = FXCollections.observableArrayList(
+  ObservableList<String> apptTimeOptions = FXCollections.observableArrayList(
     "09:00:00",
     "10:00:00",
     "11:00:00",
@@ -133,8 +133,8 @@ public class ModifyAppointmentController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle rb) {
     modifyTypeText.setItems(appointmentType);
-    modifyStartComboBox.setItems(appointmentTime);
-    modifyEndComboBox.setItems(appointmentTime);
+    modifyStartComboBox.setItems(apptTimeOptions);
+    modifyEndComboBox.setItems(apptTimeOptions);
 
     // Disable selecting weekends, past dates
     Callback<DatePicker, DateCell> dayCellFactory = this.disableWeekend();
@@ -296,7 +296,7 @@ public class ModifyAppointmentController implements Initializable {
 
         //
         DataProvider
-          .getAllAppointmentsTableList()
+          .getAppointmentsAllList()
           .set(selectedIndex, appointment);
 
         Statement statement = DBConnection.getConnection().createStatement();

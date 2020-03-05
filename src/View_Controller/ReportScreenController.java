@@ -137,11 +137,11 @@ public class ReportScreenController implements Initializable {
 
   /* -------------------------------------------------------------- */
   public void buildConsultantData() {
-    DataProvider.getAllAppointmentsTableList().clear();
-    reportConsultantTable.setItems(DataProvider.getAllAppointmentsTableList());
+    DataProvider.getAppointmentsAllList().clear();
+    reportConsultantTable.setItems(DataProvider.getAppointmentsAllList());
 
     DataProvider populateAppointments = new DataProvider();
-    DataProvider.populateAppointmentTable();
+    DataProvider.createAppointmentObjectObservableList();
 
     consultantCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
     customerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));

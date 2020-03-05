@@ -107,11 +107,11 @@ public class AppointmentScreenController implements Initializable {
     this.viewByMonthRadioButton.setToggleGroup(weekOrMonthToggleGroup);
     this.viewByAllRadioButton.setToggleGroup(weekOrMonthToggleGroup);
 
-    DataProvider.getAllAppointmentsTableList().clear();
-    appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
+    DataProvider.getAppointmentsAllList().clear();
+    appointmentTableView.setItems(DataProvider.getAppointmentsAllList());
 
     DataProvider populateAppointments = new DataProvider();
-    DataProvider.populateAppointmentTable();
+    DataProvider.createAppointmentObjectObservableList();
 
     // Have first appointment selected by default
     appointmentTableView.getSelectionModel().selectFirst();
@@ -144,11 +144,11 @@ public class AppointmentScreenController implements Initializable {
   /* -------------------------------------------------------------- */
   @FXML
   private void viewByWeekHandler(ActionEvent event) {
-    DataProvider.getAppointmentsByMonth().clear();
-    DataProvider.getAppointmentsByWeek().clear();
+    DataProvider.getAppointmentsMonth().clear();
+    DataProvider.getAppointmentsWeek().clear();
 
     if (viewByWeekRadioButton.isSelected()) {
-      DataProvider.setWeeklyView();
+      DataProvider.createAppointmentWeekList();
     }
 
     // Lambda: A lambda is used to bind columns to values.
@@ -182,22 +182,22 @@ public class AppointmentScreenController implements Initializable {
 
     // Change table view depending on selected radio button
     if (viewByWeekRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
+      appointmentTableView.setItems(DataProvider.getAppointmentsWeek());
     } else if (viewByMonthRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
+      appointmentTableView.setItems(DataProvider.getAppointmentsMonth());
     } else if (viewByAllRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
+      appointmentTableView.setItems(DataProvider.getAppointmentsAllList());
     }
   }
 
   /* -------------------------------------------------------------- */
   @FXML
   private void viewByMonthHandler(ActionEvent event) {
-    DataProvider.getAppointmentsByMonth().clear();
-    DataProvider.getAppointmentsByWeek().clear();
+    DataProvider.getAppointmentsMonth().clear();
+    DataProvider.getAppointmentsWeek().clear();
 
     if (viewByMonthRadioButton.isSelected()) {
-      DataProvider.setMonthlyView();
+      DataProvider.createAppointmentMonthList();
     }
 
     customerNameColumn.setCellValueFactory(
@@ -227,23 +227,23 @@ public class AppointmentScreenController implements Initializable {
     );
 
     if (viewByWeekRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
+      appointmentTableView.setItems(DataProvider.getAppointmentsWeek());
     } else if (viewByMonthRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
+      appointmentTableView.setItems(DataProvider.getAppointmentsMonth());
     } else if (viewByAllRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
+      appointmentTableView.setItems(DataProvider.getAppointmentsAllList());
     }
   }
 
   /* -------------------------------------------------------------- */
   @FXML
   private void viewByAllHandler(ActionEvent event) {
-    DataProvider.getAllAppointmentsTableList().clear();
-    DataProvider.getAppointmentsByMonth().clear();
-    DataProvider.getAppointmentsByWeek().clear();
+    DataProvider.getAppointmentsAllList().clear();
+    DataProvider.getAppointmentsMonth().clear();
+    DataProvider.getAppointmentsWeek().clear();
 
     DataProvider populateAppointments = new DataProvider();
-    populateAppointments.populateAppointmentTable();
+    populateAppointments.createAppointmentObjectObservableList();
 
     customerNameColumn.setCellValueFactory(
       new PropertyValueFactory<>("customerName")
@@ -269,11 +269,11 @@ public class AppointmentScreenController implements Initializable {
     appointmentEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
 
     if (viewByWeekRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
+      appointmentTableView.setItems(DataProvider.getAppointmentsWeek());
     } else if (viewByMonthRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
+      appointmentTableView.setItems(DataProvider.getAppointmentsMonth());
     } else if (viewByAllRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
+      appointmentTableView.setItems(DataProvider.getAppointmentsAllList());
     }
   }
 
@@ -345,7 +345,7 @@ public class AppointmentScreenController implements Initializable {
       int deletedCustomer = statement.executeUpdate(deleteCustomer);
 
       if (deletedCustomer > 0) {
-        DataProvider.getAllAppointmentsTableList().remove(appointment);
+        DataProvider.getAppointmentsAllList().remove(appointment);
         System.out.println(
           "Appointment(s) were deleted from appointment table"
         );

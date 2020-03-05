@@ -47,67 +47,84 @@ public class DataProvider {
   }
 
   /* -------------------------------------------------------------- */
-  public static ObservableList<Customer> getAllCustomersTableList() {
+  public static ObservableList<Customer> getCustomersAllList() {
     return customersAllList;
   }
 
   /* -------------------------------------------------------------- */
-  public static void populateCustomerTable() {
+  public static void createCustomerObjectObservableList() {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
 
-      ObservableList<Customer> allCustomers = DataProvider.getAllCustomersTableList();
+      // Array of customer objects - set two observablelists equal to each other, export
+      ObservableList<Customer> customerObjectList = DataProvider.getCustomersAllList();
 
-      ResultSet selectCustomerID = statement.executeQuery(
-        "SELECT customerId FROM customer WHERE active = 1"
+      ResultSet customerIdRS = statement.executeQuery(
+        "SELECT customerId FROM customer"
       );
 
-      ArrayList<Integer> activeCustomerID = new ArrayList<>();
+      // Create array of customer IDs
+      ArrayList<Integer> customerIdArray = new ArrayList<>();
 
-      while (selectCustomerID.next()) {
-        activeCustomerID.add(selectCustomerID.getInt(1));
+      // Add customerIDs to customer ArrayList
+      while (customerIdRS.next()) {
+        customerIdArray.add(customerIdRS.getInt(1));
       }
 
-      for (int customerIDLoop : activeCustomerID) {
+      // Iterate all customers
+      for (int custID : customerIdArray) {
+        // Create customer object
         Customer customer = new Customer();
-        ResultSet customerTableData = statement.executeQuery(
+        
+        // Create customer resultset
+        ResultSet customerRS = statement.executeQuery(
           "SELECT customerId, customerName, addressId FROM customer WHERE customerId = '" +
-          customerIDLoop +
+          custID +
           "'"
         );
-        customerTableData.next();
 
-        int customerID = customerTableData.getInt("customerId");
-        int addressID = customerTableData.getInt("addressId");
-        String customerName = customerTableData.getString("customerName");
+        customerRS.next();
 
-        ResultSet addressTableData = statement.executeQuery(
+        // Get data from customer resultset
+        int customerID = customerRS.getInt("customerId");
+        int addressID = customerRS.getInt("addressId");
+        String customerName = customerRS.getString("customerName");
+
+        // Create address resultset
+        ResultSet addressRS = statement.executeQuery(
           "SELECT address, cityId, postalCode, phone FROM address WHERE addressId = '" +
           addressID +
           "'"
         );
-        addressTableData.next();
 
-        String address = addressTableData.getString("address");
-        String postalCode = addressTableData.getString("postalCode");
-        String phone = addressTableData.getString("phone");
-        int cityID = addressTableData.getInt("cityId");
+        addressRS.next();
 
-        ResultSet cityTableData = statement.executeQuery(
+        // Get data from address resultset
+        String address = addressRS.getString("address");
+        String postalCode = addressRS.getString("postalCode");
+        String phone = addressRS.getString("phone");
+        int cityID = addressRS.getInt("cityId");
+
+        // Create city resultset
+        ResultSet cityRS = statement.executeQuery(
           "SELECT city, countryId FROM city WHERE cityId = '" + cityID + "'"
         );
-        cityTableData.next();
 
-        String city = cityTableData.getString("city");
-        int countryID = cityTableData.getInt("countryId");
+        // Get data from city resultset
+        cityRS.next();
+        String city = cityRS.getString("city");
+        int countryID = cityRS.getInt("countryId");
 
-        ResultSet countryTableData = statement.executeQuery(
+        // Create country resultset
+        ResultSet countryRS = statement.executeQuery(
           "SELECT country FROM country WHERE countryId = '" + countryID + "'"
         );
-        countryTableData.next();
+        countryRS.next();
 
-        String country = countryTableData.getString("country");
+        // Get data from country result set
+        String country = cityRS.getString("country");
 
+        // Set properties for customer object 
         customer.setCustomerID(customerID);
         customer.setCustomerName(customerName);
         customer.setAddress(address);
@@ -115,7 +132,9 @@ public class DataProvider {
         customer.setCountry(country);
         customer.setPostalCode(postalCode);
         customer.setPhone(phone);
-        allCustomers.add(customer);
+
+        // Add customer object to customer observablelist
+        customerObjectList.add(customer);
       }
     } catch (SQLException e) {
       System.out.println("Error: " + e.getMessage());
@@ -123,30 +142,32 @@ public class DataProvider {
   }
 
   /* -------------------------------------------------------------- */
-  public static void populateAppointmentTable() {
+  public static void createAppointmentObjectObservableList() {
     try {
       Statement statement = DBConnection.getConnection().createStatement();
 
-      ObservableList<Appointment> allAppointments = DataProvider.getAllAppointmentsTableList();
+      ObservableList<Appointment> appointmentObjectList = DataProvider.getAppointmentsAllList();
 
-      ResultSet selectAppointment = statement.executeQuery(
+      ResultSet appointmentIdRS = statement.executeQuery(
         "SELECT appointmentId FROM appointment"
       );
 
-      ArrayList<Integer> appointmentIDArray = new ArrayList<>();
+      ArrayList<Integer> appointmentIdArray = new ArrayList<>();
 
-      while (selectAppointment.next()) {
-        appointmentIDArray.add(selectAppointment.getInt(1));
+      while (appointmentIdRS.next()) {
+        appointmentIdArray.add(appointmentIdRS.getInt(1));
       }
 
-      for (int appointmentIDLoop : appointmentIDArray) {
+      for (int apptID : appointmentIdArray) {
         Appointment appointment = new Appointment();
+
         ResultSet appointmentTableData = statement.executeQuery(
           "SELECT customer.customerName, appointmentId, appointment.customerId, userId, title, description, location, contact, type, url, start, end " +
           "FROM appointment JOIN customer ON customer.customerId = appointment.customerId " +
           "WHERE appointmentId = " +
-          appointmentIDLoop
+          apptID
         );
+
         appointmentTableData.next();
 
         int appointmentId = appointmentTableData.getInt("appointmentId");
@@ -162,12 +183,14 @@ public class DataProvider {
         String start = appointmentTableData.getString("start");
         String end = appointmentTableData.getString("end");
 
+        // Trim time strings
         start = start.substring(0, start.length() - 2);
         end = end.substring(0, end.length() - 2);
 
         DateTimeFormatter format = DateTimeFormatter.ofPattern(
           "yyyy-MM-dd HH:mm:ss"
         );
+
         ZoneId zoneIdLocal = ZoneId.of(TimeZone.getDefault().getID());
         ZoneId UTCZoneID = ZoneId.of("UTC");
 
@@ -180,6 +203,7 @@ public class DataProvider {
         ZonedDateTime convertedStartTime = zonedStartLocal.withZoneSameInstant(
           zoneIdLocal
         );
+
         ZonedDateTime convertedEndTime = zonedEndLocal.withZoneSameInstant(
           zoneIdLocal
         );
@@ -205,7 +229,8 @@ public class DataProvider {
         appointment.setUrl(url);
         appointment.setStart(finalStartTime);
         appointment.setEnd(finalEndTime);
-        allAppointments.add(appointment);
+
+        appointmentObjectList.add(appointment);
       }
     } catch (SQLException e) {
       System.out.println("Error: " + e.getMessage());
@@ -213,43 +238,25 @@ public class DataProvider {
   }
 
   /* -------------------------------------------------------------- */
-  public static int nextAppointmentId()
-    throws ClassNotFoundException, SQLException {
-    Statement statement = DBConnection.getConnection().createStatement();
-
-    ResultSet selectAppointment = statement.executeQuery(
-      "SELECT appointmentId FROM appointment"
-    );
-
-    int max = 0;
-
-    while (selectAppointment.next()) {
-      max = selectAppointment.getInt("Auto_increment");
-    }
-
-    return max;
-  }
-
-  /* -------------------------------------------------------------- */
-  public static ObservableList<Appointment> getAllAppointmentsTableList() {
+  public static ObservableList<Appointment> getAppointmentsAllList() {
     return appointmentsAllList;
   }
 
   /* -------------------------------------------------------------- */
-  public static ObservableList<Appointment> getAppointmentsByWeek() {
+  public static ObservableList<Appointment> getAppointmentsWeek() {
     return appointmentsWeekList;
   }
 
   /* -------------------------------------------------------------- */
-  public static ObservableList<Appointment> getAppointmentsByMonth() {
+  public static ObservableList<Appointment> getAppointmentsMonth() {
     return appointmentsMonthList;
   }
 
   /* -------------------------------------------------------------- */
-  public static void setWeeklyView() {
-    // weekForReference
+  public static void createAppointmentWeekList() {
     try {
-      ArrayList<Integer> selectedAppointmentsByWeek = new ArrayList<>();
+      // Create array for appointment IDs
+      ArrayList<Integer> appointmentsWeekArray = new ArrayList<>();
 
       Statement statement = DBConnection.getConnection().createStatement();
 
@@ -261,20 +268,27 @@ public class DataProvider {
 
       ResultSet appointmentsWeekRS = statement.executeQuery(query);
 
+      // Add appointment IDs to array
       while (appointmentsWeekRS.next()) {
-        selectedAppointmentsByWeek.add(appointmentsWeekRS.getInt(1));
+        appointmentsWeekArray.add(appointmentsWeekRS.getInt(1));
       }
 
-      for (int appointmentId : selectedAppointmentsByWeek) {
+      // Iterate appointment ID array
+      for (int appointmentId : appointmentsWeekArray) {
+        // Get customer data associated with appointment ID
         ResultSet selectAppointment = statement.executeQuery(
-          "SELECT customer.customerName, customer.customerId, contact, title, type, location, description, start, end FROM appointment JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId =" +
-          appointmentId
+          "SELECT customer.customerName, customer.customerId, contact, title, type, location, description, start, end " + "FROM appointment " + 
+          "INNER JOIN customer " + 
+          "ON customer.customerId = appointment.customerId " + 
+          "WHERE appointmentId =" + appointmentId
         );
 
         selectAppointment.next();
 
+        // Create appointment object
         Appointment appointment = new Appointment();
 
+        // Get data from ResultSet
         String customerName = selectAppointment.getString(1);
         int customerId = selectAppointment.getInt(2);
         String contact = selectAppointment.getString(3);
@@ -285,6 +299,7 @@ public class DataProvider {
         String start = selectAppointment.getString(8);
         String end = selectAppointment.getString(9);
 
+        // Set appointment object properties with gleaned data
         appointment.setCustomerName(customerName);
         appointment.setContact(contact);
         appointment.setTitle(title);
@@ -294,6 +309,7 @@ public class DataProvider {
         appointment.setStart(start);
         appointment.setEnd(end);
 
+        // Add appointment object to outer appointment ObservableList
         appointmentsWeekList.add(appointment);
       }
     } catch (SQLException e) {
@@ -302,8 +318,8 @@ public class DataProvider {
   }
 
   /* -------------------------------------------------------------- */
-  public static void setMonthlyView() {
-    ArrayList<Integer> selectedAppointmentsByMonth = new ArrayList<>();
+  public static void createAppointmentMonthList() {
+    ArrayList<Integer> appointmentIdArray = new ArrayList<>();
 
     try {
       Statement statement = DBConnection.getConnection().createStatement();
@@ -315,13 +331,13 @@ public class DataProvider {
         "AND start < LAST_DAY(CURRENT_DATE) + INTERVAL 1 DAY " +
         "ORDER BY start ASC";
 
-      ResultSet monthlyAppointments = statement.executeQuery(query);
+      ResultSet appointmentsMonthRS = statement.executeQuery(query);
 
-      while (monthlyAppointments.next()) {
-        selectedAppointmentsByMonth.add(monthlyAppointments.getInt(1));
+      while (appointmentsMonthRS.next()) {
+        appointmentIdArray.add(appointmentsMonthRS.getInt(1));
       }
 
-      for (int appointmentId : selectedAppointmentsByMonth) {
+      for (int appointmentId : appointmentIdArray) {
         ResultSet selectAppointment = statement.executeQuery(
           "SELECT customer.customerName, customer.customerId, contact, title, type, location, description, start, end FROM appointment JOIN customer ON customer.customerId = appointment.customerId WHERE appointmentId =" +
           appointmentId

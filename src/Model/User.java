@@ -18,6 +18,7 @@ public class User {
   private String userName;
   private String userPassword;
   private int active;
+  
   public static ObservableList<Customer> allUsers = FXCollections.observableArrayList();
 
   public User() {}
@@ -43,10 +44,6 @@ public class User {
     return userPassword;
   }
 
-  public int getActive() {
-    return active;
-  }
-
   /* -------------------------------------------------------------- */
   // Setters
   public void setUserID(int userID) {
@@ -61,9 +58,6 @@ public class User {
     this.userPassword = userPassword;
   }
 
-  public void setActive(int active) {
-    this.active = active;
-  }
 }
 /* =================================================================  
                           	MY NOTES

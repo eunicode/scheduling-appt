@@ -82,10 +82,10 @@ public class CustomerTableController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    DataProvider.getAllCustomersTableList().clear();
-    customerTableView.setItems(DataProvider.getAllCustomersTableList());
+    DataProvider.getCustomersAllList().clear();
+    customerTableView.setItems(DataProvider.getCustomersAllList());
 
-    DataProvider.populateCustomerTable();
+    DataProvider.createCustomerObjectObservableList();
 
     customerTableView.getSelectionModel().selectFirst();
 
@@ -164,9 +164,9 @@ public class CustomerTableController implements Initializable {
       deleteCustomer(selectedCustomer);
 
       // Refresh customer table
-      DataProvider.getAllCustomersTableList().clear();
-      customerTableView.setItems(DataProvider.getAllCustomersTableList());
-      DataProvider.populateCustomerTable();
+      DataProvider.getCustomersAllList().clear();
+      customerTableView.setItems(DataProvider.getCustomersAllList());
+      DataProvider.createCustomerObjectObservableList();
     }
   }
 

@@ -120,7 +120,7 @@ public class ModifyCustomerController implements Initializable {
         customerPhone
       );
 
-      DataProvider.getAllCustomersTableList().set(selectedIndex, customer);
+      DataProvider.getCustomersAllList().set(selectedIndex, customer);
 
       // Create Statement objects
       Statement statement = DBConnection.getConnection().createStatement();
