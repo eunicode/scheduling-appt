@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,14 +46,13 @@ public class AddCustomerController implements Initializable {
   @FXML
   private TextField addCustomerText;
 
-  // @FXML
-  // private java.awt.TextField addCustomerAddressText;
-
   @FXML
   private TextField addCustomerAddressText;
 
   @FXML
-  // private Label addCustomerCountryText;
+  private TextField addCustomerCityComboBox;
+
+  @FXML
   private TextField addCustomerCountryText;
 
   @FXML
@@ -61,59 +62,24 @@ public class AddCustomerController implements Initializable {
   private TextField addCustomPhoneText;
 
   @FXML
-  private TextField addCustomerCityComboBox;
-
-  // private java.awt.TextField addCustomerCityComboBox;
-
-  // private ComboBox<String> addCustomerCityComboBox;
-
-  @FXML
   private Button saveCustomerButton;
 
   @FXML
   private Button cancelButton;
-
-  // ObservableList<String> cityIDList = FXCollections.observableArrayList(
-  //   "Phoenix, Arizona",
-  //   " New York, New York",
-  //   "London, England"
-  // );
-  // ObservableList<String> countryIDList = FXCollections.observableArrayList(
-  //   "United States",
-  //   "United Kingdom"
-  // );
 
   /**
    * Initializes the controller class.
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    // addCustomerCityComboBox.setItems(cityIDList);
+    
   }
 
-  /* -------------------------------------------------------------- */
-  // @FXML
-  // private void addCustomerCityHandler(ActionEvent event) {
-  //   int customerCity =
-  //     addCustomerCityComboBox.getSelectionModel().getSelectedIndex() + 1;
-
-  //   if (customerCity == 3) {
-  //     addCustomerCountryText.setText("United Kingdom");
-  //   }
-  // }
   /* -------------------------------------------------------------- */
   private static String mySQLEscapeSingleQuote(String s) {
     String escapedString = s.replace("'", "''");
     return escapedString;
   }
-
-  // private static int findCityId(String s) {
-
-  // }
-
-  // private static int findCountryId(String s) {
-
-  // }
 
   /* -------------------------------------------------------------- */
   @FXML
@@ -324,39 +290,6 @@ public class AddCustomerController implements Initializable {
       stage.setScene(new Scene((Parent) scene));
       stage.show();
     }
-
-    
-    // } catch (NumberFormatException e) {
-    //   Alert alert = new Alert(Alert.AlertType.WARNING);
-    //   alert.setTitle("Warning Dialog");
-    //   alert.setContentText("Please enter a valid value for each text field.");
-    //   alert.showAndWait();
-    // }
-
-    // if (validateCustomerName(customerName) && validateAddress(customerAddress) &&
-    //   validateZipcode(customerZipCode) && validatePhone(customerPhone)
-    // ) {
-      // Add customer to DataProvider
-      // Customer customer = new Customer(
-      //   customerId,
-      //   // customerID,
-      //   customerName,
-      //   customerAddress,
-      //   customerCityChoiceValue,
-      //   customerCountry,
-      //   customerZipCode,
-      //   customerPhone
-      // );
-      // DataProvider.addCustomer(customer);
-
-      // // Return to customer table
-      // Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-      // Object scene = FXMLLoader.load(
-      //   getClass().getResource("/View_Controller/CustomerTable.fxml")
-      // );
-      // stage.setScene(new Scene((Parent) scene));
-      // stage.show();
-    // }
   }
 
   /* -------------------------------------------------------------- */
@@ -367,15 +300,21 @@ public class AddCustomerController implements Initializable {
       "You will lose all changes. Continue?"
     );
 
-    Optional<ButtonType> result = alert.showAndWait();
-    if (result.isPresent() && result.get() == ButtonType.OK) {
-      Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-      Object scene = FXMLLoader.load(
-        getClass().getResource("/View_Controller/CustomerTable.fxml")
-      );
-      stage.setScene(new Scene((Parent) scene));
-      stage.show();
-    }
+    // Alert - Option 2: The traditional + Optional approach
+    alert.showAndWait().ifPresent(response -> {
+      if (response == ButtonType.OK) {
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        Object scene = null;
+          try {
+              scene = FXMLLoader.load(
+                      getClass().getResource("/View_Controller/CustomerTable.fxml")
+              );} catch (IOException ex) {
+              Logger.getLogger(AddCustomerController.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        stage.setScene(new Scene((Parent) scene));
+        stage.show();
+      }
+    });
   }
 
   /* -------------------------------------------------------------- */
@@ -548,5 +487,8 @@ Error Operation not allowed after ResultSet closed
 --------------------------------------------------------------------
 Java Regular Expressions to Validate phone numbers
 https://stackoverflow.com/questions/42104546/java-regular-expressions-to-validate-phone-numbers/42105140
+
+--------------------------------------------------------------------
+https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.html
 */
 /* -------------------------------------------------------------- */

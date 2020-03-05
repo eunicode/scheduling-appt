@@ -447,27 +447,16 @@ public class AddAppointmentController implements Initializable {
     );
     LocalDateTime endDateTime = LocalDateTime.parse(appointmentEndTime, format);
 
+    // Alerts for invalid start and end times
     boolean earlyAppointment = endDateTime.isBefore(startDateTime);
     boolean sameAppointment = endDateTime.isEqual(startDateTime);
 
     if (sameAppointment) {
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("Error");
-      alert.setHeaderText("Invalid time interval");
-      alert.setContentText(
-        "Appointment must have a duration. Please select an approiate time interval!"
-      );
+      Alert alert = new Alert(Alert.AlertType.ERROR, "Cannot have same start and end times");
       alert.showAndWait();
       return false;
-    }
-
-    if (earlyAppointment) {
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("Error");
-      alert.setHeaderText("Invalid time interval");
-      alert.setContentText(
-        "Appointment cannot end before it has started. Please select an approiate time interval!"
-      );
+    } else if (earlyAppointment) {
+      Alert alert = new Alert(Alert.AlertType.ERROR, "Cannot have end time before start time");
       alert.showAndWait();
       return false;
     }
@@ -490,14 +479,9 @@ public class AddAppointmentController implements Initializable {
       );
 
       if (checkAppointmentTimes.next()) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Error");
-        alert.setHeaderText("Invalid time");
-        alert.setContentText(
-          "This time is unavailable. Choose another time!"
-        );
+        Alert alert = new Alert(Alert.AlertType.ERROR, "These times are invalid");
         alert.showAndWait();
-        return false;
+        return false; // boolean function
       }
     } catch (SQLException ex) {
       ex.getMessage();
