@@ -212,8 +212,8 @@ public class AddAppointmentController implements Initializable {
       while (resultSetStatement.next()) {
         userId = resultSetStatement.getInt(1);
       }
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
+    } catch (SQLException e) {
+      System.out.println("Error: " + e.getMessage());
     }
   }
 

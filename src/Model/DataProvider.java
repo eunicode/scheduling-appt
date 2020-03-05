@@ -187,8 +187,8 @@ public class DataProvider {
         customer.setPhone(phone);
         allCustomers.add(customer);
       }
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
+    } catch (SQLException e) {
+      System.out.println("Error: " + e.getMessage());
     }
   }
 
@@ -277,8 +277,8 @@ public class DataProvider {
         appointment.setEnd(finalEndTime);
         allAppointments.add(appointment);
       }
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
+    } catch (SQLException e) {
+      System.out.println("Error: " + e.getMessage());
     }
   }
 
@@ -378,8 +378,8 @@ public class DataProvider {
         appointment.setUrl(url);
         selectedAppointmentsForCustomer.add(appointment);
       }
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
+    } catch (SQLException e) {
+      System.out.println("Error: " + e.getMessage());
     }
   }
 
@@ -435,8 +435,8 @@ public class DataProvider {
         appointment.setEnd(end);
         appointmentsByWeek.add(appointment);
       }
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
+    } catch (SQLException e) {
+      System.out.println("Error: " + e.getMessage());
     }
   }
 
@@ -492,8 +492,8 @@ public class DataProvider {
 
         appointmentsByMonth.add(appointment);
       }
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
+    } catch (SQLException e) {
+      System.out.println("Error: " + e.getMessage());
     }
   }
   /* -------------------------------------------------------------- */

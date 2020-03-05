@@ -244,11 +244,11 @@ public class AddCustomerController implements Initializable {
           int customerExecuteUpdate = statement.executeUpdate(customerQuery);
 
           if (customerExecuteUpdate == 1) {
-            System.out.println("Insert into SQL table was successful!");
+            System.out.println("One row was inserted into customer table");
           }
         }
-      } catch (SQLException ex) {
-        System.out.println("Error " + ex.getMessage());
+      } catch (SQLException e) {
+        System.out.println("Error: " + e.getMessage());
       }
 
       // Add customer to DataProvider

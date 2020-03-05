@@ -291,8 +291,8 @@ public class Appointment {
           }
         }
       } // while
-    } catch (SQLException ex) {
-      System.out.println(ex.getMessage());
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
     }
   }
 }

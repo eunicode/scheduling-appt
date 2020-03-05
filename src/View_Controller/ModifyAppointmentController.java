@@ -341,11 +341,11 @@ public class ModifyAppointmentController implements Initializable {
         int updatedAppointment = statement.executeUpdate(updateAppointment);
 
         if (updatedAppointment == 1) {
-          System.out.println("Appointment was updated successfully!");
+          System.out.println("One appointment was updated");
         }
       }
-    } catch (SQLException | NullPointerException | DateTimeParseException ex) {
-      System.out.println("Error " + ex.getMessage());
+    } catch (SQLException | NullPointerException | DateTimeParseException e) {
+      System.out.println("Error: " + e.getMessage());
     }
 
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -391,7 +391,7 @@ public class ModifyAppointmentController implements Initializable {
     String dateFromZonedDateTimeString = newAppointment
       .getStart()
       .substring(0, 10);
-    System.out.println("Hi" + dateFromZonedDateTimeString);
+
     LocalDate dateForCal = LocalDate.parse(dateFromZonedDateTimeString);
 
     this.modifyContactNameText.setText(newAppointment.getContact());

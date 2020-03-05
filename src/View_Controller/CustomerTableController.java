@@ -191,7 +191,6 @@ public class CustomerTableController implements Initializable {
   /* -------------------------------------------------------------- */
   public static void deleteCustomer(Customer customer) {
     int selectedID = customer.getCustomerID();
-    System.out.println(selectedID);
 
     try {
       Statement statement = DBConnection.getConnection().createStatement();
@@ -219,12 +218,12 @@ public class CustomerTableController implements Initializable {
 
         if (deletedAddress == 1) {
           System.out.println(
-            "Customer record was successfully deleted from the database!"
+            "One customer was deleted from customer table"
           );
         }
       }
-    } catch (SQLException ex) {
-      System.out.println(ex.getMessage());
+    } catch (SQLException e) {
+      System.out.println("SQLException: " + e.getMessage());
     }
   }
 }

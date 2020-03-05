@@ -341,8 +341,6 @@ public class AppointmentScreenController implements Initializable {
   public void deleteAppointment(Appointment appointment) {
     int selectedID = appointment.getAppointmentId();
 
-    System.out.println(selectedID);
-
     try {
       Statement statement = DBConnection.getConnection().createStatement();
       String deleteCustomer =
@@ -352,11 +350,11 @@ public class AppointmentScreenController implements Initializable {
       if (deletedCustomer > 0) {
         DataProvider.getAllAppointmentsTableList().remove(appointment);
         System.out.println(
-          "Appointment record was successfully deleted from the database!"
+          "Appointment(s) were deleted from appointment table"
         );
       }
-    } catch (SQLException ex) {
-      System.out.println(ex.getMessage());
+    } catch (SQLException e) {
+      System.out.println("SQLException: " + e.getMessage());
     }
   }
 
