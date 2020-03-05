@@ -119,7 +119,7 @@ public class AddAppointmentController implements Initializable {
   Appointment selectedCustomer;
   Appointment selectedAppointment;
 
-  private static int customerId;
+  private static int customerId = 0;
   public static int userId;
 
   private ObservableList<String> nameData = FXCollections.observableArrayList();
@@ -142,8 +142,8 @@ public class AddAppointmentController implements Initializable {
   );
 
   // Factory to create Cell of DatePicker
-  // Lambda
   private Callback<DatePicker, DateCell> disableWeekend() {
+    // Lambda: A lambda is used so we can use a callback without an anonymous inner class.
     final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) ->
       new DateCell() {
 
@@ -226,9 +226,21 @@ public class AddAppointmentController implements Initializable {
     }
   }
 
+  private boolean validateName(int id) {
+    if (id == 0) {
+      Alert alert = new Alert(
+        Alert.AlertType.WARNING,
+        "Customer is unselected"
+      );
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   /* -------------------------------------------------------------- */
-  private boolean validateType() {
-    if (addAppointmentTypeText.getSelectionModel().isEmpty()) {
+  private boolean validateType(String type) {
+    if (type == null) {
       Alert alert = new Alert(
         Alert.AlertType.WARNING,
         "Type is unselected"
@@ -240,22 +252,13 @@ public class AddAppointmentController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
-  private boolean validateDate() {
-    if(addAppointmentDatePicker.getValue() == null) {
+  private boolean validateStartAndEnd(String start, String end) {
+    if (start == null || end == null) {
       Alert alert = new Alert(
         Alert.AlertType.ERROR,
-        "Date is unselected"
+        "Start and/or end time is unselected"
       );
       alert.showAndWait();
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  /* -------------------------------------------------------------- */
-  private boolean validateStartAndEnd() {
-    if (addAppointmentStartTimeComboBox.getValue() == null || addAppointmentEndTimeComboBox.getValue() == null) {
       return false;
     } else {
       return true;
@@ -362,17 +365,10 @@ public class AddAppointmentController implements Initializable {
       .getSelectionModel()
       .getSelectedItem();
 
-    if (!validateType()) {
-      return;
-    }
-
-    if (!validateDate()) {
-      return;
-    }
-
-    if (!validateStartAndEnd()) {
-      return;
-    }
+    // Validate data  
+    validateName(customerId);
+    validateType(type);
+    validateStartAndEnd(startTime, endTime);
       
     String selectedStartDateTime = appointmentDate + " " + startTime;
     String selectedEndDateTime = appointmentDate + " " + endTime;
@@ -511,6 +507,7 @@ public class AddAppointmentController implements Initializable {
       appointment.setUrl(url);
       appointment.setStart(selectedStartDateTime);
       appointment.setEnd(selectedEndDateTime);
+
       //
       DataProvider.addAppointment(appointment);
 
@@ -556,6 +553,12 @@ public class AddAppointmentController implements Initializable {
                           	MY NOTES
 ================================================================= */
 /*
+TODO
+
+This shows warnings, but does it prevent the appointment from being saved?
+I think it does bc the alert pauses the function, so the insert command never gets run.
+
+--------------------------------------------------------------------
 How to disable the TextField of a JavaFx DatePicker?
 https://stackoverflow.com/questions/41833092/how-to-disable-the-textfield-of-a-javafx-datepicker
 
@@ -568,5 +571,6 @@ https://www.geeksforgeeks.org/javafx-alert-with-examples/
 https://stackoverflow.com/questions/39900229/alert-in-java-fx
 
 --------------------------------------------------------------------
+
 */
 /* -------------------------------------------------------------- */

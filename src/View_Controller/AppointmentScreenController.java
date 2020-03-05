@@ -169,7 +169,6 @@ public class AppointmentScreenController implements Initializable {
     );
     customerContactColumn.setCellValueFactory(
       new PropertyValueFactory<>("contact")
-      // new PropertyValueFactory<>("")
     );
     appointmentTitleColumn.setCellValueFactory(
       new PropertyValueFactory<>("title")
@@ -199,10 +198,13 @@ public class AppointmentScreenController implements Initializable {
       DataProvider.setWeeklyView();
     }
 
-    // Lambda expressions to populate appointment table
-    // Pros:
+    // Lambda: A lambda is used to bind columns to values.
+    // A lambda can be used if PropertyValueFactory cannot be used the row is an ArrayList instead of an object,
+    // and therefore does not have a property getter.
     customerNameColumn.setCellValueFactory(
-      new PropertyValueFactory<>("customerName")
+      appointment -> 
+        new SimpleStringProperty(appointment.getValue().getCustomerName())
+      // new PropertyValueFactory<>("customerName")
     );
     customerContactColumn.setCellValueFactory(
       appointment ->
@@ -251,16 +253,12 @@ public class AppointmentScreenController implements Initializable {
 
     if (viewByMonthRadioButton.isSelected()) {
       DataProvider.setMonthlyView();
-      // Calendar cal = Calendar.getInstance();
-      // String month = new SimpleDateFormat("MMMM").format(cal.getTime());
-
-      // DataProvider.setMonthlyView(month);
     }
 
-    // Lambda expressions to populate appointment table
-    // Pros:
     customerNameColumn.setCellValueFactory(
-      new PropertyValueFactory<>("customerName")
+      appointment ->
+        new SimpleStringProperty(appointment.getValue().getCustomerName())
+      // new PropertyValueFactory<>("customerName")
     );
     customerContactColumn.setCellValueFactory(
       appointment ->

@@ -108,6 +108,7 @@ public class ModifyAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   // Factory to create Cell of DatePicker
   private Callback<DatePicker, DateCell> disableWeekend() {
+    // Lambda: A lambda is used so we can use a callback without an anonymous inner class.
     final Callback<DatePicker, DateCell> dayCellFactory = (final DatePicker datePicker) ->
       new DateCell() {
 

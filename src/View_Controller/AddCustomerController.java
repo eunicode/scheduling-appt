@@ -303,7 +303,7 @@ public class AddCustomerController implements Initializable {
       "You will lose all changes. Continue?"
     );
 
-    // Alert - Option 2: The traditional + Optional approach
+    // Alert - The traditional + Optional API approach
     alert
       .showAndWait()
       .ifPresent(

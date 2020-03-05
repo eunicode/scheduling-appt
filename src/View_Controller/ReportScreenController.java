@@ -106,7 +106,6 @@ public class ReportScreenController implements Initializable {
       ResultSet apptTypeRS = statement.executeQuery(apptTypeQuery);
 
       // Create columns and cell value factories
-      // Use lambdas. It is more flexible than
       for (int i = 0; i < apptTypeRS.getMetaData().getColumnCount(); i++) {
         final int j = i;
 

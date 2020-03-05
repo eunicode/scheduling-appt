@@ -99,28 +99,34 @@ public class CustomerTableController implements Initializable {
     customerTableView.getSelectionModel().selectFirst();
 
     customerIDTable.setCellValueFactory(
+      // new PropertyValueFactory<>("getCustomerID")
       new PropertyValueFactory<>("customerID")
     );
 
-    //Lambda expression to populate customer table
     customerNameTable.setCellValueFactory(
-      customer ->
-        new SimpleStringProperty(customer.getValue().getCustomerName())
+      new PropertyValueFactory<>("customerName")
+      // customer ->
+      //   new SimpleStringProperty(customer.getValue().getCustomerName())
     );
     customerAddressTable.setCellValueFactory(
-      customer -> new SimpleStringProperty(customer.getValue().getAddress())
+      new PropertyValueFactory<>("address")
+      // customer -> new SimpleStringProperty(customer.getValue().getAddress())
     );
     customerCityTable.setCellValueFactory(
-      customer -> new SimpleStringProperty(customer.getValue().getCity())
+      new PropertyValueFactory<>("city")
+      // customer -> new SimpleStringProperty(customer.getValue().getCity())
     );
     customerCountryTable.setCellValueFactory(
-      customer -> new SimpleStringProperty(customer.getValue().getCountry())
+      new PropertyValueFactory<>("country")
+      // customer -> new SimpleStringProperty(customer.getValue().getCountry())
     );
     customerPostalCodeTable.setCellValueFactory(
-      customer -> new SimpleStringProperty(customer.getValue().getPostalCode())
+      new PropertyValueFactory<>("postalCode")
+      // customer -> new SimpleStringProperty(customer.getValue().getPostalCode())
     );
     customerPhoneTable.setCellValueFactory(
-      customer -> new SimpleStringProperty(customer.getValue().getPhone())
+      new PropertyValueFactory<>("phone")
+      // customer -> new SimpleStringProperty(customer.getValue().getPhone())
     );
   }
 
