@@ -5,9 +5,9 @@
  */
 package View_Controller;
 
-import Utilities.DBConnection;
 import Model.Customer;
 import Model.DataProvider;
+import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
 //import java.net.URL;
@@ -71,9 +71,7 @@ public class AddCustomerController implements Initializable {
    * Initializes the controller class.
    */
   @Override
-  public void initialize(URL url, ResourceBundle rb) {
-    
-  }
+  public void initialize(URL url, ResourceBundle rb) {}
 
   /* -------------------------------------------------------------- */
   private static String mySQLEscapeSingleQuote(String s) {
@@ -123,37 +121,42 @@ public class AddCustomerController implements Initializable {
     String customerZipCode = addCustomerZipCodeText.getText();
     String customerPhone = addCustomPhoneText.getText();
 
-    if (validateCustomerName(customerName) && validateAddress(customerAddress) &&
-      validateCity(customerCityChoiceValue) && validateCountry(customerCountry) && validateZipcode(customerZipCode) && validatePhone(customerPhone)
+    if (
+      validateCustomerName(customerName) &&
+      validateAddress(customerAddress) &&
+      validateCity(customerCityChoiceValue) &&
+      validateCountry(customerCountry) &&
+      validateZipcode(customerZipCode) &&
+      validatePhone(customerPhone)
     ) {
       try {
         // Create Statement object
         Statement statement = DBConnection.getConnection().createStatement();
         // Create new Statement object for concurrent ResultSet
         Statement statement2 = DBConnection.getConnection().createStatement();
-  
+
         // Find max customerId in customer table
         ResultSet customerResultSet = statement.executeQuery(
           "SELECT MAX(customerId) FROM customer"
         );
-  
+
         // Use max customerId value to update new customer's customerId key
         if (customerResultSet.next()) { // Way to check if table is non-empty
           customerId = customerResultSet.getInt(1); // col 1
           customerId += 1;
         }
-  
+
         // Find max addressId in address table
         ResultSet addressResultSet = statement.executeQuery(
           "SELECT MAX(addressId) FROM address"
         );
-  
+
         // Use max addressId value to update new customer's addressId key
         if (addressResultSet.next()) {
           addressId = addressResultSet.getInt(1);
           addressId += 1;
         }
-  
+
         // Check if country exists in country table
         ResultSet countryResultSet = statement.executeQuery(
           "SELECT countryId from country " +
@@ -175,7 +178,7 @@ public class AddCustomerController implements Initializable {
           countryResultSetMax.next();
           customerCountryId = countryResultSetMax.getInt(1); // Use statement2's resultset
           customerCountryId += 1;
-  
+
           // Insert new country into country table
           String countryInsertQuery =
             "INSERT INTO country SET countryId=" +
@@ -188,7 +191,7 @@ public class AddCustomerController implements Initializable {
             "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
           statement.executeUpdate(countryInsertQuery);
         }
-  
+
         // Check if city exists in city table
         ResultSet cityResultSet = statement.executeQuery(
           "SELECT cityId FROM city " +
@@ -197,12 +200,12 @@ public class AddCustomerController implements Initializable {
           customerCityChoiceValue +
           "'"
         );
-  
+
         // Find max cityId
         ResultSet cityResultSetMax = statement2.executeQuery(
           "SELECT MAX(cityId) FROM city"
         );
-  
+
         // If city exists in city table, use existing cityId key
         if (cityResultSet.next()) {
           customerCity = cityResultSet.getInt(1); // statement1
@@ -212,7 +215,7 @@ public class AddCustomerController implements Initializable {
           cityResultSetMax.next(); // Call next() to move to row 1
           customerCity = cityResultSetMax.getInt(1); // statement2
           customerCity += 1;
-  
+
           // Insert new city into city table
           String cityInsertQuery =
             "INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
@@ -230,7 +233,7 @@ public class AddCustomerController implements Initializable {
             "createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test')";
           statement.executeUpdate(cityInsertQuery);
         }
-  
+
         // Update address table
         String addressQuery =
           "INSERT INTO address SET addressId=" +
@@ -245,9 +248,9 @@ public class AddCustomerController implements Initializable {
           "', cityId= " +
           customerCity +
           ", createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
-  
+
         int addressExecuteUpdate = statement.executeUpdate(addressQuery);
-  
+
         // Update `Customer` table
         if (addressExecuteUpdate == 1) {
           String customerQuery =
@@ -258,9 +261,9 @@ public class AddCustomerController implements Initializable {
             "', addressId=" +
             addressId +
             ", active=1, createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
-  
+
           int customerExecuteUpdate = statement.executeUpdate(customerQuery);
-  
+
           if (customerExecuteUpdate == 1) {
             System.out.println("Insert into SQL table was successful!");
           }
@@ -301,20 +304,29 @@ public class AddCustomerController implements Initializable {
     );
 
     // Alert - Option 2: The traditional + Optional approach
-    alert.showAndWait().ifPresent(response -> {
-      if (response == ButtonType.OK) {
-        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        Object scene = null;
-          try {
-              scene = FXMLLoader.load(
-                      getClass().getResource("/View_Controller/CustomerTable.fxml")
-              );} catch (IOException ex) {
-              Logger.getLogger(AddCustomerController.class.getName()).log(Level.SEVERE, null, ex);
+    alert
+      .showAndWait()
+      .ifPresent(
+        response -> {
+          if (response == ButtonType.OK) {
+            Stage stage = (Stage) ((Button) event.getSource()).getScene()
+              .getWindow();
+            Object scene = null;
+            try {
+              scene =
+                FXMLLoader.load(
+                  getClass().getResource("/View_Controller/CustomerTable.fxml")
+                );
+            } catch (IOException ex) {
+              Logger
+                .getLogger(AddCustomerController.class.getName())
+                .log(Level.SEVERE, null, ex);
+            }
+            stage.setScene(new Scene((Parent) scene));
+            stage.show();
           }
-        stage.setScene(new Scene((Parent) scene));
-        stage.show();
-      }
-    });
+        }
+      );
   }
 
   /* -------------------------------------------------------------- */
@@ -325,9 +337,10 @@ public class AddCustomerController implements Initializable {
   /* -------------------------------------------------------------- */
   public boolean validateCustomerName(String customerName) {
     if (customerName.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning Dialog");
-      alert.setContentText("Customer name is empty");
+      Alert alert = new Alert(
+        Alert.AlertType.WARNING,
+        "Customer name is empty"
+      );
       alert.showAndWait();
       return false;
     } else {
@@ -338,9 +351,7 @@ public class AddCustomerController implements Initializable {
   /* -------------------------------------------------------------- */
   public boolean validateAddress(String address) {
     if (address.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning Dialog");
-      alert.setContentText("Address is empty");
+      Alert alert = new Alert(Alert.AlertType.WARNING, "Address is empty");
       alert.showAndWait();
       return false;
     } else {
@@ -351,9 +362,7 @@ public class AddCustomerController implements Initializable {
   /* -------------------------------------------------------------- */
   public boolean validateCity(String city) {
     if (city.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning Dialog");
-      alert.setContentText("Please enter a city");
+      Alert alert = new Alert(Alert.AlertType.WARNING, "City is empty");
       alert.showAndWait();
       return false;
     } else {
@@ -364,9 +373,7 @@ public class AddCustomerController implements Initializable {
   /* -------------------------------------------------------------- */
   public boolean validateCountry(String country) {
     if (country.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning Dialog");
-      alert.setContentText("Please enter a country");
+      Alert alert = new Alert(Alert.AlertType.WARNING, "Country is empty");
       alert.showAndWait();
       return false;
     } else {
@@ -379,15 +386,14 @@ public class AddCustomerController implements Initializable {
     String pattern = "\\d{5}";
 
     if (zipCode.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning Dialog");
-      alert.setContentText("Zip code is empty");
+      Alert alert = new Alert(Alert.AlertType.WARNING, "Zip code is empty");
       alert.showAndWait();
       return false;
     } else if (!zipCode.matches(pattern)) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning Dialog");
-      alert.setContentText("Zip code is invalid");
+      Alert alert = new Alert(
+        Alert.AlertType.WARNING,
+        "Zip code is invalid. Must be 5 digits"
+      );
       alert.showAndWait();
       return false;
     } else {
@@ -400,15 +406,14 @@ public class AddCustomerController implements Initializable {
     String pattern = "\\d{3}-\\d{4}";
 
     if (phone.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning Dialog");
-      alert.setContentText("Phone number is either empty or invalid");
+      Alert alert = new Alert(Alert.AlertType.WARNING, "Phone number is empty");
       alert.showAndWait();
       return false;
     } else if (!phone.matches(pattern)) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning Dialog");
-      alert.setContentText("Phone number is invalid");
+      Alert alert = new Alert(
+        Alert.AlertType.WARNING,
+        "Phone number is invalid. Must be 000-0000 format"
+      );
       alert.showAndWait();
       return false;
     } else {

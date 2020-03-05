@@ -5,10 +5,10 @@
  */
 package scheduler;
 
-import Utilities.DBConnection;
 import Model.Appointment;
 import Model.Customer;
 import Model.DataProvider;
+import Utilities.DBConnection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;

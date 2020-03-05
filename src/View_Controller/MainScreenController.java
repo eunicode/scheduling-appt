@@ -158,7 +158,7 @@ public class MainScreenController implements Initializable {
   //   System.exit(0);
   // }
 
-  @FXML 
+  @FXML
   private void dashboardLogButtonHandler(ActionEvent event) throws IOException {
     String filename = "user_login_log.txt";
     File file = new File(filename);

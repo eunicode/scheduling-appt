@@ -9,6 +9,4 @@ package Model;
  *
  * @author eunice
  */
-public class Address {
-    
-}
+public class Address {}

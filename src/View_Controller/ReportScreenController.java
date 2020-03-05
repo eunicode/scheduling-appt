@@ -5,10 +5,10 @@
  */
 package View_Controller;
 
-import Utilities.DBConnection;
 import Model.Appointment;
 import Model.Customer;
 import Model.DataProvider;
+import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;

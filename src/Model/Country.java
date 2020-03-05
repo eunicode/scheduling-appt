@@ -9,6 +9,4 @@ package Model;
  *
  * @author eunice
  */
-public class Country {
-    
-}
+public class Country {}

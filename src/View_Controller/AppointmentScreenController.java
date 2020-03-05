@@ -7,12 +7,12 @@ package View_Controller;
 
 import static View_Controller.CustomerTableController.deleteCustomer;
 
-import Utilities.DBConnection;
 //import Database.DBConnection;
 import Model.Appointment;
 import Model.Customer;
 import Model.DataProvider;
 import Model.User;
+import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
 //import java.net.URL;
@@ -226,14 +226,13 @@ public class AppointmentScreenController implements Initializable {
       appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
     );
 
-    if (viewByWeekRadioButton.isSelected()){
+    if (viewByWeekRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
     } else if (viewByMonthRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
     } else if (viewByAllRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
     }
-
     // try {
     //   Statement statement = DBConnection.getConnection().createStatement();
 
@@ -291,14 +290,13 @@ public class AppointmentScreenController implements Initializable {
     //   appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
     // }
 
-    if (viewByWeekRadioButton.isSelected()){
+    if (viewByWeekRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
     } else if (viewByMonthRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
     } else if (viewByAllRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
     }
-
     // sortAppointment();
     // viewByComboBox.setItems(viewByMonth);
   }
@@ -312,41 +310,39 @@ public class AppointmentScreenController implements Initializable {
     // appointmentTableView.setItems(DataProvider.getAllAppointmentsTableList());
 
     DataProvider populateAppointments = new DataProvider();
-     populateAppointments.populateAppointmentTable();
-     
+    populateAppointments.populateAppointmentTable();
+
     if (viewByAllRadioButton.isSelected()) {
       // DataProvider.setMonthlyView();
-      
-    //   DataProvider populateAppointments = new DataProvider();
-    //  populateAppointments.populateAppointmentTable();
-      
+
+      //   DataProvider populateAppointments = new DataProvider();
+      //  populateAppointments.populateAppointmentTable();
+
     }
 
     customerNameColumn.setCellValueFactory(
-        new PropertyValueFactory<>("customerName")
-      );
-      customerContactColumn.setCellValueFactory(
-        new PropertyValueFactory<>("contact")
-        // new PropertyValueFactory<>("")
-      );
-      appointmentTitleColumn.setCellValueFactory(
-        new PropertyValueFactory<>("title")
-      );
-      appointmentTypeColumn.setCellValueFactory(
-        new PropertyValueFactory<>("type")
-      );
-      appointmentLocationColumn.setCellValueFactory(
-        new PropertyValueFactory<>("location")
-      );
-      appointmentDescriptionColumn.setCellValueFactory(
-        new PropertyValueFactory<>("description")
-      );
-      appointmentStartColumn.setCellValueFactory(
-        new PropertyValueFactory<>("start")
-      );
-      appointmentEndColumn.setCellValueFactory(
-        new PropertyValueFactory<>("end")
-      );
+      new PropertyValueFactory<>("customerName")
+    );
+    customerContactColumn.setCellValueFactory(
+      new PropertyValueFactory<>("contact")
+      // new PropertyValueFactory<>("")
+    );
+    appointmentTitleColumn.setCellValueFactory(
+      new PropertyValueFactory<>("title")
+    );
+    appointmentTypeColumn.setCellValueFactory(
+      new PropertyValueFactory<>("type")
+    );
+    appointmentLocationColumn.setCellValueFactory(
+      new PropertyValueFactory<>("location")
+    );
+    appointmentDescriptionColumn.setCellValueFactory(
+      new PropertyValueFactory<>("description")
+    );
+    appointmentStartColumn.setCellValueFactory(
+      new PropertyValueFactory<>("start")
+    );
+    appointmentEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
 
     // if (viewByMonthRadioButton.isSelected()) {
     //   appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
@@ -354,7 +350,7 @@ public class AppointmentScreenController implements Initializable {
     //   appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
     // }
 
-    if (viewByWeekRadioButton.isSelected()){
+    if (viewByWeekRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAppointmentsByWeek());
     } else if (viewByMonthRadioButton.isSelected()) {
       appointmentTableView.setItems(DataProvider.getAppointmentsByMonth());
@@ -445,18 +441,16 @@ public class AppointmentScreenController implements Initializable {
   private void deleteAppointmentHandler(ActionEvent event) {
     Alert alert = new Alert(
       Alert.AlertType.CONFIRMATION,
-      "This will delete the customer record, do you want to continue?"
+      "Are you sure you want to delete this customer and its data?"
     );
-    alert.setTitle("Confirmation of Deletion");
+
     Optional<ButtonType> result = alert.showAndWait();
     if (result.isPresent() && result.get() == ButtonType.OK) {
-      //            ObservableList<Appointment> allAppointments, singleAppointment;
-      //            allAppointments = appointmentTableView.getItems();
-      //            singleAppointment = appointmentTableView.getSelectionModel().getSelectedItems();
-      //            singleAppointment.forEach(allAppointments::remove);
+      // Get selected row (Appointment object)
       selectedAppointment =
         appointmentTableView.getSelectionModel().getSelectedItem();
 
+      // Run SQL command to delete appointment record
       deleteAppointment(selectedAppointment);
     }
   }

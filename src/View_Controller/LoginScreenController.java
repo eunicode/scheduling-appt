@@ -5,10 +5,10 @@
  */
 package View_Controller;
 
+import Model.User;
 import Utilities.DBConnection;
 import Utilities.DBQuery;
 import Utilities.trackLoggedInUser;
-import Model.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -129,9 +129,7 @@ public class LoginScreenController implements Initializable {
         alert.showAndWait();
 
         trackLoggedInUser.trackLog(username, false);
-      }
-
-      if (getLocale().toString().equals("ko_KR")) {
+      } else if (getLocale().toString().equals("ko_KR")) {
         Alert alert = new Alert(
           Alert.AlertType.ERROR,
           "사용자 이름 및 / 또는 비밀번호가 잘못되었습니다."

@@ -5,10 +5,10 @@
  */
 package View_Controller;
 
-import Utilities.DBConnection;
 import Model.Appointment;
 import Model.Customer;
 import Model.DataProvider;
+import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
 //import java.net.URL;
@@ -168,56 +168,23 @@ public class CustomerTableController implements Initializable {
       Alert.AlertType.CONFIRMATION,
       "Are you sure you want to delete this customer?"
     );
-    alert.setTitle("Confirmation of Deletion");
 
     Optional<ButtonType> result = alert.showAndWait();
 
-    if (result.isPresent() && result.get() == ButtonType.OK) {      
-      // ObservableList<Customer> allCustomers;
-      // ObservableList<Customer> singleCustomer;
-      // allCustomers = customerTableView.getItems();
-      // singleCustomer = customerTableView.getSelectionModel().getSelectedItems();
-
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+      // Get selected Customer object
       selectedCustomer =
         customerTableView.getSelectionModel().getSelectedItem();
-      deleteCustomer(selectedCustomer); 
+      // Run SQL command to delete customer record  
+      deleteCustomer(selectedCustomer);
 
-      // singleCustomer.forEach(allCustomers::remove);
-
-      // System.out.println(selectedCustomer.getCustomerID());
-      
-      // deleteCustomer(selectedCustomer.getCustomerID());
+      // Refresh customer table
       DataProvider.getAllCustomersTableList().clear();
-    customerTableView.setItems(DataProvider.getAllCustomersTableList());
-    DataProvider populateCustomers = new DataProvider();
-    populateCustomers.populateCustomerTable();
+      customerTableView.setItems(DataProvider.getAllCustomersTableList());
+      DataProvider populateCustomers = new DataProvider();
+      populateCustomers.populateCustomerTable();
     }
   }
-
-  // @FXML
-  // void appointmentTableAddHandler(ActionEvent event)
-  //   throws IOException, SQLException {
-  //   FXMLLoader loader = new FXMLLoader();
-  //   loader.setLocation(
-  //     getClass().getResource("/View_Controller/AddAppointment.fxml")
-  //   );
-  //   loader.load();
-  //   AddAppointmentController controller = loader.getController();
-
-  //   int customerIDTransfer = customerTableView
-  //     .getSelectionModel()
-  //     .getSelectedItem()
-  //     .getCustomerID();
-
-  //   DataProvider.setSelectedAppointmentsForCustomer(customerIDTransfer);
-  //   AddAppointmentController setCustomer = new AddAppointmentController();
-  //   setCustomer.setSelectedCustomerId(customerIDTransfer);
-
-  //   stage = (Stage) customerTableModifyButton.getScene().getWindow();
-  //   Parent scene = loader.getRoot();
-  //   stage.setScene(new Scene(scene));
-  //   stage.show();
-  // }
 
   /* -------------------------------------------------------------- */
   @FXML
@@ -232,33 +199,33 @@ public class CustomerTableController implements Initializable {
 
   /* -------------------------------------------------------------- */
   public static void deleteCustomer(Customer customer) {
-  // public static void deleteCustomer(int selectedID) {
+    // public static void deleteCustomer(int selectedID) {
     // ++selectedID;
     int selectedID = customer.getCustomerID();
     System.out.println(selectedID);
 
     try {
       Statement statement = DBConnection.getConnection().createStatement();
-      
-      // Delete rows in appointment table that reference customer-to-be-deleted
-      String delApptQuery = 
-        "DELETE FROM appointment WHERE customerId = " + selectedID;
-      
-      statement.executeUpdate(delApptQuery);  
 
-      // Delete 
+      // Delete rows in appointment table that reference customer-to-be-deleted
+      String delApptQuery =
+        "DELETE FROM appointment WHERE customerId = " + selectedID;
+
+      statement.executeUpdate(delApptQuery);
+
+      // Delete
       String deleteCustomer =
-       "DELETE FROM customer WHERE customerId = " + selectedID;
-        // "DELETE FROM customer WHERE addressId =" + selectedID;
-      
+        "DELETE FROM customer WHERE customerId = " + selectedID;
+      // "DELETE FROM customer WHERE addressId =" + selectedID;
+
       int deletedCustomer = statement.executeUpdate(deleteCustomer);
 
       // Delete deleted customer's address
       if (deletedCustomer == 1) {
         String deleteAddress =
           "DELETE FROM address WHERE addressId =" + selectedID;
-          // "DELETE FROM address WHERE addressId =" + selectedID;
-        
+        // "DELETE FROM address WHERE addressId =" + selectedID;
+
         int deletedAddress = statement.executeUpdate(deleteAddress);
 
         if (deletedAddress == 1) {

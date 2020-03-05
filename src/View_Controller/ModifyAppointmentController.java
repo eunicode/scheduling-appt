@@ -5,9 +5,9 @@
  */
 package View_Controller;
 
-import Utilities.DBConnection;
 import Model.Appointment;
 import Model.DataProvider;
+import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
 // import java.net.URL;
@@ -51,7 +51,18 @@ import javafx.util.Callback;
  */
 
 public class ModifyAppointmentController implements Initializable {
-  // necessary?
+  @FXML
+  private ComboBox<String> modifyTypeText;
+
+  @FXML
+  private DatePicker modifyDate;
+
+  @FXML
+  private ComboBox<String> modifyStartComboBox;
+
+  @FXML
+  private ComboBox<String> modifyEndComboBox;
+
   @FXML
   private TextField modifyContactNameText;
 
@@ -61,26 +72,11 @@ public class ModifyAppointmentController implements Initializable {
   @FXML
   private TextField modifyLocationComboBox;
 
-  //   private ComboBox<String> modifyLocationComboBox;
-  @FXML
-  private ComboBox<String> modifyTypeText;
-
-  //   private TextField modifyTypeText;
   @FXML
   private TextField modifyURLText;
 
   @FXML
   private TextField modifyDescriptionComboBox;
-
-  //   private ComboBox<String> modifyDescriptionComboBox;
-  @FXML
-  private DatePicker modifyDate;
-
-  @FXML
-  private ComboBox<String> modifyStartComboBox;
-
-  @FXML
-  private ComboBox<String> modifyEndComboBox;
 
   @FXML
   private Button saveModifyAppointmentButton;
@@ -104,20 +100,10 @@ public class ModifyAppointmentController implements Initializable {
     "17:00:00"
   );
 
-  // ObservableList<String> appointmentMin = FXCollections.observableArrayList(
-  //   "00:00",
-  //   "15:00",
-  //   "30:00",
-  //   "45:00"
-  // );
-
   ObservableList<String> appointmentType = FXCollections.observableArrayList(
     "Presentation",
     "Scrum"
   );
-
-  //   ObservableList<String> appointmentLocation = FXCollections.observableArrayList("Phoenix", "New York", "London", "Internet");
-  //   ObservableList<String> appointmentDescription = FXCollections.observableArrayList("There will be a meeting", "Documentation Discussion", "Planning & Coordination");
 
   /* -------------------------------------------------------------- */
   // Factory to create Cell of DatePicker
@@ -193,44 +179,24 @@ public class ModifyAppointmentController implements Initializable {
       String selectedStartTime = date + " " + startTime;
       String selectedEndTime = date + " " + endTime;
 
-      if (startTime == null || endTime == null) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Error");
-        alert.setHeaderText("No appointment time selected");
-        alert.setContentText(
-          "Please select a start and end time to add to this appointment!"
+      if (modifyTypeText.getSelectionModel().isEmpty()) {
+        Alert alert = new Alert(
+          Alert.AlertType.WARNING,
+          "Type is unselected"
         );
-        alert.showAndWait();
-      }
-
-      if (location == null) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Error");
-        alert.setHeaderText("No location selected");
-        alert.setContentText(
-          "Please select a location to add to this appointment!"
-        );
-        alert.showAndWait();
-      }
-
-      if (description == null) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Error");
-        alert.setHeaderText("No description selected");
-        alert.setContentText(
-          "Please select a description to add to this appointment!"
-        );
-        alert.showAndWait();
-      }
+        return;
+      } 
 
       if (date == null) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Error");
-        alert.setHeaderText("No date selected");
-        alert.setContentText(
-          "Please select a valid date to add to this appointment!"
-        );
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Date is not selected");
         alert.showAndWait();
+        return;
+      }
+
+      if (startTime == null || endTime == null) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, "Start and/or end time is not selected");
+        alert.showAndWait();
+        return;
       }
 
       // Get current date-time from system clock in default timezone
@@ -468,9 +434,13 @@ public class ModifyAppointmentController implements Initializable {
 How to set default value in comboBox javafx?
 https://stackoverflow.com/questions/34949422/how-to-set-default-value-in-combobox-javafx
 
+How to check if any item is selected in JavaFX ComboBox
+https://stackoverflow.com/questions/36963551/how-to-check-if-any-item-is-selected-in-javafx-combobox
+
 --------------------------------------------------------------------
 java.time.ZonedDateTime.of() Method Example
 https://www.tutorialspoint.com/javatime/javatime_zoneddatetime_of1.htm
 https://www.threeten.org/articles/zoned-date-time.html
+
 */
 /* -------------------------------------------------------------- */

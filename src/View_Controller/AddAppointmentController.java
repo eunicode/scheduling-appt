@@ -5,14 +5,14 @@
  */
 package View_Controller;
 
+import Model.Appointment;
+import Model.Customer;
+import Model.DataProvider;
 //import java.net.URL;
 //import java.util.ResourceBundle;
 //import javafx.fxml.Initializable;
 
 import Utilities.DBConnection;
-import Model.Appointment;
-import Model.Customer;
-import Model.DataProvider;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -66,16 +66,13 @@ public class AddAppointmentController implements Initializable {
   private ComboBox<String> addAppointmentNameCombo;
 
   @FXML
-  private TextField addCustomerContactText;
-
-  @FXML
-  private TextField addAppointmentTitleText;
-
-  @FXML
   private ComboBox<String> addAppointmentTypeText;
 
   @FXML
   private ComboBox<String> addAppointmentStartTimeComboBox;
+
+  @FXML
+  private ComboBox<String> addAppointmentEndTimeComboBox;
 
   @FXML
   private DatePicker addAppointmentDatePicker;
@@ -87,10 +84,10 @@ public class AddAppointmentController implements Initializable {
   private TextField addAppointmentDescriptionText;
 
   @FXML
-  private ComboBox<String> addAppointmentEndTimeComboBox;
+  private TextField addCustomerContactText;
 
   @FXML
-  private TextField addAppointmentURLText;
+  private TextField addAppointmentTitleText;
 
   @FXML
   private Button saveAppointmentButton;
@@ -171,6 +168,8 @@ public class AddAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   /**
    * Initializes the controller class.
+     * @param url
+     * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -185,8 +184,7 @@ public class AddAppointmentController implements Initializable {
       while (nameListRS.next()) {
         nameData.add(nameListRS.getString("customerName"));
       }
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (SQLException e) {
       System.out.println(
         "Error building customer name list for appointment dropdown."
       );
@@ -229,11 +227,111 @@ public class AddAppointmentController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
+  private boolean validateType() {
+    if (addAppointmentTypeText.getSelectionModel().isEmpty()) {
+      Alert alert = new Alert(
+        Alert.AlertType.WARNING,
+        "Type is unselected"
+      );
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /* -------------------------------------------------------------- */
+  private boolean validateDate() {
+    if(addAppointmentDatePicker.getValue() == null) {
+      Alert alert = new Alert(
+        Alert.AlertType.ERROR,
+        "Date is unselected"
+      );
+      alert.showAndWait();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /* -------------------------------------------------------------- */
+  private boolean validateStartAndEnd() {
+    if (addAppointmentStartTimeComboBox.getValue() == null || addAppointmentEndTimeComboBox.getValue() == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /* -------------------------------------------------------------- */
+  public static boolean validateAppointmentStart(
+    String appointmentStartTime,
+    String appointmentEndTime
+  ) {
+    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-M-d H:m:s");
+
+    LocalDateTime startDateTime = LocalDateTime.parse(
+      appointmentStartTime,
+      format
+    );
+    LocalDateTime endDateTime = LocalDateTime.parse(appointmentEndTime, format);
+
+    // Alerts for invalid start and end times
+    boolean earlyAppointment = endDateTime.isBefore(startDateTime);
+    boolean sameAppointment = endDateTime.isEqual(startDateTime);
+
+    if (sameAppointment) {
+      Alert alert = new Alert(
+        Alert.AlertType.ERROR,
+        "Cannot have same start and end times"
+      );
+      alert.showAndWait();
+      return false;
+    } else if (earlyAppointment) {
+      Alert alert = new Alert(
+        Alert.AlertType.ERROR,
+        "Cannot have end time before start time"
+      );
+      alert.showAndWait();
+      return false;
+    }
+
+    try {
+      Statement statement = DBConnection.getConnection().createStatement();
+      String currentAppointments =
+        "SELECT * FROM appointment WHERE ('" +
+        appointmentStartTime +
+        "' BETWEEN start AND end OR '" +
+        appointmentEndTime +
+        "' BETWEEN start AND end OR '" +
+        appointmentStartTime +
+        "' > start AND '" +
+        appointmentEndTime +
+        "' < end)";
+
+      ResultSet checkAppointmentTimes = statement.executeQuery(
+        currentAppointments
+      );
+
+      if (checkAppointmentTimes.next()) {
+        Alert alert = new Alert(
+          Alert.AlertType.ERROR,
+          "These times are invalid"
+        );
+        alert.showAndWait();
+        return false; // boolean function
+      }
+    } catch (SQLException ex) {
+      ex.getMessage();
+    }
+    return true;
+  }
+
+  /* -------------------------------------------------------------- */
   @FXML
   private void saveAppointmentHandler(ActionEvent event)
     throws IOException, ParseException, ClassNotFoundException, SQLException {
-    // Assign customer ID from selected drop list item. 
-    // Customer drop list corresponds to customer table  
+    // Assign customer ID from selected drop list item.
+    // Customer drop list corresponds to customer table
     customerId =
       addAppointmentNameCombo.getSelectionModel().getSelectedIndex() + 1;
 
@@ -252,7 +350,6 @@ public class AddAppointmentController implements Initializable {
     // String type = addAppointmentTypeText.getText();
 
     String url = "";
-    // String url = addAppointmentURLText.getText();
 
     LocalDate appointmentDate = addAppointmentDatePicker.getValue();
 
@@ -265,6 +362,18 @@ public class AddAppointmentController implements Initializable {
       .getSelectionModel()
       .getSelectedItem();
 
+    if (!validateType()) {
+      return;
+    }
+
+    if (!validateDate()) {
+      return;
+    }
+
+    if (!validateStartAndEnd()) {
+      return;
+    }
+      
     String selectedStartDateTime = appointmentDate + " " + startTime;
     String selectedEndDateTime = appointmentDate + " " + endTime;
 
@@ -419,74 +528,28 @@ public class AddAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   @FXML
   private void backAppointmentHandler(ActionEvent event) throws IOException {
-    Alert alert = new Alert(AlertType.CONFIRMATION, "You will lose any entered data. Continue?", ButtonType.YES);
+    Alert alert = new Alert(
+      AlertType.CONFIRMATION,
+      "You will lose any entered data. Continue?",
+      ButtonType.YES
+    );
 
     Optional<ButtonType> result = alert.showAndWait();
 
-    if (result.get() == ButtonType.YES){
-      // user chooses YES
-      Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-      Object scene = FXMLLoader.load(getClass().getResource("/View_Controller/AppointmentScreen.fxml"));
+    // user chooses YES
+    if (result.get() == ButtonType.YES) {
+      
+      Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+      Object scene = FXMLLoader.load(
+        getClass().getResource("/View_Controller/AppointmentScreen.fxml")
+      );
       stage.setScene(new Scene((Parent) scene));
       stage.show();
-    } else {
-      // user closes the dialog
+    } 
+    // user closes the dialog
+    else {
+      
     }
-  }
-
-  /* -------------------------------------------------------------- */
-  public static boolean validateAppointmentStart(
-    String appointmentStartTime,
-    String appointmentEndTime
-  ) {
-    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-M-d H:m:s");
-
-    LocalDateTime startDateTime = LocalDateTime.parse(
-      appointmentStartTime,
-      format
-    );
-    LocalDateTime endDateTime = LocalDateTime.parse(appointmentEndTime, format);
-
-    // Alerts for invalid start and end times
-    boolean earlyAppointment = endDateTime.isBefore(startDateTime);
-    boolean sameAppointment = endDateTime.isEqual(startDateTime);
-
-    if (sameAppointment) {
-      Alert alert = new Alert(Alert.AlertType.ERROR, "Cannot have same start and end times");
-      alert.showAndWait();
-      return false;
-    } else if (earlyAppointment) {
-      Alert alert = new Alert(Alert.AlertType.ERROR, "Cannot have end time before start time");
-      alert.showAndWait();
-      return false;
-    }
-
-    try {
-      Statement statement = DBConnection.getConnection().createStatement();
-      String currentAppointments =
-        "SELECT * FROM appointment WHERE ('" +
-        appointmentStartTime +
-        "' BETWEEN start AND end OR '" +
-        appointmentEndTime +
-        "' BETWEEN start AND end OR '" +
-        appointmentStartTime +
-        "' > start AND '" +
-        appointmentEndTime +
-        "' < end)";
-
-      ResultSet checkAppointmentTimes = statement.executeQuery(
-        currentAppointments
-      );
-
-      if (checkAppointmentTimes.next()) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, "These times are invalid");
-        alert.showAndWait();
-        return false; // boolean function
-      }
-    } catch (SQLException ex) {
-      ex.getMessage();
-    }
-    return true;
   }
 }
 /* =================================================================  

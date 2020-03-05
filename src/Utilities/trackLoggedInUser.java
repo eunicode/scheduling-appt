@@ -6,11 +6,12 @@
 package Utilities;
 
 import java.io.*;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
+
 /**
  *
  * @author eunice
@@ -20,6 +21,7 @@ public class trackLoggedInUser {
   public static String filename = "user_login_log.txt";
   // public static final String filename = "user_login_log.txt";
   File file = new File(filename);
+
   // public trackLoggedInUser() {}
 
   public static void trackLog(String user, boolean loggedIn) {
@@ -30,7 +32,9 @@ public class trackLoggedInUser {
 
       // LocalDateTime localTime = LocalDateTime.now();
 
-      logFile.println(user + " logged in on: " + Calendar.getInstance().getTime());
+      logFile.println(
+        user + " logged in on: " + Calendar.getInstance().getTime()
+      );
 
       logFile.close();
 
@@ -40,7 +44,6 @@ public class trackLoggedInUser {
     }
   }
 }
-
 /* =================================================================  
                           	MY NOTES
 ================================================================= */

@@ -5,9 +5,10 @@
  */
 package Model;
 
+import static View_Controller.LoginScreenController.getLocale;
+
 import Utilities.DBConnection;
 import View_Controller.LoginScreenController;
-import static View_Controller.LoginScreenController.getLocale;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;

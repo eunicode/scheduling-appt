@@ -5,9 +5,9 @@
  */
 package View_Controller;
 
-import Utilities.DBConnection;
 import Model.Customer;
 import Model.DataProvider;
+import Utilities.DBConnection;
 import java.io.IOException;
 import java.net.URL;
 //import java.net.URL;
@@ -16,9 +16,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-import javax.xml.validation.ValidatorHandler;
-
 //import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,6 +34,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javax.xml.validation.ValidatorHandler;
 
 /**
  * FXML Controller class
@@ -109,7 +107,7 @@ public class ModifyCustomerController implements Initializable {
 
   @FXML
   void saveModifiedCustomerHandler(ActionEvent event)
-    throws IOException, SQLException {  
+    throws IOException, SQLException {
     int customerId = selectedCustomer.getCustomerID();
     // Initialize variables (will overwritten later)
     int customerCountryId = 1;
@@ -117,8 +115,8 @@ public class ModifyCustomerController implements Initializable {
     int addressId = 1;
 
     // String customerCityChoice = modifyCustomerCityText
-      //   .getSelectionModel()
-      //   .getSelectedItem();
+    //   .getSelectionModel()
+    //   .getSelectedItem();
     // Get modified user input
     String customerName = modifyCustomerText.getText();
     String customerAddress = modifyCustomerAddressText.getText();
@@ -280,13 +278,8 @@ public class ModifyCustomerController implements Initializable {
         "";
 
       int updatedCustomer = statement.executeUpdate(updateCustomer);
-    } catch (NumberFormatException e) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning Dialog");
-      alert.setContentText("Please enter a valid value for each text field.");
-      alert.showAndWait();
-    } catch (SQLException ex) {
-      System.out.println("Error " + ex.getMessage());
+    } catch (SQLException e) {
+      System.out.println("SQL Exception: " + e.getMessage());
     }
 
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
