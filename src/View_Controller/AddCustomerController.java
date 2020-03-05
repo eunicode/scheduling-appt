@@ -61,8 +61,8 @@ public class AddCustomerController implements Initializable {
 
   /**
    * Initializes the controller class.
-     * @param url
-     * @param rb
+   * @param url
+   * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {}
@@ -105,8 +105,7 @@ public class AddCustomerController implements Initializable {
       validateCountry(customerCountry) &&
       validateZipcode(customerZipCode) &&
       validatePhone(customerPhone)
-    ) 
-    // If user input is valid add customer to customer table
+    ) // If user input is valid add customer to customer table
     {
       try {
         // Create Statement object

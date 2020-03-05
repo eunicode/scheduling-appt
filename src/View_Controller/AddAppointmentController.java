@@ -159,8 +159,8 @@ public class AddAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   /**
    * Initializes the controller class.
-     * @param url
-     * @param rb
+   * @param url
+   * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -217,12 +217,11 @@ public class AddAppointmentController implements Initializable {
     }
   }
 
+  /* -------------------------------------------------------------- */
   private boolean validateName(int id) {
     if (id == 0) {
-      Alert alert = new Alert(
-        Alert.AlertType.WARNING,
-        "Customer is unselected"
-      );
+      Alert alert = new Alert(Alert.AlertType.ERROR, "Customer is unselected");
+      alert.showAndWait();
       return false;
     } else {
       return true;
@@ -232,10 +231,8 @@ public class AddAppointmentController implements Initializable {
   /* -------------------------------------------------------------- */
   private boolean validateType(String type) {
     if (type == null) {
-      Alert alert = new Alert(
-        Alert.AlertType.WARNING,
-        "Type is unselected"
-      );
+      Alert alert = new Alert(Alert.AlertType.ERROR, "Type is unselected");
+      alert.showAndWait();
       return false;
     } else {
       return true;
@@ -345,15 +342,17 @@ public class AddAppointmentController implements Initializable {
       .getSelectionModel()
       .getSelectedItem();
 
-    // Validate data  
-    validateName(customerId);
-    validateType(type);
-    validateStartAndEnd(startTime, endTime);
-      
+    // Validate data
+    if (
+      !validateName(customerId) ||
+      !validateType(type) ||
+      !validateStartAndEnd(startTime, endTime)
+    ) {
+      return;
+    }
+
     String selectedStartDateTime = appointmentDate + " " + startTime;
     String selectedEndDateTime = appointmentDate + " " + endTime;
-
-    System.out.println(selectedStartDateTime);
 
     ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
 
@@ -424,9 +423,9 @@ public class AddAppointmentController implements Initializable {
     String startConstructorValue = zonedStartLocal.toString();
     String endConstructorValue = zonedEndLocal.toString();
 
-    // If there is no overlap
+    // If there is no overlap, execute SQL command
+
     if (validateAppointmentStart(testZonedStart, testZonedEnd)) {
-      // Execute SQL command
       Statement statement = DBConnection.getConnection().createStatement();
 
       String appointmentQuery =
@@ -517,18 +516,15 @@ public class AddAppointmentController implements Initializable {
 
     // user chooses YES
     if (result.get() == ButtonType.YES) {
-      
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
       Object scene = FXMLLoader.load(
         getClass().getResource("/View_Controller/AppointmentScreen.fxml")
       );
       stage.setScene(new Scene((Parent) scene));
       stage.show();
-    } 
-    // user closes the dialog
-    else {
-      
     }
+    // user closes the dialog
+    else {}
   }
 }
 /* =================================================================  

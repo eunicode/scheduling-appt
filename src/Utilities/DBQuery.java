@@ -13,7 +13,7 @@ import java.sql.Statement;
  * @author eunice
  */
 
- // Utilities class to shorten database code
+// Utilities class to shorten database code
 public class DBQuery {
   private static String query;
   private static Statement statement;

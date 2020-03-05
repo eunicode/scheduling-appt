@@ -67,8 +67,8 @@ public class ModifyCustomerController implements Initializable {
 
   /**
    * Initializes the controller class.
-     * @param url
-     * @param rb
+   * @param url
+   * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -289,7 +289,6 @@ public class ModifyCustomerController implements Initializable {
     this.modifyCustomPhoneText.setText((newCustomer.getPhone()));
   }
 }
-
 /* =================================================================  
                           	MY NOTES
 ================================================================= */

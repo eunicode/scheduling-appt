@@ -47,7 +47,7 @@ public class Appointment {
   private String end;
   private String customerName;
 
-  // Constructor 
+  // Constructor
   public Appointment() {} // no args
 
   // Constructor overloading
@@ -296,7 +296,6 @@ public class Appointment {
     }
   }
 }
-
 /* =================================================================  
                           	MY NOTES
 ================================================================= */

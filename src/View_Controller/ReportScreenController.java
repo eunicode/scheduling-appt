@@ -211,8 +211,8 @@ public class ReportScreenController implements Initializable {
   /* -------------------------------------------------------------- */
   /**
    * Initializes the controller class.
-     * @param url
-     * @param rb
+   * @param url
+   * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -271,5 +271,3 @@ https://stackoverflow.com/questions/38049734/java-setcellvaluefactory-lambd a-vs
       "UNION ALL SELECT count(*) FROM appointment WHERE date_format(start, '%m') = '12' AND type = 'Scrum' ";
 */
 /* -------------------------------------------------------------- */
-
-

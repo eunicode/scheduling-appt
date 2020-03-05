@@ -25,10 +25,11 @@ public class trackLoggedInUser {
     try {
       FileWriter fwriter = new FileWriter(filename, true);
 
-        try (PrintWriter logFile = new PrintWriter(fwriter)) {
-            logFile.println(
-                    user + " logged in on: " + Calendar.getInstance().getTime()
-            );}
+      try (PrintWriter logFile = new PrintWriter(fwriter)) {
+        logFile.println(
+          user + " logged in on: " + Calendar.getInstance().getTime()
+        );
+      }
     } catch (IOException e) {
       System.out.println("Writing to log failed");
     }

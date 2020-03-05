@@ -9,6 +9,4 @@ package Utilities;
  *
  * @author eunice
  */
-public class Time {
-    
-}
+public class Time {}

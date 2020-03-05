@@ -99,8 +99,8 @@ public class AppointmentScreenController implements Initializable {
 
   /**
    * Initializes the controller class.
-     * @param url
-     * @param rb
+   * @param url
+   * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -158,7 +158,7 @@ public class AppointmentScreenController implements Initializable {
     // A lambda can be used if PropertyValueFactory cannot be used the row is an ArrayList instead of an object,
     // and therefore does not have a property getter.
     customerNameColumn.setCellValueFactory(
-      appointment -> 
+      appointment ->
         new SimpleStringProperty(appointment.getValue().getCustomerName())
     );
     customerContactColumn.setCellValueFactory(

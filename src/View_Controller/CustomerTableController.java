@@ -80,8 +80,8 @@ public class CustomerTableController implements Initializable {
 
   /**
    * Initializes the controller class.
-     * @param url
-     * @param rb
+   * @param url
+   * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -102,18 +102,14 @@ public class CustomerTableController implements Initializable {
     customerAddressTable.setCellValueFactory(
       new PropertyValueFactory<>("address")
     );
-    customerCityTable.setCellValueFactory(
-      new PropertyValueFactory<>("city")
-    );
+    customerCityTable.setCellValueFactory(new PropertyValueFactory<>("city"));
     customerCountryTable.setCellValueFactory(
       new PropertyValueFactory<>("country")
     );
     customerPostalCodeTable.setCellValueFactory(
       new PropertyValueFactory<>("postalCode")
     );
-    customerPhoneTable.setCellValueFactory(
-      new PropertyValueFactory<>("phone")
-    );
+    customerPhoneTable.setCellValueFactory(new PropertyValueFactory<>("phone"));
   }
 
   /* -------------------------------------------------------------- */
@@ -167,7 +163,7 @@ public class CustomerTableController implements Initializable {
       // Get selected Customer object
       selectedCustomer =
         customerTableView.getSelectionModel().getSelectedItem();
-      // Run SQL command to delete customer record  
+      // Run SQL command to delete customer record
       deleteCustomer(selectedCustomer);
 
       // Refresh customer table
@@ -217,9 +213,7 @@ public class CustomerTableController implements Initializable {
         int deletedAddress = statement.executeUpdate(deleteAddress);
 
         if (deletedAddress == 1) {
-          System.out.println(
-            "One customer was deleted from customer table"
-          );
+          System.out.println("One customer was deleted from customer table");
         }
       }
     } catch (SQLException e) {

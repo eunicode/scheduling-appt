@@ -172,12 +172,9 @@ public class ModifyAppointmentController implements Initializable {
       String selectedEndTime = date + " " + endTime;
 
       if (modifyTypeText.getSelectionModel().isEmpty()) {
-        Alert alert = new Alert(
-          Alert.AlertType.WARNING,
-          "Type is unselected"
-        );
+        Alert alert = new Alert(Alert.AlertType.WARNING, "Type is unselected");
         return;
-      } 
+      }
 
       if (date == null) {
         Alert alert = new Alert(Alert.AlertType.ERROR, "Date is not selected");
@@ -186,7 +183,10 @@ public class ModifyAppointmentController implements Initializable {
       }
 
       if (startTime == null || endTime == null) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, "Start and/or end time is not selected");
+        Alert alert = new Alert(
+          Alert.AlertType.ERROR,
+          "Start and/or end time is not selected"
+        );
         alert.showAndWait();
         return;
       }
@@ -407,7 +407,6 @@ public class ModifyAppointmentController implements Initializable {
     } else {
       this.modifyTypeText.getSelectionModel().select(1);
     }
-
   }
 }
 /* =================================================================  

@@ -35,7 +35,7 @@ public class DataProvider {
 
   // Customer ObservableLists
   public static ObservableList<Customer> allCustomersTableList = FXCollections.observableArrayList();
-  
+
   public static ObservableList<Customer> getAllCustomers() throws SQLException {
     Statement statement = DBConnection.getConnection().createStatement();
 
@@ -397,9 +397,7 @@ public class DataProvider {
         "WHERE YEARWEEK(start, 1) = YEARWEEK(CURDATE(), 1) " +
         "ORDER BY start ASC";
 
-      ResultSet weeklyAppointments = statement.executeQuery(
-        query
-      );
+      ResultSet weeklyAppointments = statement.executeQuery(query);
 
       while (weeklyAppointments.next()) {
         selectedAppointmentsByWeek.add(weeklyAppointments.getInt(1));
@@ -454,9 +452,7 @@ public class DataProvider {
         "AND start < LAST_DAY(CURRENT_DATE) + INTERVAL 1 DAY " +
         "ORDER BY start ASC";
 
-      ResultSet monthlyAppointments = statement.executeQuery(
-        query
-      );
+      ResultSet monthlyAppointments = statement.executeQuery(query);
 
       while (monthlyAppointments.next()) {
         selectedAppointmentsByMonth.add(monthlyAppointments.getInt(1));

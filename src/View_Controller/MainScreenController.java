@@ -81,8 +81,8 @@ public class MainScreenController implements Initializable {
 
   /**
    * Initializes the controller class.
-     * @param url
-     * @param rb
+   * @param url
+   * @param rb
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
@@ -119,7 +119,6 @@ public class MainScreenController implements Initializable {
     stage.setScene(new Scene((Parent) scene));
     stage.show();
   }
-
 
   @FXML
   private void dashboardLogButtonHandler(ActionEvent event) throws IOException {

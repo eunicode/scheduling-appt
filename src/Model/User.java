@@ -46,14 +46,17 @@ public class User {
   public int getActive() {
     return active;
   }
+
   /* -------------------------------------------------------------- */
   // Setters
   public void setUserID(int userID) {
     this.userID = userID;
   }
+
   public void setUserName(String userName) {
     this.userName = userName;
   }
+
   public void setUserPassword(String userPassword) {
     this.userPassword = userPassword;
   }

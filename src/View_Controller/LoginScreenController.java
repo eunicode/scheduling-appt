@@ -55,7 +55,7 @@ public class LoginScreenController implements Initializable {
 
   /**
    * Initializes the Locale on Login screen.
-     * @return 
+   * @return
    */
 
   public static Locale getLocale() {
@@ -64,17 +64,20 @@ public class LoginScreenController implements Initializable {
 
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    ResourceBundle userLanguage = ResourceBundle.getBundle("scheduler/Nat", Locale.getDefault());
+    ResourceBundle userLanguage = ResourceBundle.getBundle(
+      "scheduler/Nat",
+      Locale.getDefault()
+    );
 
     loginTitle.setText(userLanguage.getString("title"));
     usernameLabel.setText(userLanguage.getString("username"));
     passwordLabel.setText(userLanguage.getString("password"));
     submitButton.setText(userLanguage.getString("login"));
-
   }
 
   @FXML
-  private void submitButonHandler(ActionEvent event) throws IOException, Exception {
+  private void submitButonHandler(ActionEvent event)
+    throws IOException, Exception {
     String username = usernameTextField.getText();
     String password = passwordTextField.getText();
 
@@ -115,14 +118,13 @@ public class LoginScreenController implements Initializable {
     }
   }
 
-  public static Boolean attemptLogin(String username, String password) throws Exception {
+  public static Boolean attemptLogin(String username, String password)
+    throws Exception {
     try {
       // First connection in program
       Statement statement = DBConnection.makeConnection().createStatement();
 
-      ResultSet userListRS = statement.executeQuery(
-        "SELECT * FROM user"
-      );
+      ResultSet userListRS = statement.executeQuery("SELECT * FROM user");
 
       // If (username, pw) matches a row in user table, log in
       while (userListRS.next()) {
@@ -136,7 +138,7 @@ public class LoginScreenController implements Initializable {
     } catch (SQLException e) {
       System.out.println("Error: " + e.getMessage());
     }
-      return false;
+    return false;
   }
 
   public Locale getUserLocale() {
