@@ -12,6 +12,7 @@ import Utilities.trackLoggedInUser;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 //import java.io.IOException;
 //import java.net.URL;
 //import java.sql.ResultSet;
@@ -108,7 +109,7 @@ public class LoginScreenController implements Initializable {
   }
 
   @FXML
-  private void submitButonHandler(ActionEvent event) throws IOException {
+  private void submitButonHandler(ActionEvent event) throws IOException, Exception {
     String username = usernameTextField.getText();
     String password = passwordTextField.getText();
 
@@ -149,24 +150,28 @@ public class LoginScreenController implements Initializable {
     }
   }
 
-  public static Boolean attemptLogin(String username, String password) {
+  public static Boolean attemptLogin(String username, String password) throws Exception {
     try {
-      String SQLLogin = "SELECT * FROM user";
-      DBQuery.makeQuery(SQLLogin);
-      ResultSet queryResult = DBQuery.getResult();
+      // First connection in program
+      Statement statement = DBConnection.makeConnection().createStatement();
 
-      while (queryResult.next()) {
+      ResultSet userListRS = statement.executeQuery(
+        "SELECT * FROM user"
+      );
+
+      // If (username, pw) matches a row in user table, log in
+      while (userListRS.next()) {
         if (
-          queryResult.getString("userName").equals(username) &&
-          queryResult.getString("password").equals(password)
+          userListRS.getString("userName").equals(username) &&
+          userListRS.getString("password").equals(password)
         ) return true;
       }
 
       return false;
-    } catch (Exception ex) {
-      System.out.println(ex.getMessage());
-      return false;
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
     }
+      return false;
   }
 
   public Locale getUserLocale() {

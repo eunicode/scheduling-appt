@@ -397,11 +397,6 @@ public class DataProvider {
 
       ResultSet weeklyAppointments = statement.executeQuery(
         query
-        // "SELECT appointmentId FROM appointment WHERE year(start) = year(date_add(curdate(), interval " +
-        // weekForReference +
-        // " WEEK)) AND weekofyear(start) = weekofyear(date_add(curdate(),interval " +
-        // weekForReference +
-        // " WEEK));"
       );
 
       while (weeklyAppointments.next()) {
@@ -445,7 +440,6 @@ public class DataProvider {
 
   /* -------------------------------------------------------------- */
   public static void setMonthlyView() {
-    // public static void setMonthlyView(String monthForReference) {
     ArrayList<Integer> selectedAppointmentsByMonth = new ArrayList<>();
 
     try {
@@ -460,9 +454,6 @@ public class DataProvider {
 
       ResultSet monthlyAppointments = statement.executeQuery(
         query
-        // "SELECT appointmentId FROM appointment WHERE monthname(start) = '" +
-        // monthForReference +
-        // "'"
       );
 
       while (monthlyAppointments.next()) {

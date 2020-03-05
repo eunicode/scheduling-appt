@@ -13,36 +13,38 @@ import java.sql.Statement;
  * @author eunice
  */
 
+ // Utilities class to shorten database code
 public class DBQuery {
-  private static String QUERY;
-  private static Statement STMT;
-  private static ResultSet RESULT;
+  private static String query;
+  private static Statement statement;
+  private static ResultSet result;
 
-  public static void makeQuery(String q) {
-    QUERY = q;
+  public static void makeQuery(String sql) {
+    query = sql.toLowerCase();
 
     try {
-      //Create a Statement Object
-      Statement stmt = DBConnection.makeConnection().createStatement();
+      // Create a Statement Object
+      Statement statement = DBConnection.makeConnection().createStatement();
 
-      //Determine QUERY execution
-      if (QUERY.toLowerCase().startsWith("select")) {
-        RESULT = stmt.executeQuery(QUERY);
+      // Execute SELECT queries
+      if (query.startsWith("select")) {
+        result = statement.executeQuery(query);
       }
-      if (
-        QUERY.toLowerCase().startsWith("delete") ||
-        QUERY.toLowerCase().startsWith("insert") ||
-        QUERY.toLowerCase().startsWith("update")
+      // Execute DELETE, INSERT, UPDATE commands
+      else if (
+        query.startsWith("delete") ||
+        query.startsWith("insert") ||
+        query.startsWith("update")
       ) {
-        stmt.executeUpdate(QUERY);
+        statement.executeUpdate(query);
       }
-    } catch (Exception ex) {
-      System.out.println("Error " + ex.getMessage());
+    } catch (Exception e) {
+      System.out.println("SQL query failed");
     }
   }
 
   public static ResultSet getResult() {
-    return RESULT;
+    return result;
   }
 }
 /* =================================================================  

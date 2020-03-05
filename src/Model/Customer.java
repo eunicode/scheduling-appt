@@ -31,9 +31,11 @@ public class Customer {
 
   public ObservableList<Appointment> associatedAppointments = FXCollections.observableArrayList();
 
-  public Customer() {}
+  // Constructor
+  public Customer() {} // no args
 
-  public Customer(
+  // Constructor overloading
+  public Customer( // 7 params
     int customerID,
     String customerName,
     String address,
@@ -51,7 +53,8 @@ public class Customer {
     this.phone = phone;
   }
 
-  public Customer(
+  // Constructor overloading
+  public Customer( // 9 params
     int customerID,
     String customerName,
     int active,
@@ -73,6 +76,8 @@ public class Customer {
     this.phone = phone;
   }
 
+  /* -------------------------------------------------------------- */
+  // Getters
   public int getCustomerID() {
     return customerID;
   }
@@ -93,6 +98,8 @@ public class Customer {
     return active;
   }
 
+  /* -------------------------------------------------------------- */
+  // Setters
   public void setActive(int active) {
     this.active = active;
   }

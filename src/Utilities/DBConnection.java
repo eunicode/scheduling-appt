@@ -30,8 +30,6 @@ public class DBConnection {
     // Create bridge and update `conn`
     conn = (Connection) DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 
-    // System.out.println("Connection successful");
-
     return conn;
   }
 

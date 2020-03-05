@@ -47,13 +47,10 @@ public class Appointment {
   private String end;
   private String customerName;
 
-  // consultant
-  // createDate / createdBy / lastUpdate / lastUpdateBy
+  // Constructor 
+  public Appointment() {} // no args
 
-  // Constructor
-  public Appointment() {}
-
-  // Constructor overload
+  // Constructor overloading
   public Appointment( // 12 params
     String customerName,
     int appointmentId,
@@ -82,7 +79,8 @@ public class Appointment {
     end = this.end;
   }
 
-  public Appointment( // 11 params - missing customerName
+  // Constructor overloading
+  public Appointment( // 11 params
     int appointmentId,
     int customerId,
     int userId,
@@ -109,6 +107,7 @@ public class Appointment {
   }
 
   /* -------------------------------------------------------------- */
+  // Getters
   public int getAppointmentId() {
     return appointmentId;
   }
@@ -158,6 +157,7 @@ public class Appointment {
   }
 
   /* -------------------------------------------------------------- */
+  // Setters
   public void setAppointmentId(int appointmentId) {
     this.appointmentId = appointmentId;
   }
@@ -210,11 +210,6 @@ public class Appointment {
     this.customerName = customerName;
   }
 
-  // public LocalDate getDate(String dateString) {
-  //   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-  //   LocalDate transformedDate = LocalDate.parse(dateString, formatter);
-  //   return transformedDate;
-  // }
   /* -------------------------------------------------------------- */
   public static String pullCustomerName(int customerId) throws SQLException {
     Statement statement = DBConnection.getConnection().createStatement();
@@ -301,6 +296,7 @@ public class Appointment {
     }
   }
 }
+
 /* =================================================================  
                           	MY NOTES
 ================================================================= */
