@@ -305,7 +305,7 @@ public class CustomerAddController implements Initializable {
           "', postalCode='" +
           customerZipCode +
           "', cityId= " +
-          customerCity +
+          customerCityEsc +
           ", createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
 
         int checkInsertSuccess = statement.executeUpdate(addressSQL);

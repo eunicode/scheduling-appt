@@ -389,6 +389,7 @@ public class AppointmentEditController implements Initializable {
 
     LocalDate dateForCal = LocalDate.parse(dateFromZonedDateTimeString);
 
+    // Set values with previously saved data
     this.apptEditName.setText(newAppointment.getContact());
     this.apptEditTitle.setText(newAppointment.getTitle());
     this.apptEditLocation.setText(newAppointment.getLocation());
@@ -401,6 +402,25 @@ public class AppointmentEditController implements Initializable {
       this.typeCombo.getSelectionModel().selectFirst();
     } else {
       this.typeCombo.getSelectionModel().select(1);
+    }
+
+    // Set start to previously selected start
+    String selectedStart = newAppointment.getStart().substring(11) + ":00";
+    System.out.println("hi" + selectedStart);
+    for (String timeOption : apptTimeOptions) {
+      if (timeOption.equals(selectedStart)) {
+        int idx = apptTimeOptions.indexOf(timeOption);
+        this.startCombo.getSelectionModel().select(idx);
+      }
+    }
+    
+    // Set end to previously selected end
+    String selectedEnd = newAppointment.getEnd().substring(11) + ":00";
+    for (String timeOption : apptTimeOptions) {
+      if (timeOption.equals(selectedEnd)) {
+        int idx = apptTimeOptions.indexOf(timeOption);
+        this.endCombo.getSelectionModel().select(idx);
+      }
     }
   }
 }

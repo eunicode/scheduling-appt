@@ -113,6 +113,22 @@ public class Appointment {
     return customerId;
   }
 
+  public String getType() {
+    return type;
+  }
+
+  public LocalTime getTime() {
+    return time;
+  }
+
+  public String getStart() {
+    return start;
+  }
+
+  public String getEnd() {
+    return end;
+  }
+  
   public String getTitle() {
     return title;
   }
@@ -129,24 +145,8 @@ public class Appointment {
     return contact;
   }
 
-  public String getType() {
-    return type;
-  }
-
   public String getUrl() {
     return url;
-  }
-
-  public LocalTime getTime() {
-    return time;
-  }
-
-  public String getStart() {
-    return start;
-  }
-
-  public String getEnd() {
-    return end;
   }
 
   /* -------------------------------------------------------------- */
