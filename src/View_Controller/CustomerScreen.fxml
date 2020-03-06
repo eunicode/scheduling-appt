@@ -22,7 +22,7 @@
         </columns>
       </TableView>
       <Button fx:id="customerAddButton" layoutX="23.0" layoutY="404.0" mnemonicParsing="false" onAction="#addButtonHandler" text="Add Customer" />
-      <Button fx:id="customerEditButton" layoutX="144.0" layoutY="404.0" mnemonicParsing="false" onAction="#modifyButtonHandler" text="Edit Customer" />
+      <Button fx:id="customerEditButton" layoutX="144.0" layoutY="404.0" mnemonicParsing="false" onAction="#editButtonHandler" text="Edit Customer" />
       <Button fx:id="customerDeleteButton" layoutX="263.0" layoutY="404.0" mnemonicParsing="false" onAction="#deleteButtonHandler" text="Delete Customer" />
       <Button fx:id="customerBackButton" layoutX="758.0" layoutY="404.0" mnemonicParsing="false" onAction="#backButtonHandler" prefHeight="27.0" prefWidth="115.0" text="Back" />
    </children>

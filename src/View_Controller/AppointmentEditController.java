@@ -61,9 +61,6 @@ public class AppointmentEditController implements Initializable {
   private ComboBox<String> endCombo;
 
   @FXML
-  private TextField apptEditName;
-
-  @FXML
   private TextField apptEditTitle;
 
   @FXML
@@ -72,7 +69,10 @@ public class AppointmentEditController implements Initializable {
   @FXML
   private TextField apptEditDescrip;
 
-  Appointment selectedAppointment;
+  @FXML
+  private TextField apptEditContact;
+
+  Appointment selectedAppt;
   int selectedIdx;
 
   // hour
@@ -139,17 +139,18 @@ public class AppointmentEditController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void saveMondifyAppointmentHandler(ActionEvent event)
+  private void saveApptEditHandler(ActionEvent event)
     throws IOException {
     try {
-      int appointmentId = selectedAppointment.getAppointmentId();
-      int customerId = selectedAppointment.getCustomerId();
-      int userId = selectedAppointment.getUserId();
+      // Get edited input data 
+      int appointmentId = selectedAppt.getAppointmentId();
+      int customerId = selectedAppt.getCustomerId();
+      int userId = selectedAppt.getUserId();
 
       String title = apptEditTitle.getText();
       String description = apptEditDescrip.getText();
       String location = apptEditLocation.getText();
-      String assignedContact = apptEditName.getText();
+      String apptContact = apptEditContact.getText();
       String type = typeCombo.getSelectionModel().getSelectedItem();
       String url = "";
 
@@ -160,10 +161,7 @@ public class AppointmentEditController implements Initializable {
         .getSelectedItem();
       String endTime = endCombo.getSelectionModel().getSelectedItem();
 
-      // Build date-time string
-      String selectedStartTime = date + " " + startTime;
-      String selectedEndTime = date + " " + endTime;
-
+      // Validate user input
       if (typeCombo.getSelectionModel().isEmpty()) {
         Alert alert = new Alert(Alert.AlertType.WARNING, "Type is unselected");
         alert.showAndWait();
@@ -185,23 +183,27 @@ public class AppointmentEditController implements Initializable {
         return;
       }
 
+      // Build date-time string
+      String selectedStartDateTimeStr = date + " " + startTime;
+      String selectedEndDateTimeStr = date + " " + endTime;
+
       // Get zone ID of system's default timezone
       ZoneId zoneIdLocal = ZoneId.of(TimeZone.getDefault().getID());
 
       // Format mask - format used to translate string to LocalDateTime
-      DateTimeFormatter format = DateTimeFormatter.ofPattern(
+      DateTimeFormatter formatMask = DateTimeFormatter.ofPattern(
         "yyyy-MM-dd HH:mm:ss"
       );
 
       // Parse string to LocalDateTime
       LocalDateTime startLocalTimeF = LocalDateTime.parse(
-        selectedStartTime,
-        format
+        selectedStartDateTimeStr,
+        formatMask
       );
 
       LocalDateTime endLocalTimeF = LocalDateTime.parse(
-        selectedEndTime,
-        format
+        selectedEndDateTimeStr,
+        formatMask
       );
 
       // Get local ZonedDateTime: start
@@ -272,7 +274,7 @@ public class AppointmentEditController implements Initializable {
       String zonedStartLocalString = zonedStartLocal.toString();
       String zonedEndLocalString = zonedEndLocal.toString();
 
-      // Check if appointment has overlap
+      // Check if appointment has overlap. If it doesn't...
       if (
         AppointmentAddController.validateAppointmentTimes(
           startDateTimeUTCString,
@@ -287,7 +289,7 @@ public class AppointmentEditController implements Initializable {
           title,
           description,
           location,
-          assignedContact,
+          apptContact,
           type,
           url,
           zonedStartLocalString,
@@ -300,15 +302,15 @@ public class AppointmentEditController implements Initializable {
         Statement statement = DBConnection.getConnection().createStatement();
 
         // Get appointment data
-        ResultSet selectAppointment = statement.executeQuery(
+        ResultSet appointmentRS = statement.executeQuery(
           "SELECT * FROM appointment WHERE appointmentId = " +
           appointmentId +
           ""
         );
 
-        //
-        while (selectAppointment.next()) {
-          customerId = selectAppointment.getInt("customerId");
+        // Get selected appointment's customerId
+        if (appointmentRS.next()) {
+          customerId = appointmentRS.getInt("customerId");
         }
 
         // Build MySQL query - use UTC
@@ -320,7 +322,7 @@ public class AppointmentEditController implements Initializable {
           "', location = '" +
           location +
           "', contact = '" +
-          assignedContact +
+          apptContact +
           "', type = '" +
           type +
           "', url = '" +
@@ -343,6 +345,7 @@ public class AppointmentEditController implements Initializable {
       System.out.println("Error modifying appointment: " + e.getMessage());
     }
 
+    // Go  back to main appointment screen
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
 
     Object scene = FXMLLoader.load(
@@ -355,7 +358,7 @@ public class AppointmentEditController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void cancelModifyAppointmentHandler(ActionEvent event)
+  private void cancelApptEditHandler(ActionEvent event)
     throws IOException {
     Alert alert = new Alert(
       Alert.AlertType.CONFIRMATION,
@@ -363,6 +366,7 @@ public class AppointmentEditController implements Initializable {
     );
 
     Optional<ButtonType> result = alert.showAndWait();
+    // Go back to main appointment screen
     if (result.isPresent() && result.get() == ButtonType.OK) {
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
 
@@ -378,7 +382,7 @@ public class AppointmentEditController implements Initializable {
   /* -------------------------------------------------------------- */
   // Populate form with previously saved data
   public void setAppointment(Appointment appointment, int index) {
-    selectedAppointment = appointment;
+    selectedAppt = appointment;
     selectedIdx = index;
 
     Appointment newAppointment = (Appointment) appointment;
@@ -390,23 +394,23 @@ public class AppointmentEditController implements Initializable {
     LocalDate dateForCal = LocalDate.parse(dateFromZonedDateTimeString);
 
     // Set values with previously saved data
-    this.apptEditName.setText(newAppointment.getContact());
+    this.dateDatePicker.setValue(dateForCal);
     this.apptEditTitle.setText(newAppointment.getTitle());
     this.apptEditLocation.setText(newAppointment.getLocation());
     this.apptEditDescrip.setText(newAppointment.getDescription());
-    this.dateDatePicker.setValue(dateForCal);
+    this.apptEditContact.setText(newAppointment.getContact());
 
     // Set type to previously selected type
     String selectedType = newAppointment.getType();
     if ("Presentation".equals(selectedType)) {
       this.typeCombo.getSelectionModel().selectFirst();
-    } else {
+    } else { // "Scrum"
       this.typeCombo.getSelectionModel().select(1);
     }
 
     // Set start to previously selected start
     String selectedStart = newAppointment.getStart().substring(11) + ":00";
-    System.out.println("hi" + selectedStart);
+    // System.out.println("hi" + selectedStart);
     for (String timeOption : apptTimeOptions) {
       if (timeOption.equals(selectedStart)) {
         int idx = apptTimeOptions.indexOf(timeOption);

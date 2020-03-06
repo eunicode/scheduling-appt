@@ -79,26 +79,16 @@ public class CustomerScreenController implements Initializable {
     } catch (Exception e) {
       System.out.println("Error1: " + e.getMessage());
     }
-   try {
-    customerTable.setItems(DataProvider.getCustomersAllList());
-   } catch(Exception e) {
-    System.out.println("Error2: " + e.getMessage());
-   }
-   try {
-//    DataProvider populateCustomers = new DataProvider();
-    DataProvider.createCustomerObjectObservableList();
-   } catch (Exception e) {
-    System.out.println("Error3: " + e.getMessage());
-   }
-//   try {
-//    
-//   } catch (Exception e) {
-//    System.out.println("Error: " + e.getMessage());
-//   }
-    
-   
-    
-    
+    try {
+      customerTable.setItems(DataProvider.getCustomersAllList());
+    } catch(Exception e) {
+      System.out.println("Error2: " + e.getMessage());
+    }
+    try {
+      DataProvider.createCustomerObjectObservableList(); // investigate
+    } catch (Exception e) {
+      System.out.println("Error3: " + e.getMessage());
+    }
 
     customerTable.getSelectionModel().selectFirst();
 
@@ -136,7 +126,7 @@ public class CustomerScreenController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void modifyButtonHandler(ActionEvent event) throws IOException {
+  private void editButtonHandler(ActionEvent event) throws IOException {
     // Create FXMLLoader instance
     FXMLLoader loader = new FXMLLoader();
     // Find location of FXML file to load
@@ -223,7 +213,7 @@ public class CustomerScreenController implements Initializable {
         int deletedAddress = statement.executeUpdate(deleteAddress);
 
         if (deletedAddress == 1) {
-          System.out.println("One customer was deleted from customer table");
+          System.out.println("One customer and associated appointments were deleted from the database");
         }
       }
     } catch (SQLException e) {

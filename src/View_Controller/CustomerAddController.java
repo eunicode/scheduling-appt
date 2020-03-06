@@ -159,7 +159,7 @@ public class CustomerAddController implements Initializable {
   private void saveCustomerAddHandler(ActionEvent event) throws IOException {
     // Initialize values
     int customerId = 1;
-    int customerCity = 1;
+    int customerCityId = 1;
     int customerCountryId = 1;
     int addressId = 1;
 
@@ -170,7 +170,7 @@ public class CustomerAddController implements Initializable {
       customerAddAddress.getText()
     );
 
-    String customerCityEsc = mySQLEscapeSingleQuote(
+    String customerCity = mySQLEscapeSingleQuote(
       customerAddCity.getText()
     );
 
@@ -182,7 +182,7 @@ public class CustomerAddController implements Initializable {
     if (
       checkCustomerName(customerName) &&
       checkAddress(customerAddress) &&
-      checkCity(customerCityEsc) &&
+      checkCity(customerCity) &&
       checkCountry(customerCountry) &&
       checkZipcode(customerZipCode) &&
       checkPhone(customerPhone)
@@ -256,7 +256,7 @@ public class CustomerAddController implements Initializable {
           "SELECT cityId FROM city " +
           "WHERE city = " +
           "'" +
-          customerCityEsc +
+          customerCity +
           "'"
         );
 
@@ -267,22 +267,22 @@ public class CustomerAddController implements Initializable {
 
         // If city exists in city table, use existing cityId key
         if (cityResultSet.next()) {
-          customerCity = cityResultSet.getInt(1); // statement1
+          customerCityId = cityResultSet.getInt(1); // statement1
         }
         // Else create a new unique cityId key
         else {
           cityResultSetMax.next(); // Call next() to move to row 1
-          customerCity = cityResultSetMax.getInt(1); // statement2
-          customerCity += 1;
+          customerCityId = cityResultSetMax.getInt(1); // statement2
+          customerCityId += 1;
 
           // Insert new city into city table
           String cityInsertQuery =
             "INSERT INTO city (cityId, city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) " +
             "VALUES(" +
-            customerCity +
+            customerCityId +
             ", " +
             "'" +
-            customerCityEsc +
+            customerCity +
             "', " +
             "(SELECT countryId FROM country WHERE country=" +
             "'" +
@@ -305,7 +305,7 @@ public class CustomerAddController implements Initializable {
           "', postalCode='" +
           customerZipCode +
           "', cityId= " +
-          customerCityEsc +
+          customerCityId +
           ", createDate=NOW(), createdBy='test', lastUpdate=NOW(), lastUpdateBy='test'";
 
         int checkInsertSuccess = statement.executeUpdate(addressSQL);
@@ -336,7 +336,7 @@ public class CustomerAddController implements Initializable {
         customerId,
         customerName,
         customerAddress,
-        customerCityEsc,
+        customerCity,
         customerCountry,
         customerZipCode,
         customerPhone

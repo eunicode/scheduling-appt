@@ -82,7 +82,7 @@ public class AppointmentScreenController implements Initializable {
 
   Stage stage;
   Parent scene;
-  private Appointment selectedAppointment;
+  private Appointment selectedAppt; // Pass to edit screen
 
   /**
    * Initializes the controller class.
@@ -321,11 +321,11 @@ public class AppointmentScreenController implements Initializable {
     Optional<ButtonType> result = alert.showAndWait();
     if (result.isPresent() && result.get() == ButtonType.OK) {
       // Get selected row (Appointment object)
-      selectedAppointment =
+      selectedAppt =
         appointmentTable.getSelectionModel().getSelectedItem();
 
       // Run SQL command to delete appointment record
-      deleteAppt(selectedAppointment);
+      deleteAppt(selectedAppt);
     }
   }
 
