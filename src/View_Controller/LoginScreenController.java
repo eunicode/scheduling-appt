@@ -6,7 +6,7 @@
 package View_Controller;
 
 import Utilities.DBConnection;
-import Utilities.trackLoggedInUser;
+import Utilities.PrintLog;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -82,7 +82,7 @@ public class LoginScreenController implements Initializable {
     if (checkUsernamePasswordPair(username, password)) {
       storeUser = username;
 
-      AddAppointmentController appt = new AddAppointmentController();
+      AppointmentAddController appt = new AppointmentAddController();
       appt.findUserId(storeUser);
 
       // Go to dashboard screen
@@ -93,7 +93,7 @@ public class LoginScreenController implements Initializable {
       stage.setScene(new Scene((Parent) scene));
       stage.show();
 
-      trackLoggedInUser.trackLog(username, true);
+      PrintLog.trackLog(username, true);
     } 
     // Else show alerts
     else {
@@ -104,7 +104,7 @@ public class LoginScreenController implements Initializable {
         );
         alert.showAndWait();
 
-        trackLoggedInUser.trackLog(username, false);
+        PrintLog.trackLog(username, false);
       } else if (Locale.getDefault().toString().equals("ko_KR")) {
         Alert alert = new Alert(
           Alert.AlertType.ERROR,
@@ -112,7 +112,7 @@ public class LoginScreenController implements Initializable {
         );
         alert.showAndWait();
 
-        trackLoggedInUser.trackLog(username, false);
+        PrintLog.trackLog(username, false);
       }
     }
   }
@@ -136,7 +136,7 @@ public class LoginScreenController implements Initializable {
 
       return false;
     } catch (SQLException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.out.println("Error check credentials: " + e.getMessage());
     }
     return false;
   }

@@ -34,7 +34,7 @@ import javafx.stage.Stage;
  * @author eunice
  */
 
-public class CustomerTableController implements Initializable {
+public class CustomerScreenController implements Initializable {
   @FXML
   private TableView<Customer> customerTable;
 
@@ -74,9 +74,31 @@ public class CustomerTableController implements Initializable {
   @Override
   public void initialize(URL url, ResourceBundle rb) {
     // Populate customer table
-    DataProvider.getCustomersAllList().clear();
+    try {
+      DataProvider.getCustomersAllList().clear();
+    } catch (Exception e) {
+      System.out.println("Error1: " + e.getMessage());
+    }
+   try {
     customerTable.setItems(DataProvider.getCustomersAllList());
+   } catch(Exception e) {
+    System.out.println("Error2: " + e.getMessage());
+   }
+   try {
+//    DataProvider populateCustomers = new DataProvider();
     DataProvider.createCustomerObjectObservableList();
+   } catch (Exception e) {
+    System.out.println("Error3: " + e.getMessage());
+   }
+//   try {
+//    
+//   } catch (Exception e) {
+//    System.out.println("Error: " + e.getMessage());
+//   }
+    
+   
+    
+    
 
     customerTable.getSelectionModel().selectFirst();
 
@@ -106,7 +128,7 @@ public class CustomerTableController implements Initializable {
     stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
     scene =
       FXMLLoader.load(
-        getClass().getResource("/View_Controller/AddCustomer.fxml")
+        getClass().getResource("/View_Controller/CustomerAdd.fxml")
       );
     stage.setScene(new Scene(scene));
     stage.show();
@@ -119,12 +141,12 @@ public class CustomerTableController implements Initializable {
     FXMLLoader loader = new FXMLLoader();
     // Find location of FXML file to load
     loader.setLocation(
-      getClass().getResource("/View_Controller/ModifyCustomer.fxml")
+      getClass().getResource("/View_Controller/CustomerEdit.fxml")
     );
     loader.load();
 
     // Create controller
-    ModifyCustomerController controller = loader.getController();
+    CustomerEditController controller = loader.getController();
     // Get selected customer object
     Customer customer = customerTable.getSelectionModel().getSelectedItem();
 

@@ -45,7 +45,7 @@ public class MainScreenController implements Initializable {
   private void customerHandler(ActionEvent event) throws IOException {
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
     Object scene = FXMLLoader.load(
-      getClass().getResource("/View_Controller/CustomerTable.fxml")
+      getClass().getResource("/View_Controller/CustomerScreen.fxml")
     );
     stage.setScene(new Scene((Parent) scene));
     stage.show();

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.231" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AddAppointmentController">
+<AnchorPane id="AnchorPane" prefHeight="450.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.231" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AppointmentAddController">
 <!-- xmlns="http://javafx.com/javafx/8.0.231" -->
    <children>
       <Label layoutX="22.0" layoutY="28.0" text="Add Appointment" />

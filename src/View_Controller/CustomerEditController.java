@@ -33,7 +33,7 @@ import javafx.stage.Stage;
  * @author eunice
  */
 
-public class ModifyCustomerController implements Initializable {
+public class CustomerEditController implements Initializable {
   @FXML
   private TextField customerEditName;
 
@@ -83,7 +83,7 @@ public class ModifyCustomerController implements Initializable {
     String customerPhone = customerEditPhone.getText();
 
     // Validate modified user input
-    AddCustomerController getValidateFxns = new AddCustomerController();
+    CustomerAddController getValidateFxns = new CustomerAddController();
 
     if (!getValidateFxns.checkCustomerName(customerName)) {
       return;
@@ -237,7 +237,7 @@ public class ModifyCustomerController implements Initializable {
 
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
     Object scene = FXMLLoader.load(
-      getClass().getResource("/View_Controller/CustomerTable.fxml")
+      getClass().getResource("/View_Controller/CustomerScreen.fxml")
     );
     stage.setScene(new Scene((Parent) scene));
     stage.show();
@@ -255,7 +255,7 @@ public class ModifyCustomerController implements Initializable {
     if (result.isPresent() && result.get() == ButtonType.OK) {
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
       Object scene = FXMLLoader.load(
-        getClass().getResource("/View_Controller/CustomerTable.fxml")
+        getClass().getResource("/View_Controller/CustomerScreen.fxml")
       );
       stage.setScene(new Scene((Parent) scene));
       stage.show();

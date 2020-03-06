@@ -78,9 +78,8 @@ public class DataProvider {
 
         // Create customer resultset
         ResultSet customerRS = statement.executeQuery(
-          "SELECT customerId, customerName, addressId FROM customer WHERE customerId = '" +
-          custID +
-          "'"
+          "SELECT customerId, customerName, addressId FROM customer WHERE customerId = " +
+          custID
         );
 
         customerRS.next();
@@ -92,9 +91,8 @@ public class DataProvider {
 
         // Create address resultset
         ResultSet addressRS = statement.executeQuery(
-          "SELECT address, cityId, postalCode, phone FROM address WHERE addressId = '" +
-          addressID +
-          "'"
+          "SELECT address, cityId, postalCode, phone FROM address WHERE addressId = " +
+          addressID
         );
 
         addressRS.next();
@@ -103,11 +101,13 @@ public class DataProvider {
         String address = addressRS.getString("address");
         String postalCode = addressRS.getString("postalCode");
         String phone = addressRS.getString("phone");
+        // String cityId = addressRS.getString("cityId");
         int cityID = addressRS.getInt("cityId");
 
         // Create city resultset
         ResultSet cityRS = statement.executeQuery(
-          "SELECT city, countryId FROM city WHERE cityId = '" + cityID + "'"
+          // "SELECT city, countryId FROM city WHERE cityId = '" + cityID + "'"
+          "SELECT city, countryId FROM city WHERE cityId = " + cityID 
         );
 
         // Get data from city resultset
@@ -122,7 +122,7 @@ public class DataProvider {
         countryRS.next();
 
         // Get data from country result set
-        String country = cityRS.getString("country");
+        String country = countryRS.getString("country");
 
         // Set properties for customer object
         customer.setCustomerID(customerID);
@@ -137,7 +137,7 @@ public class DataProvider {
         customerObjectList.add(customer);
       }
     } catch (SQLException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.out.println("Error creating customer objects: " + e.getMessage());
     }
   }
 
@@ -233,7 +233,7 @@ public class DataProvider {
         appointmentObjectList.add(appointment);
       }
     } catch (SQLException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.out.println("Error create appointment objects: " + e.getMessage());
     }
   }
 
@@ -315,7 +315,7 @@ public class DataProvider {
         appointmentsWeekList.add(appointment);
       }
     } catch (SQLException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.out.println("Error create appointment objects: " + e.getMessage());
     }
   }
 
@@ -370,7 +370,7 @@ public class DataProvider {
         appointmentsMonthList.add(appointment);
       }
     } catch (SQLException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.out.println("Error creating monthly appointments list: " + e.getMessage());
     }
   }
   /* -------------------------------------------------------------- */

@@ -15,7 +15,7 @@ import java.util.Calendar;
  * @author eunice
  */
 // createFile
-public class trackLoggedInUser {
+public class PrintLog {
   public static String filename = "user_login_log.txt";
 
   File file = new File(filename);

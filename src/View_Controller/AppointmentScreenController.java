@@ -274,7 +274,7 @@ public class AppointmentScreenController implements Initializable {
   private void apptAddButtonHandler(ActionEvent event)
     throws IOException {
     Parent parent = FXMLLoader.load(
-      getClass().getResource("AddAppointment.fxml")
+      getClass().getResource("AppointmentAdd.fxml")
     );
     Scene scene = new Scene(parent);
     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -288,11 +288,11 @@ public class AppointmentScreenController implements Initializable {
   void apptEditHandler(ActionEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(
-      getClass().getResource("/View_Controller/ModifyAppointment.fxml")
+      getClass().getResource("/View_Controller/AppointmentEdit.fxml")
     );
     loader.load();
 
-    ModifyAppointmentController controller = loader.getController();
+    AppointmentEditController controller = loader.getController();
 
     // Get selected appointment object
     Appointment appointment = appointmentTable

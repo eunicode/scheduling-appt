@@ -47,7 +47,7 @@ import javafx.util.Callback;
  * @author eunice
  */
 
-public class ModifyAppointmentController implements Initializable {
+public class AppointmentEditController implements Initializable {
   @FXML
   private ComboBox<String> typeCombo;
 
@@ -274,7 +274,7 @@ public class ModifyAppointmentController implements Initializable {
 
       // Check if appointment has overlap
       if (
-        AddAppointmentController.validateAppointmentTimes(
+        AppointmentAddController.validateAppointmentTimes(
           startDateTimeUTCString,
           endDateTimeUTCString
         )
@@ -340,7 +340,7 @@ public class ModifyAppointmentController implements Initializable {
         }
       }
     } catch (SQLException | NullPointerException | DateTimeParseException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.out.println("Error modifying appointment: " + e.getMessage());
     }
 
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

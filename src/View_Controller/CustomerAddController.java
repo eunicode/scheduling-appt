@@ -34,7 +34,7 @@ import javafx.stage.Stage;
  * @author eunice
  */
 
-public class AddCustomerController implements Initializable {
+public class CustomerAddController implements Initializable {
   @FXML
   private TextField customerAddName;
 
@@ -328,7 +328,7 @@ public class AddCustomerController implements Initializable {
           }
         }
       } catch (SQLException e) {
-        System.out.println("Error: " + e.getMessage());
+        System.out.println("Error inserting customer: " + e.getMessage());
       }
 
       // Create customer
@@ -348,7 +348,7 @@ public class AddCustomerController implements Initializable {
       // Return to customer table
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
       Object scene = FXMLLoader.load(
-        getClass().getResource("/View_Controller/CustomerTable.fxml")
+        getClass().getResource("/View_Controller/CustomerScreen.fxml")
       );
       stage.setScene(new Scene((Parent) scene));
       stage.show();
@@ -366,8 +366,7 @@ public class AddCustomerController implements Initializable {
     // Alert - The traditional + Optional API approach
     alert
       .showAndWait()
-      .ifPresent(
-        response -> {
+      .ifPresent(response -> {
           if (response == ButtonType.OK) {
             Stage stage = (Stage) ((Button) event.getSource()).getScene()
               .getWindow();
@@ -375,11 +374,11 @@ public class AddCustomerController implements Initializable {
             try {
               scene =
                 FXMLLoader.load(
-                  getClass().getResource("/View_Controller/CustomerTable.fxml")
+                  getClass().getResource("/View_Controller/CustomerScreen.fxml")
                 );
             } catch (IOException ex) {
               Logger
-                .getLogger(AddCustomerController.class.getName())
+                .getLogger(CustomerAddController.class.getName())
                 .log(Level.SEVERE, null, ex);
             }
             stage.setScene(new Scene((Parent) scene));

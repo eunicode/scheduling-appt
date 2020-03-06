@@ -50,7 +50,7 @@ import javafx.util.Callback;
  * @author eunice
  */
 
-public class AddAppointmentController implements Initializable {
+public class AppointmentAddController implements Initializable {
   @FXML
   private ComboBox<String> appointmentNameCombo;
 
@@ -195,7 +195,7 @@ public class AddAppointmentController implements Initializable {
         userId = userIdRS.getInt(1);
       }
     } catch (final SQLException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.out.println("Error finding user ID: " + e.getMessage());
     }
   }
 
