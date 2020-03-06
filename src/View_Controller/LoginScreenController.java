@@ -55,7 +55,8 @@ public class LoginScreenController implements Initializable {
 
   /**
    * Initializes the Locale on Login screen.
-   * @return
+     * @param url
+     * @param rb
    */
 
   @Override

@@ -72,12 +72,6 @@ public class ModifyAppointmentController implements Initializable {
   @FXML
   private TextField apptEditDescrip;
 
-  @FXML
-  private Button saveApptEditButton;
-
-  @FXML
-  private Button cancelApptEditButton;
-
   Appointment selectedAppointment;
   int selectedIdx;
 

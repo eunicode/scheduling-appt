@@ -43,12 +43,6 @@ public class ReportScreenController implements Initializable {
   private TableView reportAppointmentTable;
 
   @FXML
-  private TableColumn<?, ?> monthApptCol;
-
-  @FXML
-  private TableColumn<?, ?> typeApptCol;
-
-  @FXML
   private TableView reportConsultantTable;
 
   @FXML
@@ -65,12 +59,6 @@ public class ReportScreenController implements Initializable {
 
   @FXML
   private TableView reportAdditionalTable;
-
-  @FXML
-  private TableColumn<?, ?> nameAddCol;
-
-  @FXML
-  private Button backButton;
 
   private ObservableList<ObservableList> apptData;
   private ObservableList<Appointment> consultantData;

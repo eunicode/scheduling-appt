@@ -52,12 +52,6 @@ public class ModifyCustomerController implements Initializable {
   @FXML
   private TextField customerEditCountry;
 
-  @FXML
-  private Button saveCustomerEditButton;
-
-  @FXML
-  private Button cancelCustomerEditButton;
-
   Customer selectedCustomer;
   int selectedIdx;
 

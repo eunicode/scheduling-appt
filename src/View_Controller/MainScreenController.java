@@ -28,20 +28,6 @@ import javafx.stage.Stage;
  */
 
 public class MainScreenController implements Initializable {
-  @FXML
-  private Label titleLabel;
-
-  @FXML
-  private Button customerButton;
-
-  @FXML
-  private Button appointmentButton;
-
-  @FXML
-  private Button reportButton;
-
-  @FXML
-  private Button logoutButton;
 
   /**
    * Initializes the controller class.

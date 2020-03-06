@@ -220,7 +220,6 @@ public class Appointment {
 
       // Iterate upcoming appointments
       while (todaysAppointmentsRS.next()) {
-        String customerName = todaysAppointmentsRS.getString("customerName");
         String startTime = todaysAppointmentsRS.getString("start");
 
         DateTimeFormatter dateFormatMask = DateTimeFormatter.ofPattern(

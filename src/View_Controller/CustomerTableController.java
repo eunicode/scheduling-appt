@@ -60,16 +60,7 @@ public class CustomerTableController implements Initializable {
   private TableColumn<Customer, String> customerPhoneCol;
 
   @FXML
-  private Button customerAddButton;
-
-  @FXML
   private Button customerEditButton;
-
-  @FXML
-  private Button customerDeleteButton;
-
-  @FXML
-  private Button customerBackButton;
 
   Stage stage;
   Parent scene;

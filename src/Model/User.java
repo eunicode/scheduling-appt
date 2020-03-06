@@ -17,7 +17,6 @@ public class User {
   private int userID;
   private String userName;
   private String userPassword;
-  private int active;
 
   public static ObservableList<Customer> allUsers = FXCollections.observableArrayList();
 
@@ -27,7 +26,6 @@ public class User {
     this.userID = userID;
     this.userName = userName;
     this.userPassword = userPassword;
-    this.active = active;
   }
 
   /* -------------------------------------------------------------- */

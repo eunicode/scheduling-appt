@@ -53,12 +53,6 @@ public class AddCustomerController implements Initializable {
   @FXML
   private TextField customerAddPhone;
 
-  @FXML
-  private Button saveCustomerAddButton;
-
-  @FXML
-  private Button cancelCustomerAddButton;
-
   /**
    * Initializes the controller class.
    * @param url
