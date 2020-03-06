@@ -64,6 +64,6 @@
          </children>
       </GridPane>
       <Button fx:id="saveApptAddButton" layoutX="250.0" layoutY="394.0" mnemonicParsing="false" onAction="#saveApptAddHandler" prefHeight="27.0" prefWidth="88.0" text="Save" />
-      <Button fx:id="cancelApptAddButton" layoutX="344.0" layoutY="394.0" mnemonicParsing="false" onAction="#backAppointmentHandler" prefHeight="27.0" prefWidth="88.0" text="Cancel" />
+      <Button fx:id="cancelApptAddButton" layoutX="344.0" layoutY="394.0" mnemonicParsing="false" onAction="#cancelApptAddHandler" prefHeight="27.0" prefWidth="88.0" text="Cancel" />
    </children>
 </AnchorPane>

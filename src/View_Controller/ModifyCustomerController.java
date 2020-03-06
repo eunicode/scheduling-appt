@@ -93,19 +93,19 @@ public class ModifyCustomerController implements Initializable {
     String customerPhone = modifyCustomPhoneText.getText();
 
     // Validate modified user input
-    AddCustomerController validate = new AddCustomerController();
+    AddCustomerController getValidateFxns = new AddCustomerController();
 
-    if (!validate.validateCustomerName(customerName)) {
+    if (!getValidateFxns.checkCustomerName(customerName)) {
       return;
-    } else if (!validate.validateAddress(customerAddress)) {
+    } else if (!getValidateFxns.checkAddress(customerAddress)) {
       return;
-    } else if (!validate.validateCity(customerCityChoice)) {
+    } else if (!getValidateFxns.checkCity(customerCityChoice)) {
       return;
-    } else if (!validate.validateCountry(customerCountry)) {
+    } else if (!getValidateFxns.checkCountry(customerCountry)) {
       return;
-    } else if (!validate.validateZipcode(customerZipCode)) {
+    } else if (!getValidateFxns.checkZipcode(customerZipCode)) {
       return;
-    } else if (!validate.validatePhone(customerPhone)) {
+    } else if (!getValidateFxns.checkPhone(customerPhone)) {
       return;
     }
 

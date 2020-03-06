@@ -10,30 +10,30 @@
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.231" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AppointmentScreenController">
 <!-- xmlns="http://javafx.com/javafx/8.0.231" -->
    <children>
-      <TableView fx:id="appointmentTableView" layoutX="15.0" layoutY="186.0" prefHeight="295.0" prefWidth="970.0">
+      <TableView fx:id="appointmentTable" layoutX="15.0" layoutY="186.0" prefHeight="295.0" prefWidth="970.0">
         <columns>
-          <TableColumn fx:id="customerNameColumn" prefWidth="128.0" text="Name" />
+          <TableColumn fx:id="apptCustomerCol" prefWidth="128.0" text="Name" />
           
-          <TableColumn fx:id="appointmentTypeColumn" prefWidth="101.0" text="Type" />
+          <TableColumn fx:id="apptTypeCol" prefWidth="101.0" text="Type" />
 
-          <TableColumn fx:id="appointmentStartColumn" minWidth="0.0" prefWidth="157.0" text="Start" />
-          <TableColumn fx:id="appointmentEndColumn" prefWidth="138.0" text="End" />
+          <TableColumn fx:id="apptStartCol" minWidth="0.0" prefWidth="157.0" text="Start" />
+          <TableColumn fx:id="apptEndCol" prefWidth="138.0" text="End" />
           
-          <TableColumn fx:id="appointmentTitleColumn" prefWidth="105.0" text="Title" />
-          <TableColumn fx:id="appointmentLocationColumn" prefWidth="126.0" text="Location" />
-          <TableColumn fx:id="appointmentDescriptionColumn" prefWidth="112.0" text="Description" />
-          <TableColumn fx:id="customerContactColumn" prefWidth="102.0" text="Contact" />
+          <TableColumn fx:id="apptTitleCol" prefWidth="105.0" text="Title" />
+          <TableColumn fx:id="apptLocationCol" prefWidth="126.0" text="Location" />
+          <TableColumn fx:id="apptDescriptionCol" prefWidth="112.0" text="Description" />
+          <TableColumn fx:id="apptContactCol" prefWidth="102.0" text="Contact" />
 
         </columns>
       </TableView>
-      <RadioButton fx:id="viewByWeekRadioButton" layoutX="55.0" layoutY="62.0" mnemonicParsing="false" onAction="#viewByWeekHandler" text="This week's appointments" />
-      <RadioButton fx:id="viewByMonthRadioButton" layoutX="55.0" layoutY="93.0" mnemonicParsing="false" onAction="#viewByMonthHandler" text="This month's appointments" />
-      <RadioButton fx:id="viewByAllRadioButton" layoutX="55.0" layoutY="123.0" mnemonicParsing="false" onAction="#viewByAllHandler" text="All appointments" />
+      <RadioButton fx:id="weekViewRadioButton" layoutX="55.0" layoutY="62.0" mnemonicParsing="false" onAction="#weekViewHandler" text="This week's appointments" />
+      <RadioButton fx:id="monthViewRadioButton" layoutX="55.0" layoutY="93.0" mnemonicParsing="false" onAction="#monthViewHandler" text="This month's appointments" />
+      <RadioButton fx:id="allViewRadioButton" layoutX="55.0" layoutY="123.0" mnemonicParsing="false" onAction="#allViewHandler" text="All appointments" />
       <Label layoutX="55.0" layoutY="29.0" text="Appointment Records" />
-      <Button fx:id="backButton" layoutX="741.0" layoutY="498.0" mnemonicParsing="false" onAction="#backHandler" prefHeight="27.0" prefWidth="124.0" text="Back" />
-      <!-- <Button fx:id="appointmentTableAddButton" layoutX="421.0" layoutY="404.0" mnemonicParsing="false" onAction="#appointmentTableAddHandler" text="Add Appointment" /> -->
-      <Button fx:id="appointmentTableAddButton" layoutX="60.0" layoutY="498.0" mnemonicParsing="false" onAction="#appointmentTableAddHandler" text="Add appointment" />
-      <Button fx:id="modifyAppointmentButton" layoutX="201.0" layoutY="498.0" mnemonicParsing="false" onAction="#modifyAppointmentHandler" prefHeight="27.0" prefWidth="134.0" text="Edit appointment" />
-      <Button fx:id="deleteAppointmentButton" layoutX="349.0" layoutY="498.0" mnemonicParsing="false" onAction="#deleteAppointmentHandler" prefHeight="27.0" prefWidth="151.0" text="Delete appointment" />
+      <Button fx:id="apptBackButton" layoutX="741.0" layoutY="498.0" mnemonicParsing="false" onAction="#apptBackHandler" prefHeight="27.0" prefWidth="124.0" text="Back" />
+      <!-- <Button fx:id="apptAddButton" layoutX="421.0" layoutY="404.0" mnemonicParsing="false" onAction="#apptAddButtonHandler" text="Add Appointment" /> -->
+      <Button fx:id="apptAddButton" layoutX="60.0" layoutY="498.0" mnemonicParsing="false" onAction="#apptAddButtonHandler" text="Add appointment" />
+      <Button fx:id="apptEditButton" layoutX="201.0" layoutY="498.0" mnemonicParsing="false" onAction="#apptEditHandler" prefHeight="27.0" prefWidth="134.0" text="Edit appointment" />
+      <Button fx:id="apptDeleteButton" layoutX="349.0" layoutY="498.0" mnemonicParsing="false" onAction="#apptDeleteHandler" prefHeight="27.0" prefWidth="151.0" text="Delete appointment" />
    </children>
 </AnchorPane>

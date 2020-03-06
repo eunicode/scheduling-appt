@@ -280,7 +280,7 @@ public class ModifyAppointmentController implements Initializable {
 
       // Check if appointment has overlap
       if (
-        AddAppointmentController.validateAppointmentStart(
+        AddAppointmentController.validateAppointmentTimes(
           startDateTimeUTCString,
           endDateTimeUTCString
         )

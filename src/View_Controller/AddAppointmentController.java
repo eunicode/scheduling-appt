@@ -86,9 +86,6 @@ public class AddAppointmentController implements Initializable {
 
   Stage stage;
   Parent scene;
-  // DataProvider addCustomer;
-  // Appointment selectedCustomer;
-  // Appointment selectedAppointment;
 
   private static int customerId = 0;
   private String selectedCustomerName = "";
@@ -183,19 +180,19 @@ public class AddAppointmentController implements Initializable {
 
   /* -------------------------------------------------------------- */
   // Called in login screen
-  public void setSelectedUserId(final String selectedUserName) {
+  public void findUserId(final String uname) {
     try {
+      String query =
+        "SELECT userId FROM user WHERE userName = '" + uname + "'";
+
       final Connection conn = DBConnection.getConnection();
 
-      String query =
-        "SELECT userId FROM user WHERE userName = '" + selectedUserName + "'";
+      final PreparedStatement pStatement = conn.prepareStatement(query); // has advantages to createStatement()
 
-      final PreparedStatement getUserId = conn.prepareStatement(query);
+      final ResultSet userIdRS = pStatement.executeQuery();
 
-      final ResultSet resultSetStatement = getUserId.executeQuery();
-
-      while (resultSetStatement.next()) {
-        userId = resultSetStatement.getInt(1);
+      if (userIdRS.next()) {
+        userId = userIdRS.getInt(1);
       }
     } catch (final SQLException e) {
       System.out.println("Error: " + e.getMessage());
@@ -245,20 +242,20 @@ public class AddAppointmentController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
-  public static boolean validateAppointmentStart(
-    final String appointmentStartTime,
-    final String appointmentEndTime
+  public static boolean validateAppointmentTimes(
+    final String startString,
+    final String endString
   ) {
     final DateTimeFormatter formatMask = DateTimeFormatter.ofPattern(
       "yyyy-M-d H:m:s"
     );
 
     final LocalDateTime startLocalTimeF = LocalDateTime.parse(
-      appointmentStartTime,
+      startString,
       formatMask
     );
     final LocalDateTime endLocalTimeF = LocalDateTime.parse(
-      appointmentEndTime,
+      endString,
       formatMask
     );
 
@@ -292,15 +289,15 @@ public class AddAppointmentController implements Initializable {
       final String overlapQuery =
         "SELECT * FROM appointment " +
         "WHERE ('" +
-        appointmentStartTime +
+        startString +
         "' BETWEEN start AND end " +
         "OR '" +
-        appointmentEndTime +
+        endString +
         "' BETWEEN start AND end " +
         "OR '" +
-        appointmentStartTime +
+        startString +
         "' > start AND '" +
-        appointmentEndTime +
+        endString +
         "' < end)";
 
       final ResultSet overlapRS = statement.executeQuery(overlapQuery);
@@ -432,12 +429,12 @@ public class AddAppointmentController implements Initializable {
       ":" +
       Integer.toString(endMinUTC);
 
-    final String zonedStartLocalString = zonedStartLocal.toString();
-    final String zonedEndLocalString = zonedEndLocal.toString();
+    // final String zonedStartLocalString = zonedStartLocal.toString();
+    // final String zonedEndLocalString = zonedEndLocal.toString();
 
     // If the times are kosher, and there is no overlap, execute SQL command
     if (
-      validateAppointmentStart(startDateTimeUTCString, endDateTimeUTCString)
+      validateAppointmentTimes(startDateTimeUTCString, endDateTimeUTCString)
     ) {
       final Statement statement = DBConnection
         .getConnection()
@@ -488,12 +485,12 @@ public class AddAppointmentController implements Initializable {
         ", NOW(), " + // lastUpdate
         "'test')"; // lastUpdateBy
 
-      final int appointmentExecuteUpdate = statement.executeUpdate(
+      final int checkInsertSucess = statement.executeUpdate(
         appointmentQuery
       );
 
       // If one row was affected
-      if (appointmentExecuteUpdate == 1) {
+      if (checkInsertSucess == 1) {
         System.out.println("One row was inserted into appointment table");
       }
 
@@ -508,21 +505,9 @@ public class AddAppointmentController implements Initializable {
         assignedContact,
         type,
         url,
-        zonedStartLocalString,
-        zonedEndLocalString
+        startDateTime,
+        endDateTime
       );
-
-      appointment.setAppointmentId(1);
-      appointment.setCustomerId(customerId);
-      appointment.setUserId(userId);
-      appointment.setTitle(title);
-      appointment.setDescription(description);
-      appointment.setLocation(location);
-      appointment.setContact(assignedContact);
-      appointment.setType(type);
-      appointment.setUrl(url);
-      appointment.setStart(startDateTime);
-      appointment.setEnd(endDateTime);
 
       // Add appointment object to appointment ObservableList
       DataProvider.addAppointment(appointment);
@@ -543,7 +528,7 @@ public class AddAppointmentController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void backAppointmentHandler(final ActionEvent event)
+  private void cancelApptAddHandler(final ActionEvent event)
     throws IOException {
     final Alert alert = new Alert(
       AlertType.CONFIRMATION,

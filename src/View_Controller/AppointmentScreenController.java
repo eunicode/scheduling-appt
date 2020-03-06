@@ -25,7 +25,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -43,52 +42,43 @@ public class AppointmentScreenController implements Initializable {
   private ToggleGroup weekOrMonthToggleGroup;
 
   @FXML
-  private RadioButton viewByWeekRadioButton;
+  private RadioButton weekViewRadioButton;
 
   @FXML
-  private RadioButton viewByMonthRadioButton;
+  private RadioButton monthViewRadioButton;
 
   @FXML
-  private RadioButton viewByAllRadioButton;
+  private RadioButton allViewRadioButton;
 
   @FXML
-  private TableView<Appointment> appointmentTableView;
+  private TableView<Appointment> appointmentTable;
 
   @FXML
-  private TableColumn<Appointment, String> customerNameColumn;
+  private TableColumn<Appointment, String> apptCustomerCol;
 
   @FXML
-  private TableColumn<Appointment, String> customerContactColumn;
+  private TableColumn<Appointment, String> apptTypeCol;
 
   @FXML
-  private TableColumn<Appointment, String> appointmentTitleColumn;
+  private TableColumn<Appointment, String> apptStartCol;
 
   @FXML
-  private TableColumn<Appointment, String> appointmentTypeColumn;
+  private TableColumn<Appointment, String> apptEndCol;
 
   @FXML
-  private TableColumn<Appointment, String> appointmentLocationColumn;
+  private TableColumn<Appointment, String> apptTitleCol;
 
   @FXML
-  private TableColumn<Appointment, String> appointmentDescriptionColumn;
+  private TableColumn<Appointment, String> apptLocationCol;
 
   @FXML
-  private TableColumn<Appointment, String> appointmentStartColumn;
+  private TableColumn<Appointment, String> apptDescriptionCol;
 
   @FXML
-  private TableColumn<Appointment, String> appointmentEndColumn;
+  private TableColumn<Appointment, String> apptContactCol;
 
   @FXML
-  private Button backButton;
-
-  @FXML
-  private Button modifyAppointmentButton;
-
-  @FXML
-  private Button deleteAppointmentButton;
-
-  @FXML
-  private ComboBox<String> viewByComboBox;
+  private Button apptEditButton;
 
   Stage stage;
   Parent scene;
@@ -103,183 +93,185 @@ public class AppointmentScreenController implements Initializable {
   public void initialize(URL url, ResourceBundle rb) {
     // Create ToggleGroup for radio buttons with Java instead of FXML
     weekOrMonthToggleGroup = new ToggleGroup();
-    this.viewByWeekRadioButton.setToggleGroup(weekOrMonthToggleGroup);
-    this.viewByMonthRadioButton.setToggleGroup(weekOrMonthToggleGroup);
-    this.viewByAllRadioButton.setToggleGroup(weekOrMonthToggleGroup);
+    this.weekViewRadioButton.setToggleGroup(weekOrMonthToggleGroup);
+    this.monthViewRadioButton.setToggleGroup(weekOrMonthToggleGroup);
+    this.allViewRadioButton.setToggleGroup(weekOrMonthToggleGroup);
 
+    // Populate appointments table
     DataProvider.getAppointmentsAllList().clear();
-    appointmentTableView.setItems(DataProvider.getAppointmentsAllList());
-
-    DataProvider populateAppointments = new DataProvider();
-    DataProvider.createAppointmentObjectObservableList();
+    appointmentTable.setItems(DataProvider.getAppointmentsAllList()); // 
+    DataProvider.createAppointmentObjectObservableList(); // investigate
 
     // Have first appointment selected by default
-    appointmentTableView.getSelectionModel().selectFirst();
+    appointmentTable.getSelectionModel().selectFirst();
 
     // Bind columns to values from customer object
-    customerNameColumn.setCellValueFactory(
+    apptCustomerCol.setCellValueFactory(
       new PropertyValueFactory<>("customerName")
     );
-    customerContactColumn.setCellValueFactory(
+    apptContactCol.setCellValueFactory(
       new PropertyValueFactory<>("contact")
     );
-    appointmentTitleColumn.setCellValueFactory(
+    apptTitleCol.setCellValueFactory(
       new PropertyValueFactory<>("title")
     );
-    appointmentTypeColumn.setCellValueFactory(
+    apptTypeCol.setCellValueFactory(
       new PropertyValueFactory<>("type")
     );
-    appointmentLocationColumn.setCellValueFactory(
+    apptLocationCol.setCellValueFactory(
       new PropertyValueFactory<>("location")
     );
-    appointmentDescriptionColumn.setCellValueFactory(
+    apptDescriptionCol.setCellValueFactory(
       new PropertyValueFactory<>("description")
     );
-    appointmentStartColumn.setCellValueFactory(
+    apptStartCol.setCellValueFactory(
       new PropertyValueFactory<>("start")
     );
-    appointmentEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+    apptEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
   }
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void viewByWeekHandler(ActionEvent event) {
+  private void weekViewHandler(ActionEvent event) {
+    // Clear observablelist of appointment objects
+    DataProvider.getAppointmentsAllList().clear();
     DataProvider.getAppointmentsMonth().clear();
     DataProvider.getAppointmentsWeek().clear();
 
-    if (viewByWeekRadioButton.isSelected()) {
+    if (weekViewRadioButton.isSelected()) {
       DataProvider.createAppointmentWeekList();
     }
 
     // Lambda: A lambda is used to bind columns to values.
-    // A lambda can be used if PropertyValueFactory cannot be used the row is an ArrayList instead of an object,
+    // A lambda can also be used if PropertyValueFactory() cannot be used because the row is an ArrayList instead of an object,
     // and therefore does not have a property getter.
-    customerNameColumn.setCellValueFactory(
+    apptCustomerCol.setCellValueFactory(
       appointment ->
         new SimpleStringProperty(appointment.getValue().getCustomerName())
     );
-    customerContactColumn.setCellValueFactory(
+    apptContactCol.setCellValueFactory(
       appointment ->
         new SimpleStringProperty(appointment.getValue().getContact())
     );
-    appointmentTitleColumn.setCellValueFactory(
+    apptTitleCol.setCellValueFactory(
       appointment -> new SimpleStringProperty(appointment.getValue().getTitle())
     );
-    appointmentLocationColumn.setCellValueFactory(
+    apptLocationCol.setCellValueFactory(
       appointment ->
         new SimpleStringProperty(appointment.getValue().getLocation())
     );
-    appointmentDescriptionColumn.setCellValueFactory(
+    apptDescriptionCol.setCellValueFactory(
       appointment ->
         new SimpleStringProperty(appointment.getValue().getDescription())
     );
-    appointmentStartColumn.setCellValueFactory(
+    apptStartCol.setCellValueFactory(
       appointment -> new SimpleStringProperty(appointment.getValue().getStart())
     );
-    appointmentEndColumn.setCellValueFactory(
+    apptEndCol.setCellValueFactory(
       appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
     );
 
     // Change table view depending on selected radio button
-    if (viewByWeekRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsWeek());
-    } else if (viewByMonthRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsMonth());
-    } else if (viewByAllRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsAllList());
+    if (weekViewRadioButton.isSelected()) {
+      appointmentTable.setItems(DataProvider.getAppointmentsWeek());
+    } else if (monthViewRadioButton.isSelected()) {
+      appointmentTable.setItems(DataProvider.getAppointmentsMonth());
+    } else if (allViewRadioButton.isSelected()) {
+      appointmentTable.setItems(DataProvider.getAppointmentsAllList());
     }
   }
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void viewByMonthHandler(ActionEvent event) {
+  private void monthViewHandler(ActionEvent event) {
+    DataProvider.getAppointmentsAllList().clear();
     DataProvider.getAppointmentsMonth().clear();
     DataProvider.getAppointmentsWeek().clear();
 
-    if (viewByMonthRadioButton.isSelected()) {
+    if (monthViewRadioButton.isSelected()) {
       DataProvider.createAppointmentMonthList();
     }
 
-    customerNameColumn.setCellValueFactory(
+    apptCustomerCol.setCellValueFactory(
       appointment ->
         new SimpleStringProperty(appointment.getValue().getCustomerName())
     );
-    customerContactColumn.setCellValueFactory(
+    apptContactCol.setCellValueFactory(
       appointment ->
         new SimpleStringProperty(appointment.getValue().getContact())
     );
-    appointmentTitleColumn.setCellValueFactory(
+    apptTitleCol.setCellValueFactory(
       appointment -> new SimpleStringProperty(appointment.getValue().getTitle())
     );
-    appointmentLocationColumn.setCellValueFactory(
+    apptLocationCol.setCellValueFactory(
       appointment ->
         new SimpleStringProperty(appointment.getValue().getLocation())
     );
-    appointmentDescriptionColumn.setCellValueFactory(
+    apptDescriptionCol.setCellValueFactory(
       appointment ->
         new SimpleStringProperty(appointment.getValue().getDescription())
     );
-    appointmentStartColumn.setCellValueFactory(
+    apptStartCol.setCellValueFactory(
       appointment -> new SimpleStringProperty(appointment.getValue().getStart())
     );
-    appointmentEndColumn.setCellValueFactory(
+    apptEndCol.setCellValueFactory(
       appointment -> new SimpleStringProperty(appointment.getValue().getEnd())
     );
 
-    if (viewByWeekRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsWeek());
-    } else if (viewByMonthRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsMonth());
-    } else if (viewByAllRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsAllList());
+    if (weekViewRadioButton.isSelected()) {
+      appointmentTable.setItems(DataProvider.getAppointmentsWeek());
+    } else if (monthViewRadioButton.isSelected()) {
+      appointmentTable.setItems(DataProvider.getAppointmentsMonth());
+    } else if (allViewRadioButton.isSelected()) {
+      appointmentTable.setItems(DataProvider.getAppointmentsAllList());
     }
   }
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void viewByAllHandler(ActionEvent event) {
-    DataProvider.getAppointmentsAllList().clear();
+  private void allViewHandler(ActionEvent event) {
+    DataProvider.getAppointmentsAllList().clear(); 
     DataProvider.getAppointmentsMonth().clear();
     DataProvider.getAppointmentsWeek().clear();
 
     DataProvider populateAppointments = new DataProvider();
     populateAppointments.createAppointmentObjectObservableList();
 
-    customerNameColumn.setCellValueFactory(
+    apptCustomerCol.setCellValueFactory(
       new PropertyValueFactory<>("customerName")
     );
-    customerContactColumn.setCellValueFactory(
+    apptContactCol.setCellValueFactory(
       new PropertyValueFactory<>("contact")
     );
-    appointmentTitleColumn.setCellValueFactory(
+    apptTitleCol.setCellValueFactory(
       new PropertyValueFactory<>("title")
     );
-    appointmentTypeColumn.setCellValueFactory(
+    apptTypeCol.setCellValueFactory(
       new PropertyValueFactory<>("type")
     );
-    appointmentLocationColumn.setCellValueFactory(
+    apptLocationCol.setCellValueFactory(
       new PropertyValueFactory<>("location")
     );
-    appointmentDescriptionColumn.setCellValueFactory(
+    apptDescriptionCol.setCellValueFactory(
       new PropertyValueFactory<>("description")
     );
-    appointmentStartColumn.setCellValueFactory(
+    apptStartCol.setCellValueFactory(
       new PropertyValueFactory<>("start")
     );
-    appointmentEndColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
+    apptEndCol.setCellValueFactory(new PropertyValueFactory<>("end"));
 
-    if (viewByWeekRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsWeek());
-    } else if (viewByMonthRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsMonth());
-    } else if (viewByAllRadioButton.isSelected()) {
-      appointmentTableView.setItems(DataProvider.getAppointmentsAllList());
+    if (weekViewRadioButton.isSelected()) {
+      appointmentTable.setItems(DataProvider.getAppointmentsWeek());
+    } else if (monthViewRadioButton.isSelected()) {
+      appointmentTable.setItems(DataProvider.getAppointmentsMonth());
+    } else if (allViewRadioButton.isSelected()) {
+      appointmentTable.setItems(DataProvider.getAppointmentsAllList());
     }
   }
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void appointmentTableAddHandler(ActionEvent event)
+  private void apptAddButtonHandler(ActionEvent event)
     throws IOException {
     Parent parent = FXMLLoader.load(
       getClass().getResource("AddAppointment.fxml")
@@ -293,7 +285,7 @@ public class AppointmentScreenController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
-  void modifyAppointmentHandler(ActionEvent event) throws IOException {
+  void apptEditHandler(ActionEvent event) throws IOException {
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(
       getClass().getResource("/View_Controller/ModifyAppointment.fxml")
@@ -302,14 +294,17 @@ public class AppointmentScreenController implements Initializable {
 
     ModifyAppointmentController controller = loader.getController();
 
-    Appointment appointment = appointmentTableView
+    // Get selected appointment object
+    Appointment appointment = appointmentTable
       .getSelectionModel()
       .getSelectedItem();
 
-    int index = appointmentTableView.getSelectionModel().getSelectedIndex();
+    // Get index of selected row  
+    int index = appointmentTable.getSelectionModel().getSelectedIndex();
+    // Pass appointment object and its index to edit appointment screen
     controller.setAppointment(appointment, index);
 
-    stage = (Stage) modifyAppointmentButton.getScene().getWindow();
+    stage = (Stage) apptEditButton.getScene().getWindow();
     Parent scene = loader.getRoot();
     stage.setScene(new Scene(scene));
     stage.show();
@@ -317,7 +312,7 @@ public class AppointmentScreenController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void deleteAppointmentHandler(ActionEvent event) {
+  private void apptDeleteHandler(ActionEvent event) {
     Alert alert = new Alert(
       Alert.AlertType.CONFIRMATION,
       "Are you sure you want to delete this customer and its data?"
@@ -327,29 +322,31 @@ public class AppointmentScreenController implements Initializable {
     if (result.isPresent() && result.get() == ButtonType.OK) {
       // Get selected row (Appointment object)
       selectedAppointment =
-        appointmentTableView.getSelectionModel().getSelectedItem();
+        appointmentTable.getSelectionModel().getSelectedItem();
 
       // Run SQL command to delete appointment record
-      deleteAppointment(selectedAppointment);
+      deleteAppt(selectedAppointment);
     }
   }
 
   /* -------------------------------------------------------------- */
-  public void deleteAppointment(Appointment appointment) {
+  public void deleteAppt(Appointment appointment) {
     int selectedID = appointment.getAppointmentId();
 
     try {
       Statement statement = DBConnection.getConnection().createStatement();
-      String deleteCustomer =
+      String SQL =
         "DELETE FROM appointment WHERE appointmentId = " + selectedID;
-      int deletedCustomer = statement.executeUpdate(deleteCustomer);
+      int checkDeleteSuccess = statement.executeUpdate(SQL);
 
-      if (deletedCustomer > 0) {
+      if (checkDeleteSuccess == 1) {
         DataProvider.getAppointmentsAllList().remove(appointment);
+
         System.out.println(
           "Appointment(s) were deleted from appointment table"
         );
       }
+
     } catch (SQLException e) {
       System.out.println("SQLException: " + e.getMessage());
     }
@@ -357,7 +354,7 @@ public class AppointmentScreenController implements Initializable {
 
   /* -------------------------------------------------------------- */
   @FXML
-  private void backHandler(ActionEvent event) throws IOException {
+  private void apptBackHandler(ActionEvent event) throws IOException {
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
     Object scene = FXMLLoader.load(
       getClass().getResource("/View_Controller/MainScreen.fxml")

@@ -87,7 +87,7 @@ public class LoginScreenController implements Initializable {
       loggedInUser = username;
 
       AddAppointmentController user = new AddAppointmentController();
-      user.setSelectedUserId(loggedInUser);
+      user.findUserId(loggedInUser);
 
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
       Object scene = FXMLLoader.load(

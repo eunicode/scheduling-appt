@@ -24,7 +24,6 @@
       <Button fx:id="customerTableAddButton" layoutX="23.0" layoutY="404.0" mnemonicParsing="false" onAction="#addButtonHandler" text="Add Customer" />
       <Button fx:id="customerTableModifyButton" layoutX="144.0" layoutY="404.0" mnemonicParsing="false" onAction="#modifyButtonHandler" text="Edit Customer" />
       <Button fx:id="customerTableDeleteButton" layoutX="263.0" layoutY="404.0" mnemonicParsing="false" onAction="#deleteButtonHandler" text="Delete Customer" />
-      <!-- <Button fx:id="appointmentTableAddButton" layoutX="421.0" layoutY="404.0" mnemonicParsing="false" onAction="#appointmentTableAddHandler" text="Add Appointment" /> -->
       <Button fx:id="backButton" layoutX="758.0" layoutY="404.0" mnemonicParsing="false" onAction="#backButtonHandler" prefHeight="27.0" prefWidth="115.0" text="Back" />
    </children>
 </AnchorPane>

@@ -337,7 +337,7 @@ public class AddCustomerController implements Initializable {
         System.out.println("Error: " + e.getMessage());
       }
 
-      // Add customer to DataProvider
+      // Create customer
       Customer customer = new Customer(
         customerId,
         customerName,
@@ -347,6 +347,8 @@ public class AddCustomerController implements Initializable {
         customerZipCode,
         customerPhone
       );
+
+      // Add customer object to ObservableList
       DataProvider.addCustomer(customer);
 
       // Return to customer table
