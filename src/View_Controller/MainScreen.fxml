@@ -22,18 +22,18 @@
             <RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="91.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="customerTableButton" mnemonicParsing="false" onAction="#customerTableHandler" prefHeight="48.0" prefWidth="241.0" text="Customers" GridPane.hgrow="ALWAYS" />
-            <Button fx:id="appointmentTableButton" mnemonicParsing="false" onAction="#appointmentTableHandler" prefHeight="48.0" prefWidth="244.0" text="Appointments" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
-            <Button fx:id="reportTableButton" mnemonicParsing="false" onAction="#reportTableHandler" prefHeight="43.0" prefWidth="242.0" text="Reports" GridPane.rowIndex="2" />
+            <Button fx:id="customerButton" mnemonicParsing="false" onAction="#customerHandler" prefHeight="48.0" prefWidth="241.0" text="Customers" GridPane.hgrow="ALWAYS" />
+            <Button fx:id="appointmentButton" mnemonicParsing="false" onAction="#appointmentHandler" prefHeight="48.0" prefWidth="244.0" text="Appointments" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+            <Button fx:id="reportButton" mnemonicParsing="false" onAction="#reportHandler" prefHeight="43.0" prefWidth="242.0" text="Reports" GridPane.rowIndex="2" />
             <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="241.0" text="View, add, edit, delete customers" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
             <Label alignment="TOP_CENTER" prefHeight="19.0" prefWidth="242.0" text="View, add, edit, delete appointments" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
             <Label alignment="TOP_CENTER" prefHeight="20.0" prefWidth="115.0" text="View reports" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
-            <Button fx:id="dashboardLogButton" mnemonicParsing="false" onAction="#dashboardLogButtonHandler" prefHeight="40.0" prefWidth="242.0" text="Log" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="dashboardLogButton" mnemonicParsing="false" onAction="#dashboardLogHandler" prefHeight="40.0" prefWidth="242.0" text="Log" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="View user login log" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
-      <Label fx:id="welcomeLabel" layoutX="200.0" layoutY="35.0" text="Welcome! Select an option below" />
-      <Button fx:id="logoutButton" layoutX="464.0" layoutY="312.0" mnemonicParsing="false" onAction="#logoutHandler" prefHeight="27.0" prefWidth="85.0" text="Logout" />
+      <Label fx:id="titleLabel" layoutX="200.0" layoutY="35.0" text="Welcome! Select an option below" />
+      <Button fx:id="logoutButton" layoutX="464.0" layoutY="312.0" mnemonicParsing="false" onAction="#logoutButtonHandler" prefHeight="27.0" prefWidth="85.0" text="Logout" />
       <Label layoutX="122.0" layoutY="65.0" text="(App may be slow. Please wait a few seconds for app to respond)" />
    </children>
 </AnchorPane>

@@ -35,35 +35,31 @@ import javafx.stage.Stage;
 
 public class ModifyCustomerController implements Initializable {
   @FXML
-  private TextField modifyCustomerText;
+  private TextField customerEditName;
 
   @FXML
-  private TextField modifyCustomerAddressText;
+  private TextField customerEditAddress;
 
   @FXML
-  private TextField modifyCustomerZipCodeText;
+  private TextField customerEditZipCode;
 
   @FXML
-  private TextField modifyCustomPhoneText;
+  private TextField customerEditPhone;
 
   @FXML
-  private TextField modifyCustomerCityText;
-
-  // private ComboBox<String> modifyCustomerCityText;
+  private TextField customerEditCity;
 
   @FXML
-  private TextField modifyCustomerCountryText;
-
-  // private Label modifyCustomerCountryText;
+  private TextField customerEditCountry;
 
   @FXML
-  private Button saveModifiedustomerButton;
+  private Button saveCustomerEditButton;
 
   @FXML
-  private Button cancelModifiedButton;
+  private Button cancelCustomerEditButton;
 
   Customer selectedCustomer;
-  int selectedIndex;
+  int selectedIdx;
 
   /**
    * Initializes the controller class.
@@ -85,12 +81,12 @@ public class ModifyCustomerController implements Initializable {
     int addressId = 1;
 
     // Get modified user input
-    String customerName = modifyCustomerText.getText();
-    String customerAddress = modifyCustomerAddressText.getText();
-    String customerCityChoice = modifyCustomerCityText.getText();
-    String customerCountry = modifyCustomerCountryText.getText();
-    String customerZipCode = modifyCustomerZipCodeText.getText();
-    String customerPhone = modifyCustomPhoneText.getText();
+    String customerName = customerEditName.getText();
+    String customerAddress = customerEditAddress.getText();
+    String customerCityChoice = customerEditCity.getText();
+    String customerCountry = customerEditCountry.getText();
+    String customerZipCode = customerEditZipCode.getText();
+    String customerPhone = customerEditPhone.getText();
 
     // Validate modified user input
     AddCustomerController getValidateFxns = new AddCustomerController();
@@ -120,7 +116,7 @@ public class ModifyCustomerController implements Initializable {
         customerPhone
       );
 
-      DataProvider.getCustomersAllList().set(selectedIndex, customer);
+      DataProvider.getCustomersAllList().set(selectedIdx, customer);
 
       // Create Statement objects
       Statement statement = DBConnection.getConnection().createStatement();
@@ -276,16 +272,16 @@ public class ModifyCustomerController implements Initializable {
   // Fill in form w/ previously saved data
   public void setCustomer(Customer customer, int index) {
     selectedCustomer = customer;
-    selectedIndex = index;
+    selectedIdx = index;
 
     Customer newCustomer = (Customer) customer;
 
-    this.modifyCustomerText.setText(newCustomer.getCustomerName());
-    this.modifyCustomerAddressText.setText((newCustomer.getAddress()));
-    this.modifyCustomerCityText.setText((newCustomer.getCity()));
-    this.modifyCustomerCountryText.setText((newCustomer.getCountry()));
-    this.modifyCustomerZipCodeText.setText((newCustomer.getPostalCode()));
-    this.modifyCustomPhoneText.setText((newCustomer.getPhone()));
+    this.customerEditName.setText(newCustomer.getCustomerName());
+    this.customerEditAddress.setText((newCustomer.getAddress()));
+    this.customerEditCity.setText((newCustomer.getCity()));
+    this.customerEditCountry.setText((newCustomer.getCountry()));
+    this.customerEditZipCode.setText((newCustomer.getPostalCode()));
+    this.customerEditPhone.setText((newCustomer.getPhone()));
   }
 }
 /* =================================================================  

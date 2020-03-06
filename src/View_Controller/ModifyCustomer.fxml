@@ -31,15 +31,15 @@
             <Label text="Country:" GridPane.rowIndex="3" />
             <Label text="Zipcode:" GridPane.rowIndex="4" />
             <Label text="Phone:" GridPane.rowIndex="5" />
-            <TextField fx:id="modifyCustomerText" GridPane.columnIndex="1" />
-            <TextField fx:id="modifyCustomerAddressText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="modifyCustomerCountryText" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="modifyCustomPhoneText" promptText="000-0000 format" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="modifyCustomerZipCodeText" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="modifyCustomerCityText" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="customerEditName" GridPane.columnIndex="1" />
+            <TextField fx:id="customerEditAddress" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="customerEditCountry" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="customerEditPhone" promptText="000-0000 format" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="customerEditZipCode" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="customerEditCity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Button fx:id="saveModifiedustomerButton" layoutX="221.0" layoutY="329.0" mnemonicParsing="false" onAction="#saveModifiedCustomerHandler" prefHeight="27.0" prefWidth="98.0" text="Save" />
-      <Button fx:id="cancelModifiedButton" layoutX="333.0" layoutY="329.0" mnemonicParsing="false" onAction="#cancelModifiedHandler" prefHeight="27.0" prefWidth="98.0" text="Cancel" />
+      <Button fx:id="saveCustomerEditButton" layoutX="221.0" layoutY="329.0" mnemonicParsing="false" onAction="#saveModifiedCustomerHandler" prefHeight="27.0" prefWidth="98.0" text="Save" />
+      <Button fx:id="cancelCustomerEditButton" layoutX="333.0" layoutY="329.0" mnemonicParsing="false" onAction="#cancelModifiedHandler" prefHeight="27.0" prefWidth="98.0" text="Cancel" />
    </children>
 </AnchorPane>

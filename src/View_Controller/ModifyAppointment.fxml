@@ -37,19 +37,19 @@
             <Label text="Description:" GridPane.rowIndex="6" />
             <Label text="Start time:" GridPane.rowIndex="2" />
             <Label text="End time:" GridPane.rowIndex="3" />
-            <TextField fx:id="modifyTitleText" promptText="optional" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="modifyLocationComboBox" promptText="optional" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="modifyDescriptionComboBox" promptText="optional" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <ComboBox fx:id="modifyStartComboBox" prefHeight="27.0" prefWidth="88.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox fx:id="modifyEndComboBox" prefHeight="27.0" prefWidth="87.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox fx:id="modifyTypeText" prefWidth="150.0" GridPane.columnIndex="1" />
-            <TextField fx:id="modifyContactNameText" promptText="optional" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="apptEditTitle" promptText="optional" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="apptEditLocation" promptText="optional" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="apptEditDescrip" promptText="optional" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <ComboBox fx:id="startCombo" prefHeight="27.0" prefWidth="88.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="endCombo" prefHeight="27.0" prefWidth="87.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox fx:id="typeCombo" prefWidth="150.0" GridPane.columnIndex="1" />
+            <TextField fx:id="apptEditName" promptText="optional" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <Label text="Contact" GridPane.rowIndex="7" />
-            <DatePicker fx:id="modifyDate" prefHeight="27.0" prefWidth="291.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <DatePicker fx:id="dateDatePicker" prefHeight="27.0" prefWidth="291.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Date:" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <Button fx:id="saveModifyAppointmentButton" layoutX="250.0" layoutY="394.0" mnemonicParsing="false" onAction="#saveMondifyAppointmentHandler" prefHeight="27.0" prefWidth="88.0" text="Save" />
-      <Button fx:id="cancelModifyAppointmentButton" layoutX="344.0" layoutY="394.0" mnemonicParsing="false" onAction="#cancelModifyAppointmentHandler" prefHeight="27.0" prefWidth="88.0" text="Cancel" />
+      <Button fx:id="saveApptEditButton" layoutX="250.0" layoutY="394.0" mnemonicParsing="false" onAction="#saveMondifyAppointmentHandler" prefHeight="27.0" prefWidth="88.0" text="Save" />
+      <Button fx:id="cancelApptEditButton" layoutX="344.0" layoutY="394.0" mnemonicParsing="false" onAction="#cancelModifyAppointmentHandler" prefHeight="27.0" prefWidth="88.0" text="Cancel" />
    </children>
 </AnchorPane>

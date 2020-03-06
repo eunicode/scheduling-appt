@@ -49,37 +49,37 @@ import javafx.util.Callback;
 
 public class ModifyAppointmentController implements Initializable {
   @FXML
-  private ComboBox<String> modifyTypeText;
+  private ComboBox<String> typeCombo;
 
   @FXML
-  private DatePicker modifyDate;
+  private DatePicker dateDatePicker;
 
   @FXML
-  private ComboBox<String> modifyStartComboBox;
+  private ComboBox<String> startCombo;
 
   @FXML
-  private ComboBox<String> modifyEndComboBox;
+  private ComboBox<String> endCombo;
 
   @FXML
-  private TextField modifyContactNameText;
+  private TextField apptEditName;
 
   @FXML
-  private TextField modifyTitleText;
+  private TextField apptEditTitle;
 
   @FXML
-  private TextField modifyLocationComboBox;
+  private TextField apptEditLocation;
 
   @FXML
-  private TextField modifyDescriptionComboBox;
+  private TextField apptEditDescrip;
 
   @FXML
-  private Button saveModifyAppointmentButton;
+  private Button saveApptEditButton;
 
   @FXML
-  private Button cancelModifyAppointmentButton;
+  private Button cancelApptEditButton;
 
   Appointment selectedAppointment;
-  int selectedIndex;
+  int selectedIdx;
 
   // hour
   ObservableList<String> apptTimeOptions = FXCollections.observableArrayList(
@@ -132,15 +132,15 @@ public class ModifyAppointmentController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    modifyTypeText.setItems(appointmentType);
-    modifyStartComboBox.setItems(apptTimeOptions);
-    modifyEndComboBox.setItems(apptTimeOptions);
+    typeCombo.setItems(appointmentType);
+    startCombo.setItems(apptTimeOptions);
+    endCombo.setItems(apptTimeOptions);
 
     // Disable selecting weekends, past dates
     Callback<DatePicker, DateCell> dayCellFactory = this.disableWeekend();
-    modifyDate.setDayCellFactory(dayCellFactory);
+    dateDatePicker.setDayCellFactory(dayCellFactory);
     // Disable text field editing
-    modifyDate.getEditor().setDisable(true);
+    dateDatePicker.getEditor().setDisable(true);
   }
 
   /* -------------------------------------------------------------- */
@@ -152,25 +152,25 @@ public class ModifyAppointmentController implements Initializable {
       int customerId = selectedAppointment.getCustomerId();
       int userId = selectedAppointment.getUserId();
 
-      String title = modifyTitleText.getText();
-      String description = modifyDescriptionComboBox.getText();
-      String location = modifyLocationComboBox.getText();
-      String assignedContact = modifyContactNameText.getText();
-      String type = modifyTypeText.getSelectionModel().getSelectedItem();
+      String title = apptEditTitle.getText();
+      String description = apptEditDescrip.getText();
+      String location = apptEditLocation.getText();
+      String assignedContact = apptEditName.getText();
+      String type = typeCombo.getSelectionModel().getSelectedItem();
       String url = "";
 
-      LocalDate date = modifyDate.getValue();
+      LocalDate date = dateDatePicker.getValue();
 
-      String startTime = modifyStartComboBox
+      String startTime = startCombo
         .getSelectionModel()
         .getSelectedItem();
-      String endTime = modifyEndComboBox.getSelectionModel().getSelectedItem();
+      String endTime = endCombo.getSelectionModel().getSelectedItem();
 
       // Build date-time string
       String selectedStartTime = date + " " + startTime;
       String selectedEndTime = date + " " + endTime;
 
-      if (modifyTypeText.getSelectionModel().isEmpty()) {
+      if (typeCombo.getSelectionModel().isEmpty()) {
         Alert alert = new Alert(Alert.AlertType.WARNING, "Type is unselected");
         alert.showAndWait();
         return;
@@ -301,7 +301,7 @@ public class ModifyAppointmentController implements Initializable {
         );
 
         //
-        DataProvider.getAppointmentsAllList().set(selectedIndex, appointment);
+        DataProvider.getAppointmentsAllList().set(selectedIdx, appointment);
 
         Statement statement = DBConnection.getConnection().createStatement();
 
@@ -385,7 +385,7 @@ public class ModifyAppointmentController implements Initializable {
   // Populate form with previously saved data
   public void setAppointment(Appointment appointment, int index) {
     selectedAppointment = appointment;
-    selectedIndex = index;
+    selectedIdx = index;
 
     Appointment newAppointment = (Appointment) appointment;
 
@@ -395,18 +395,18 @@ public class ModifyAppointmentController implements Initializable {
 
     LocalDate dateForCal = LocalDate.parse(dateFromZonedDateTimeString);
 
-    this.modifyContactNameText.setText(newAppointment.getContact());
-    this.modifyTitleText.setText(newAppointment.getTitle());
-    this.modifyLocationComboBox.setText(newAppointment.getLocation());
-    this.modifyDescriptionComboBox.setText(newAppointment.getDescription());
-    this.modifyDate.setValue(dateForCal);
+    this.apptEditName.setText(newAppointment.getContact());
+    this.apptEditTitle.setText(newAppointment.getTitle());
+    this.apptEditLocation.setText(newAppointment.getLocation());
+    this.apptEditDescrip.setText(newAppointment.getDescription());
+    this.dateDatePicker.setValue(dateForCal);
 
     // Set type to previously selected type
     String selectedType = newAppointment.getType();
     if ("Presentation".equals(selectedType)) {
-      this.modifyTypeText.getSelectionModel().selectFirst();
+      this.typeCombo.getSelectionModel().selectFirst();
     } else {
-      this.modifyTypeText.getSelectionModel().select(1);
+      this.typeCombo.getSelectionModel().select(1);
     }
   }
 }

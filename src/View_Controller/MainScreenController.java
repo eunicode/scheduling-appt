@@ -29,19 +29,19 @@ import javafx.stage.Stage;
 
 public class MainScreenController implements Initializable {
   @FXML
-  private Button customerTableButton;
+  private Label titleLabel;
 
   @FXML
-  private Button appointmentTableButton;
+  private Button customerButton;
+
+  @FXML
+  private Button appointmentButton;
+
+  @FXML
+  private Button reportButton;
 
   @FXML
   private Button logoutButton;
-
-  @FXML
-  private Button reportTableButton;
-
-  @FXML
-  private Label welcomeLabel;
 
   /**
    * Initializes the controller class.
@@ -50,12 +50,13 @@ public class MainScreenController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    Appointment checkAppointments = new Appointment();
-    checkAppointments.upcomingAppointmentAlert();
+    // Show upcoming appointment alert at dashboard
+    Appointment appt = new Appointment();
+    appt.upcomingAppointmentAlert();
   }
 
   @FXML
-  private void customerTableHandler(ActionEvent event) throws IOException {
+  private void customerHandler(ActionEvent event) throws IOException {
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
     Object scene = FXMLLoader.load(
       getClass().getResource("/View_Controller/CustomerTable.fxml")
@@ -65,7 +66,7 @@ public class MainScreenController implements Initializable {
   }
 
   @FXML
-  private void appointmentTableHandler(ActionEvent event) throws IOException {
+  private void appointmentHandler(ActionEvent event) throws IOException {
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
     Object scene = FXMLLoader.load(
       getClass().getResource("/View_Controller/AppointmentScreen.fxml")
@@ -75,7 +76,7 @@ public class MainScreenController implements Initializable {
   }
 
   @FXML
-  void reportTableHandler(ActionEvent event) throws IOException {
+  void reportHandler(ActionEvent event) throws IOException {
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
     Object scene = FXMLLoader.load(
       getClass().getResource("/View_Controller/ReportScreen.fxml")
@@ -85,7 +86,7 @@ public class MainScreenController implements Initializable {
   }
 
   @FXML
-  private void dashboardLogButtonHandler(ActionEvent event) throws IOException {
+  private void dashboardLogHandler(ActionEvent event) throws IOException {
     String filename = "user_login_log.txt";
     File file = new File(filename);
     Desktop desktop = Desktop.getDesktop();
@@ -93,7 +94,8 @@ public class MainScreenController implements Initializable {
   }
 
   @FXML
-  private void logoutHandler(ActionEvent event) throws IOException {
+  private void logoutButtonHandler(ActionEvent event) throws IOException {
+    // Back to login screen
     Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
     Object scene = FXMLLoader.load(
       getClass().getResource("/View_Controller/LoginScreen.fxml")
