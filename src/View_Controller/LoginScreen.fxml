@@ -21,7 +21,7 @@
             <Font name="Arial Bold" size="15.0" />
          </font>
       </Label>
-      <Button fx:id="submitButton" layoutX="352.0" layoutY="240.0" mnemonicParsing="false" onAction="#submitButonHandler" text="Login" />
+      <Button fx:id="loginButton" layoutX="352.0" layoutY="240.0" mnemonicParsing="false" onAction="#loginButtonHandler" text="Login" />
       
       <GridPane layoutX="96.0" layoutY="105.0" prefHeight="105.0" prefWidth="308.0">
         <columnConstraints>
@@ -34,10 +34,10 @@
           
         </rowConstraints>
          <children>
-            <Label fx:id="passwordLabel" text="Password:" GridPane.rowIndex="1" />
-            <Label fx:id="usernameLabel" text="Username:" />
-            <TextField fx:id="usernameTextField" GridPane.columnIndex="1" />
-            <TextField fx:id="passwordTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="loginPasswordLabel" text="Password:" GridPane.rowIndex="1" />
+            <Label fx:id="loginUsernameLabel" text="Username:" />
+            <TextField fx:id="loginUsername" GridPane.columnIndex="1" />
+            <TextField fx:id="loginPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       

@@ -36,40 +36,40 @@ import javafx.stage.Stage;
 
 public class CustomerTableController implements Initializable {
   @FXML
-  private TableView<Customer> customerTableView;
+  private TableView<Customer> customerTable;
 
   @FXML
-  private TableColumn<Customer, Integer> customerIDTable;
+  private TableColumn<Customer, Integer> customerIdCol;
 
   @FXML
-  private TableColumn<Customer, String> customerNameTable;
+  private TableColumn<Customer, String> customerNameCol;
 
   @FXML
-  private TableColumn<Customer, String> customerAddressTable;
+  private TableColumn<Customer, String> customerAddressCol;
 
   @FXML
-  private TableColumn<Customer, String> customerCityTable;
+  private TableColumn<Customer, String> customerCityCol;
 
   @FXML
-  private TableColumn<Customer, String> customerCountryTable;
+  private TableColumn<Customer, String> customerCountryCol;
 
   @FXML
-  private TableColumn<Customer, String> customerPostalCodeTable;
+  private TableColumn<Customer, String> customerZipCodeCol;
 
   @FXML
-  private TableColumn<Customer, String> customerPhoneTable;
+  private TableColumn<Customer, String> customerPhoneCol;
 
   @FXML
-  private Button customerTableAddButton;
+  private Button customerAddButton;
 
   @FXML
-  private Button customerTableModifyButton;
+  private Button customerEditButton;
 
   @FXML
-  private Button customerTableDeleteButton;
+  private Button customerDeleteButton;
 
   @FXML
-  private Button backButton;
+  private Button customerBackButton;
 
   Stage stage;
   Parent scene;
@@ -82,31 +82,31 @@ public class CustomerTableController implements Initializable {
    */
   @Override
   public void initialize(URL url, ResourceBundle rb) {
+    // Populate customer table
     DataProvider.getCustomersAllList().clear();
-    customerTableView.setItems(DataProvider.getCustomersAllList());
-
+    customerTable.setItems(DataProvider.getCustomersAllList());
     DataProvider.createCustomerObjectObservableList();
 
-    customerTableView.getSelectionModel().selectFirst();
+    customerTable.getSelectionModel().selectFirst();
 
-    customerIDTable.setCellValueFactory(
+    // Bind columns to values
+    customerIdCol.setCellValueFactory(
       new PropertyValueFactory<>("customerID")
     );
-
-    customerNameTable.setCellValueFactory(
+    customerNameCol.setCellValueFactory(
       new PropertyValueFactory<>("customerName")
     );
-    customerAddressTable.setCellValueFactory(
+    customerAddressCol.setCellValueFactory(
       new PropertyValueFactory<>("address")
     );
-    customerCityTable.setCellValueFactory(new PropertyValueFactory<>("city"));
-    customerCountryTable.setCellValueFactory(
+    customerCityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
+    customerCountryCol.setCellValueFactory(
       new PropertyValueFactory<>("country")
     );
-    customerPostalCodeTable.setCellValueFactory(
+    customerZipCodeCol.setCellValueFactory(
       new PropertyValueFactory<>("postalCode")
     );
-    customerPhoneTable.setCellValueFactory(new PropertyValueFactory<>("phone"));
+    customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
   }
 
   /* -------------------------------------------------------------- */
@@ -134,13 +134,14 @@ public class CustomerTableController implements Initializable {
 
     // Create controller
     ModifyCustomerController controller = loader.getController();
+    // Get selected customer object
+    Customer customer = customerTable.getSelectionModel().getSelectedItem();
 
-    Customer customer = customerTableView.getSelectionModel().getSelectedItem();
-
-    int index = customerTableView.getSelectionModel().getSelectedIndex();
+    int index = customerTable.getSelectionModel().getSelectedIndex();
+    // Pass customer object and its index to edit customer screen
     controller.setCustomer(customer, index);
 
-    stage = (Stage) customerTableModifyButton.getScene().getWindow();
+    stage = (Stage) customerEditButton.getScene().getWindow();
     Parent scene = loader.getRoot();
     stage.setScene(new Scene(scene));
     stage.show();
@@ -159,13 +160,13 @@ public class CustomerTableController implements Initializable {
     if (result.isPresent() && result.get() == ButtonType.OK) {
       // Get selected Customer object
       selectedCustomer =
-        customerTableView.getSelectionModel().getSelectedItem();
+        customerTable.getSelectionModel().getSelectedItem();
       // Run SQL command to delete customer record
       deleteCustomer(selectedCustomer);
 
       // Refresh customer table
       DataProvider.getCustomersAllList().clear();
-      customerTableView.setItems(DataProvider.getCustomersAllList());
+      customerTable.setItems(DataProvider.getCustomersAllList());
       DataProvider.createCustomerObjectObservableList();
     }
   }
@@ -197,7 +198,6 @@ public class CustomerTableController implements Initializable {
       // Delete
       String deleteCustomer =
         "DELETE FROM customer WHERE customerId = " + selectedID;
-      // "DELETE FROM customer WHERE addressId =" + selectedID;
 
       int deletedCustomer = statement.executeUpdate(deleteCustomer);
 

@@ -5,8 +5,6 @@
  */
 package Model;
 
-import static View_Controller.LoginScreenController.getLocale;
-
 import Utilities.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +15,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 import javafx.scene.control.Alert;
 
 /**
@@ -256,7 +255,7 @@ public class Appointment {
         );
 
         if (difference > 0 && difference <= 15) {
-          if (getLocale().toString().equals("ko_KR")) {
+          if (Locale.getDefault().toString().equals("ko_KR")) {
             Alert alert = new Alert(
               Alert.AlertType.INFORMATION,
               "15 분 내에 약속이 있습니다."

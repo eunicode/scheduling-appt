@@ -37,58 +37,54 @@ public class LoginScreenController implements Initializable {
   private Label loginTitle;
 
   @FXML
-  private TextField usernameTextField;
+  private TextField loginUsername;
 
   @FXML
-  private TextField passwordTextField;
+  private TextField loginPassword;
 
   @FXML
-  private Button submitButton;
+  private Button loginButton;
 
   @FXML
-  private Label usernameLabel;
+  private Label loginUsernameLabel;
 
   @FXML
-  private Label passwordLabel;
+  private Label loginPasswordLabel;
 
-  private static String loggedInUser;
+  private static String storeUser;
 
   /**
    * Initializes the Locale on Login screen.
    * @return
    */
 
-  public static Locale getLocale() {
-    return Locale.getDefault();
-  }
-
   @Override
   public void initialize(URL url, ResourceBundle rb) {
-    ResourceBundle userLanguage = ResourceBundle.getBundle(
+    ResourceBundle rbLang = ResourceBundle.getBundle(
       "scheduler/Nat",
       Locale.getDefault()
     );
 
-    loginTitle.setText(userLanguage.getString("title"));
-    usernameLabel.setText(userLanguage.getString("username"));
-    passwordLabel.setText(userLanguage.getString("password"));
-    submitButton.setText(userLanguage.getString("login"));
+    loginTitle.setText(rbLang.getString("title"));
+    loginUsernameLabel.setText(rbLang.getString("username"));
+    loginPasswordLabel.setText(rbLang.getString("password"));
+    loginButton.setText(rbLang.getString("login"));
   }
 
   @FXML
-  private void submitButonHandler(ActionEvent event)
+  private void loginButtonHandler(ActionEvent event)
     throws IOException, Exception {
-    String username = usernameTextField.getText();
-    String password = passwordTextField.getText();
+    String username = loginUsername.getText();
+    String password = loginPassword.getText();
 
-    boolean correctCredentials = attemptLogin(username, password);
+    // If (username, password) pair exists in database, show main screen
+    if (checkUsernamePasswordPair(username, password)) {
+      storeUser = username;
 
-    if (correctCredentials) {
-      loggedInUser = username;
+      AddAppointmentController appt = new AddAppointmentController();
+      appt.findUserId(storeUser);
 
-      AddAppointmentController user = new AddAppointmentController();
-      user.findUserId(loggedInUser);
-
+      // Go to dashboard screen
       Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
       Object scene = FXMLLoader.load(
         getClass().getResource("/View_Controller/MainScreen.fxml")
@@ -97,8 +93,10 @@ public class LoginScreenController implements Initializable {
       stage.show();
 
       trackLoggedInUser.trackLog(username, true);
-    } else {
-      if (getLocale().toString().equals("en_US")) {
+    } 
+    // Else show alerts
+    else {
+      if (Locale.getDefault().toString().equals("en_US")) {
         Alert alert = new Alert(
           Alert.AlertType.ERROR,
           "The username and/or password is incorrect."
@@ -106,7 +104,7 @@ public class LoginScreenController implements Initializable {
         alert.showAndWait();
 
         trackLoggedInUser.trackLog(username, false);
-      } else if (getLocale().toString().equals("ko_KR")) {
+      } else if (Locale.getDefault().toString().equals("ko_KR")) {
         Alert alert = new Alert(
           Alert.AlertType.ERROR,
           "사용자 이름 및 / 또는 비밀번호가 잘못되었습니다."
@@ -118,15 +116,16 @@ public class LoginScreenController implements Initializable {
     }
   }
 
-  public static Boolean attemptLogin(String username, String password)
+  // Checks if (username, password) exists in database
+  public static Boolean checkUsernamePasswordPair(String username, String password)
     throws Exception {
     try {
-      // First connection in program
+      // First connection in program - makeConnection
       Statement statement = DBConnection.makeConnection().createStatement();
 
       ResultSet userListRS = statement.executeQuery("SELECT * FROM user");
 
-      // If (username, pw) matches a row in user table, log in
+      // If (username, pw) matches a row in user table, return true
       while (userListRS.next()) {
         if (
           userListRS.getString("userName").equals(username) &&
@@ -139,14 +138,6 @@ public class LoginScreenController implements Initializable {
       System.out.println("Error: " + e.getMessage());
     }
     return false;
-  }
-
-  public Locale getUserLocale() {
-    return Locale.getDefault();
-  }
-
-  public static String getLoggedInUser() {
-    return loggedInUser;
   }
 }
 /* =================================================================  
