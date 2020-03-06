@@ -302,7 +302,7 @@ public class AppointmentScreenController implements Initializable {
     // Get index of selected row  
     int index = appointmentTable.getSelectionModel().getSelectedIndex();
     // Pass appointment object and its index to edit appointment screen
-    controller.setAppointment(appointment, index);
+    controller.populateAppointment(appointment, index);
 
     stage = (Stage) apptEditButton.getScene().getWindow();
     Parent scene = loader.getRoot();

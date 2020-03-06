@@ -74,8 +74,10 @@ public class AppointmentEditController implements Initializable {
 
   Appointment selectedAppt;
   int selectedIdx;
+  String prevSavedStart; // previously selected
+  String prevSavedEnd;
+  String dateFromZonedDateTimeString;
 
-  // hour
   ObservableList<String> apptTimeOptions = FXCollections.observableArrayList(
     "09:00:00",
     "10:00:00",
@@ -138,6 +140,56 @@ public class AppointmentEditController implements Initializable {
   }
 
   /* -------------------------------------------------------------- */
+  // Populate form with previously saved data
+  public void populateAppointment(Appointment appointment, int index) {
+    selectedAppt = appointment;
+    selectedIdx = index;
+
+    Appointment newAppointment = (Appointment) appointment;
+
+    dateFromZonedDateTimeString = newAppointment
+      .getStart()
+      .substring(0, 10);
+
+    System.out.println(dateFromZonedDateTimeString);  
+    LocalDate dateForCal = LocalDate.parse(dateFromZonedDateTimeString);
+
+    // Set values with previously saved data
+    this.dateDatePicker.setValue(dateForCal);
+    this.apptEditTitle.setText(newAppointment.getTitle());
+    this.apptEditLocation.setText(newAppointment.getLocation());
+    this.apptEditDescrip.setText(newAppointment.getDescription());
+    this.apptEditContact.setText(newAppointment.getContact());
+
+    // Set type to previously selected type
+    String selectedType = newAppointment.getType();
+    if ("Presentation".equals(selectedType)) {
+      this.typeCombo.getSelectionModel().selectFirst();
+    } else { // "Scrum"
+      this.typeCombo.getSelectionModel().select(1);
+    }
+
+    // Set start to previously selected start
+    prevSavedStart = newAppointment.getStart().substring(11) + ":00";
+    // System.out.println("hi" + prevSavedStart);
+    for (String timeOption : apptTimeOptions) {
+      if (timeOption.equals(prevSavedStart)) {
+        int idx = apptTimeOptions.indexOf(timeOption);
+        this.startCombo.getSelectionModel().select(idx);
+      }
+    }
+    
+    // Set end to previously selected end
+    prevSavedEnd = newAppointment.getEnd().substring(11) + ":00";
+    for (String timeOption : apptTimeOptions) {
+      if (timeOption.equals(prevSavedEnd)) {
+        int idx = apptTimeOptions.indexOf(timeOption);
+        this.endCombo.getSelectionModel().select(idx);
+      }
+    }
+  }
+
+  /* -------------------------------------------------------------- */
   @FXML
   private void saveApptEditHandler(ActionEvent event)
     throws IOException {
@@ -155,6 +207,8 @@ public class AppointmentEditController implements Initializable {
       String url = "";
 
       LocalDate date = dateDatePicker.getValue();
+      DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+      String dateString = date.format(format);
 
       String startTime = startCombo
         .getSelectionModel()
@@ -276,10 +330,15 @@ public class AppointmentEditController implements Initializable {
 
       // Check if appointment has overlap. If it doesn't...
       if (
-        AppointmentAddController.validateAppointmentTimes(
+        // (
+        //   dateString ==  dateFromZonedDateTimeString && startTime == prevSavedStart 
+        //   && endTime == prevSavedEnd
+        // )
+        // ||
+        (AppointmentAddController.validateAppointmentTimes(
           startDateTimeUTCString,
-          endDateTimeUTCString
-        )
+          endDateTimeUTCString) 
+        )  
       ) {
         // Create appointment instance
         Appointment appointment = new Appointment(
@@ -376,55 +435,6 @@ public class AppointmentEditController implements Initializable {
 
       stage.setScene(new Scene((Parent) scene));
       stage.show();
-    }
-  }
-
-  /* -------------------------------------------------------------- */
-  // Populate form with previously saved data
-  public void setAppointment(Appointment appointment, int index) {
-    selectedAppt = appointment;
-    selectedIdx = index;
-
-    Appointment newAppointment = (Appointment) appointment;
-
-    String dateFromZonedDateTimeString = newAppointment
-      .getStart()
-      .substring(0, 10);
-
-    LocalDate dateForCal = LocalDate.parse(dateFromZonedDateTimeString);
-
-    // Set values with previously saved data
-    this.dateDatePicker.setValue(dateForCal);
-    this.apptEditTitle.setText(newAppointment.getTitle());
-    this.apptEditLocation.setText(newAppointment.getLocation());
-    this.apptEditDescrip.setText(newAppointment.getDescription());
-    this.apptEditContact.setText(newAppointment.getContact());
-
-    // Set type to previously selected type
-    String selectedType = newAppointment.getType();
-    if ("Presentation".equals(selectedType)) {
-      this.typeCombo.getSelectionModel().selectFirst();
-    } else { // "Scrum"
-      this.typeCombo.getSelectionModel().select(1);
-    }
-
-    // Set start to previously selected start
-    String selectedStart = newAppointment.getStart().substring(11) + ":00";
-    // System.out.println("hi" + selectedStart);
-    for (String timeOption : apptTimeOptions) {
-      if (timeOption.equals(selectedStart)) {
-        int idx = apptTimeOptions.indexOf(timeOption);
-        this.startCombo.getSelectionModel().select(idx);
-      }
-    }
-    
-    // Set end to previously selected end
-    String selectedEnd = newAppointment.getEnd().substring(11) + ":00";
-    for (String timeOption : apptTimeOptions) {
-      if (timeOption.equals(selectedEnd)) {
-        int idx = apptTimeOptions.indexOf(timeOption);
-        this.endCombo.getSelectionModel().select(idx);
-      }
     }
   }
 }
