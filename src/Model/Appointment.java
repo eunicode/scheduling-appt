@@ -253,7 +253,9 @@ public class Appointment {
           localTime
         );
 
+        // Alert if there's an appointment 15 minutes within login
         if (difference > 0 && difference <= 15) {
+          // If system locale is Korean
           if (Locale.getDefault().toString().equals("ko_KR")) {
             Alert alert = new Alert(
               Alert.AlertType.INFORMATION,
@@ -261,7 +263,9 @@ public class Appointment {
             );
             alert.showAndWait();
             break;
-          } else {
+          } 
+          // If system locale is not Koream
+          else {
             Alert alert = new Alert(
               Alert.AlertType.INFORMATION,
               "You have an appointment within 15 minutes."

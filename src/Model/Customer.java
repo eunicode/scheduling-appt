@@ -13,7 +13,9 @@ import javafx.collections.ObservableList;
  * @author eunice
  */
 
+// Plain Old Java Object class
 public class Customer {
+  // Members to correspond with `Customer` table columns
   private int customerID;
   private String customerName;
   private int active;
@@ -24,6 +26,8 @@ public class Customer {
   private String postalCode;
   private String phone;
 
+  // JavaFX ObservableList backed by ArrayList. 
+  // All list elements are type Appointment. ObservableList listens for changes
   public ObservableList<Appointment> appointmentsForCustomer = FXCollections.observableArrayList();
 
   // Constructor
@@ -39,6 +43,7 @@ public class Customer {
     String postalCode,
     String phone
   ) {
+    // Member variables are assigned argument values
     this.customerID = customerID;
     this.customerName = customerName;
     this.address = address;

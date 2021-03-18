@@ -15,10 +15,11 @@ import java.sql.Statement;
 
 // Utilities class to shorten database code
 public class DBQuery {
-  private static String query;
+  private static String query; // variable scope | one shared instance | type | variable name
   private static Statement statement;
   private static ResultSet result;
 
+  // Define my method
   public static void makeQuery(String sql) {
     query = sql.toLowerCase();
 

@@ -394,14 +394,14 @@ https://www.w3schools.com/sql/func_mysql_date_format.asp
 
 --------------------------------------------------------------------
 "SELECT appointmentId, date_format(start, '%Y-%m-%d') " +
-      "FROM appointment " +
-      "WHERE (year(start) = YEAR(curdate()) AND weekofyear(start) = weekofyear(date_add(curdate(),interval 7 day))) " +
-      "OR (start = curdate())";
+"FROM appointment " +
+"WHERE (year(start) = YEAR(curdate()) AND weekofyear(start) = weekofyear(date_add(curdate(),interval 7 day))) " +
+"OR (start = curdate())";
 
-      "SELECT appointmentId " +
-      "FROM appointment " +
-      "WHERE start >= NOW() AND start < NOW() + INTERVAL 30 DAY " +
-      "ORDER BY start ASC";
+"SELECT appointmentId " +
+"FROM appointment " +
+"WHERE start >= NOW() AND start < NOW() + INTERVAL 30 DAY " +
+"ORDER BY start ASC";
 
 --------------------------------------------------------------------
 */
