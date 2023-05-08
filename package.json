@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/eunicode/scheduling-appt#readme",
   "devDependencies": {
-    "prettier-plugin-java": "^0.7.0"
+    "prettier-plugin-java": "^2.1.0"
   }
 }
